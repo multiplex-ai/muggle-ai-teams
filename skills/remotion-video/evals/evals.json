@@ -1,0 +1,23 @@
+{
+  "skill_name": "remotion-video",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to create a 15-second animated intro video for my YouTube channel called 'TechPulse'. It should have the channel name flying in with a spring animation, a dark gradient background (#0f0c29 to #302b63 to #24243e), and a subtle particle effect. 1920x1080, 30fps. Can you set up the Remotion project and build this?",
+      "expected_output": "A complete Remotion project with: src/index.ts entry point, Root.tsx with a Composition registered, a main component using AbsoluteFill, spring() for the title animation, interpolate() for opacity/position, proper project structure with package.json including remotion and @remotion/cli dependencies.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I have a JSON array of 50 customer testimonials with fields: name, company, quote, rating. I want to generate a video for each one — 5 seconds each, 1080x1080 (Instagram square), white background, the quote in the center with fade-in, the name and company below it, and a star rating visualization at the top. Can you build a Remotion setup that renders all 50 from the data?",
+      "expected_output": "A Remotion project with parameterized Composition using defaultProps and inputProps, a testimonial component with Sequence-based timing for stars/quote/attribution, a render script using @remotion/bundler bundle() + @remotion/renderer renderMedia() in a loop over the dataset, proper use of interpolate for fade animations.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Build me a remotion video that shows an animated bar chart race — I'll give it data for 5 companies and their revenue over 4 quarters. The bars should smoothly animate between quarters with spring physics, and there should be fade transitions between each quarter view. Use Tailwind for styling. 1920x1080, 30fps, about 20 seconds total.",
+      "expected_output": "A Remotion project with TailwindCSS configured (remotion.config.ts with enableTailwind, index.css with @import tailwindcss), TransitionSeries with fade transitions between quarter scenes, spring() animations for bar heights, proper Series/Sequence timing, data-driven component accepting quarter data as props.",
+      "files": []
+    }
+  ]
+}
