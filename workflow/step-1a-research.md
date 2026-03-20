@@ -23,7 +23,12 @@ Use `WebSearch` to find how similar features are implemented in production syste
 
 ### 3. Search SkillsMP
 
-Search skillsmp.com for related skills. Install valuable ones.
+Search [skillsmp.com](https://skillsmp.com/) for related skills. Install valuable ones.
+
+**API key required.** Check if the user has provided a SkillsMP API key (stored in memory as `reference_skillsmp`). If no key is available:
+1. Ask the user: *"SkillsMP search requires an API key. You can register at https://skillsmp.com/ and provide your key, or we can skip this step."*
+2. If user provides a key → save it to memory and proceed with the search
+3. If user skips → document "SkillsMP search: skipped (no API key)" and continue
 
 ### 4. Pull library docs
 
@@ -48,7 +53,7 @@ Look for open-source projects that solve 80%+ of the problem and can be forked, 
 These are NOT optional. Skip only if user explicitly says to. Each skipped item requires a documented reason.
 
 1. **WebSearch** for industry practices (at least 3 queries with findings documented)
-2. **Search SkillsMP** (skillsmp.com) via API for relevant skills; install valuable ones
+2. **Search SkillsMP** (skillsmp.com) via API for relevant skills; install valuable ones (requires API key — ask user or skip)
 3. **Use Context7 MCP** to fetch latest docs for libraries being used
 4. **Dispatch `feature-dev:code-architect`** for architecture design (not design it yourself)
 5. **Invoke `frontend-design:frontend-design`** for visual mockups AFTER panel review (Step 1D), not during Step 1C — the panel may change the design significantly, making early mockups wasted work

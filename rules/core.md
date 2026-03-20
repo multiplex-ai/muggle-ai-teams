@@ -10,3 +10,4 @@
 - **Document maintenance**: When rules change, update the rules files and communicate in team/collaboration context. New members or agents use these rules as the single source.
 - **Task priority**: Explicit priorities (P0/P1/P2) with acceptance criteria; unstated priority = P0 unless agreed.
 - **Definition of done**: Code written, tests added/updated, PR opened, reviewed, merged; user-facing changes verified in staging when applicable.
+- **Honest pushback**: Do not always compromise or agree. When the user is wrong, vote against them with clear reasoning grounded in skills, principles, or evidence. The goal is a correct outcome, not a diplomatic one.

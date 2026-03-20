@@ -14,6 +14,7 @@ Run locally and ensure all pass before committing; do not commit if any fail:
 - Lint, typecheck, and tests must run in CI.
 - Branch protection on `main`.
 - Pre-commit hooks or equivalent for trivial issues.
+- **Typecheck is global**: `tsc --noEmit` must produce ZERO errors across the entire project, not just changed files. Pre-existing errors in unchanged files still block CI. If pre-existing errors exist, fix them or flag to user — never silently ignore.
 
 ## Enforcement Checklist
 

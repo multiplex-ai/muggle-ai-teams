@@ -13,25 +13,29 @@ Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA 
 
 ---
 
-## What Is MuggleAI-Teams?
+## How Is This Different?
 
-MuggleAI-Teams is a centralized management system for Claude Code agents, skills, and workflows. Instead of scattering configuration across `~/.claude/`, project `.claude/` folders, and random dotfiles, everything lives in one directory with symlinks connecting it all.
+There are several excellent projects in the Claude Code ecosystem. Here's how MuggleAI-Teams compares:
 
-**The problem:** Claude Code's agent ecosystem grows fast. You end up with dozens of agents, hundreds of skills, project-specific rules, and no way to keep them organized or portable across machines.
+| | **MuggleAI-Teams** | **[Superpowers](https://github.com/obra/superpowers)** | **[Everything Claude Code](https://github.com/affaan-m/everything-claude-code)** | **[Get Shit Done](https://github.com/gsd-build/get-shit-done)** |
+|---|---|---|---|---|
+| **Focus** | Team management + organization | Development workflow skills | Agent harness optimization | Context engineering |
+| **Core idea** | One folder, symlinked everywhere, version-controlled | Composable skills that enforce a systematic dev process | Performance system with instincts, learning, and security | Fresh-context-per-task to prevent quality degradation |
+| **Agents** | 29 specialized roles with scope-first routing | Skill-based (no standalone agents) | 28 subagents | Multi-agent orchestration via waves |
+| **Skills** | 186 (merged + deduplicated) | ~15 core workflow skills | 116+ | Embedded in prompts |
+| **Rules** | 16 domain-split files, loaded on demand | Via skill enforcement | Multi-language rule sets | XML-structured prompts |
+| **Learning system** | Behavioral rules graduate to always-loaded files | N/A | Instinct-based with confidence scoring | N/A |
+| **Portability** | `setup.sh` symlinks to any machine | Plugin install | Plugin + manual setup | Drop-in folder |
+| **Multi-tool** | Claude Code + Cursor | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
 
-**The solution:** One folder. One `setup.sh`. Everything symlinked, version-controlled, and structured so Claude Code loads only what it needs.
+**MuggleAI-Teams doesn't replace these projects — it builds on them.** We merged the best parts of Superpowers (workflow discipline) and ECC (agents, skills, hooks) into a unified, deduplicated system, then added:
 
-### Key numbers
-
-| Component | Count | Description |
-|-----------|-------|-------------|
-| Agents | 29 | Specialized roles from architect to security-reviewer |
-| Commands | 52 | Slash commands for every workflow (`/tdd`, `/plan`, `/e2e`, `/code-review`) |
-| Skills | 186 | Domain expertise from SEO to Django to Rust testing |
-| Rules | 15 | Domain-based rule files loaded on demand |
-| Workflow steps | 14 | Hierarchical workflow from research to learning |
-| Context modes | 3 | `dev`, `research`, `review` — switch what Claude knows |
-| Hooks | 12 | Automated guards (typecheck on edit, doc-file warnings) |
+- **Scope-first agent routing** — requirements go to the narrowest agent, not broadcast universally
+- **Multi-perspective panel review** — 2-round design review with core + domain + gap panelists
+- **Behavioral learning system** — user corrections graduate to always-loaded rules files, not unreliable memory
+- **Domain-based rule loading** — 80% reduction in always-loaded context (562 → 115 lines)
+- **Hierarchical workflow** — index + on-demand step files = 100% step compliance with minimal context cost
+- **Symlink architecture** — edit once in MuggleAI-Teams, available at both global and project level instantly
 
 ---
 
@@ -58,6 +62,73 @@ chmod +x MuggleAI-Teams/setup.sh
 4. Backs up any existing directories before overwriting
 
 No dependencies. No build step. Works on macOS and Linux.
+
+---
+
+## How to Use It
+
+### Everyday usage (no workflow needed)
+
+After running `setup.sh`, your Claude Code sessions automatically get:
+
+- **29 agents** dispatched based on task type (coding, review, debugging, etc.)
+- **52 slash commands** — type `/plan`, `/tdd`, `/code-review`, `/build-fix` anytime
+- **186 skills** loaded on demand when relevant
+- **16 rules** enforcing code quality, behavioral standards, and routing decisions
+- **12 hooks** running automatically (typecheck on edit, formatting, session tracking)
+
+Just use Claude Code normally. The agents, rules, and hooks work in the background.
+
+### Full workflow (`/MuggleAI-Teams`)
+
+For larger features, type `/MuggleAI-Teams` to activate the 8-phase orchestrated workflow:
+
+```
+Phase 1: Design (6 sub-steps)
+  1A Research    → Explore codebase, search SkillsMP, pull library docs
+  1B Requirements → Gather requirements, map impact
+  1C Design      → Architecture proposal with brainstorming
+  1D Panel Review → Multi-expert review (architecture, security, stress test, blind spots)
+  1E Approval    → User sign-off before implementation
+  1F Plan        → Implementation slices with acceptance criteria
+
+Phase 2-3: Dispatch
+  Route to narrowest agent scope → parallel execution where possible
+
+Phase 4-5: Implement & Verify
+  TDD-first → quality gates (typecheck, lint, test) → local verification
+
+Phase 6-7: Review & Push
+  3-pass code review (quality, compliance, contract) → PR
+
+Phase 8: Learn
+  Extract learnings → graduate to rules files (not just memory)
+```
+
+Each phase loads only its step file on demand — the full workflow is 14 files but only ~50 lines sit in your context at any time.
+
+### Key slash commands
+
+| Command | What it does |
+|---------|-------------|
+| `/MuggleAI-Teams` | Full orchestrated workflow |
+| `/plan` | Research + requirements + implementation plan |
+| `/tdd` | Test-driven development (RED → GREEN → IMPROVE) |
+| `/code-review` | 3-pass review of uncommitted changes |
+| `/build-fix` | Fix build/typecheck errors incrementally |
+| `/e2e` | Generate and run Playwright E2E tests |
+| `/learn-eval` | Extract patterns from session → save to skills or rules |
+| `/save-session` | Save session state for resumption later |
+| `/docs` | Look up library docs via Context7 |
+
+### Behavioral rules (always active)
+
+These rules enforce how Claude works with you, loaded in every conversation:
+
+- **Diagnose before fixing** — systematic debugging, never guess at root causes
+- **Process feedback as checklist** — extract every comment into a numbered table before evaluating
+- **Honest pushback** — challenge you when you're wrong, with reasoning
+- **Output quality** — readable mockups, sufficient detail, no cramming
 
 ---
 
@@ -88,64 +159,48 @@ Operations: `/loop-start`, `/loop-status`, `/devfleet`, `/multi-execute`, `/mode
 
 ### `/skills` — 186 domain skills
 
-Organized into directories covering: AI/ML patterns, backend frameworks (Django, FastAPI, Express), frontend patterns, SEO/GEO optimization, cloud infrastructure, database migrations, testing strategies, content writing, deployment patterns, and more.
+Organized into directories covering: AI/ML patterns, backend frameworks (Django, FastAPI, Express, Spring Boot, Laravel), frontend patterns, SEO/GEO optimization, cloud infrastructure, database migrations, testing strategies, content writing, deployment patterns, and more.
 
-### `/rules` — 15 domain-based rule files
+### `/rules` — 16 domain-based rule files
 
 ```
-core.md                 # Always loaded — minimal footprint
-coding.md               # Coding standards
-git.md                  # Commit, branch, PR conventions
-planning.md             # Research-first workflow
-testing.md              # TDD, coverage gates
-quality-gates.md        # Pre-commit checks
-agents-routing.md       # Which agent handles what
-agents-advanced.md      # Multi-agent orchestration
-model-selection.md      # Opus/Sonnet/Haiku routing
-context-management.md   # Context window strategy
-security-php.md         # PHP-specific security rules
-coding-style-php.md     # PHP coding conventions
-patterns-php.md         # PHP design patterns
-hooks-php.md            # PHP hooks
-testing-php.md          # PHP testing
-```
+Always loaded (every conversation):
+  core.md              # Universal principles, honest pushback
+  behavior.md          # Debugging discipline, communication, output quality
+  agents-routing.md    # Scope-first agent dispatch
+  model-selection.md   # Opus/Sonnet/Haiku routing
 
-**Why domain-based rules?** Claude Code loads `~/.claude/rules/` on every conversation start. Splitting from one monolithic file into 15 domain files achieved an **80% reduction in always-loaded context** (562 to 115 lines in `core.md`). Rules are loaded on demand based on the task.
+Loaded on demand:
+  coding.md            # TypeScript/React standards (when editing code)
+  testing.md           # TDD, coverage gates (when editing tests)
+  git.md               # Commit, branch, PR conventions
+  quality-gates.md     # Pre-commit checks
+  planning.md          # Research-first workflow
+  context-management.md # Context window strategy
+  agents-advanced.md   # Multi-agent orchestration
+  security-php.md      # PHP-specific security rules
+  coding-style-php.md  # PHP coding conventions
+  patterns-php.md      # PHP design patterns
+  hooks-php.md         # PHP hooks
+  testing-php.md       # PHP testing
+```
 
 ### `/workflow` — 14-step hierarchical workflow
 
-```
-reference.md            # Index file — always loaded, routes to steps
-step-1a-research.md     # Research & reuse (mandatory)
-step-1b-requirements.md # Requirements gathering
-step-1c-design.md       # Design & architecture
-step-1d-panel-review.md # Multi-perspective panel review
-step-1e-approval.md     # User approval gate
-step-1f-plan.md         # Implementation plan
-step-2-routing.md       # Agent routing & dispatch
-step-3-parallel.md      # Parallel task execution
-step-4-execute.md       # Implementation
-step-5-verify.md        # Verification & testing
-step-6-review.md        # Code review
-step-7-push.md          # Git operations
-step-8-learn.md         # Retrospective & learning
-```
-
-Only `reference.md` loads by default. Step files load on demand, keeping the context window clean.
-
-### `/contexts` — 3 modes
-
-- **`dev`** — Full development context (agents, skills, commands active)
-- **`research`** — Research-focused (documentation, web search, analysis)
-- **`review`** — Code review context (reviewer agents, quality gates)
+Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them.
 
 ### `/hooks` — 12 automated guards
 
-Post-edit typechecking, documentation file warnings, and utility libraries for package management, formatting, and hook state.
+- **PostToolUse**: Auto-format + typecheck after every file edit
+- **PreToolUse**: Warn before creating documentation files
+- **Stop**: Check for console.log, suggest compaction, track costs, save session
+- **SessionStart**: Load session context
 
-### `/projects` — 7 project configurations
+### `/contexts` — 3 behavioral modes
 
-Pre-configured contexts for specific sub-projects: `muggle-ai-ui`, `muggle-ai-prompt-service`, `muggle-ai-mcp`, `muggle-ai-teaching-service`, `muggle-ai-docs`, plus shared `environment.md` and `external-services.md`.
+- **`dev`** — Write code first, ask questions later
+- **`research`** — Read widely before concluding
+- **`review`** — Check logic, security, and correctness
 
 ---
 
@@ -155,36 +210,43 @@ Pre-configured contexts for specific sub-projects: `muggle-ai-ui`, `muggle-ai-pr
 
 ```
 MuggleAI-Teams/
-  agents/         ← single source of truth
+  agents/         <- single source of truth
   commands/
   skills/
   rules/
   ...
 
 ~/.claude/
-  agents/ → MuggleAI-Teams/agents/     (global)
-  commands/ → MuggleAI-Teams/commands/
-  skills/ → MuggleAI-Teams/skills/
-  rules/ → MuggleAI-Teams/rules/
+  agents/ -> MuggleAI-Teams/agents/     (global)
+  commands/ -> MuggleAI-Teams/commands/
+  skills/ -> MuggleAI-Teams/skills/
+  rules/ -> MuggleAI-Teams/rules/
 
 your-project/.claude/
-  agents/ → MuggleAI-Teams/agents/     (project)
-  skills/ → MuggleAI-Teams/skills/
+  agents/ -> MuggleAI-Teams/agents/     (project)
+  skills/ -> MuggleAI-Teams/skills/
 ```
-
-Edit a file in `MuggleAI-Teams/` and it's instantly available at both global and project level. No copying, no syncing.
 
 ### Domain-based rule loading
 
-Instead of one massive rules file that consumes context on every conversation, rules are split by domain. `core.md` (115 lines) loads always. Everything else loads when the task requires it — coding rules load when you code, git rules load when you commit, testing rules load when you test.
+Instead of one massive rules file that consumes context on every conversation, rules are split by domain. Four core files (~120 lines total) load always. Everything else loads when the task requires it.
 
-### Hierarchical workflow
+### Learning system
 
-The workflow uses an index + on-demand pattern. `reference.md` is a lightweight routing file that tells Claude which step file to load next. This achieved **100% workflow compliance** — no steps get skipped because the index enforces the sequence.
+When you correct Claude's behavior during a project, the learning system (`/learn-eval`, Step 8) extracts the correction and graduates it to the appropriate rules file — not just memory. This means the correction is enforced in every future session automatically, without requiring Claude to actively recall it.
+
+| Correction type | Graduates to |
+|----------------|-------------|
+| How to debug/fix | `rules/behavior.md` (always loaded) |
+| Communication preferences | `rules/behavior.md` (always loaded) |
+| Code quality expectations | `rules/core.md` (always loaded) |
+| Testing/CI expectations | `rules/quality-gates.md` |
+| Git conventions | `rules/git.md` |
+| Technical patterns | `skills/learned/` |
 
 ### Portability
 
-The entire `MuggleAI-Teams/` folder is self-contained and version-controlled. Clone it on a new machine, run `setup.sh`, and your full agent team is operational. Memory links to Claude's persistent storage, so context carries over.
+Clone on a new machine, run `setup.sh`, and your full agent team is operational.
 
 ---
 
@@ -202,9 +264,9 @@ No. Skills are loaded on demand based on what you're working on. Claude Code rea
 
 `setup.sh` backs up your existing `~/.claude/agents/`, `~/.claude/commands/`, `~/.claude/skills/`, and `~/.claude/rules/` to `.bak` directories before creating symlinks. You can restore them by removing the symlinks and renaming the backups.
 
-### What version of Claude Code does this work with?
+### Can I use this with Superpowers or ECC?
 
-MuggleAI-Teams works with Claude Code's current agent, command, and skill system. The file structure follows Claude Code's conventions — `.md` files in the expected directories with the expected naming patterns.
+MuggleAI-Teams already includes merged versions of Superpowers workflow skills and ECC agents/commands. Installing them separately would create duplicates. If you want to add new skills from those projects, drop them into the MuggleAI-Teams directories and they'll be picked up automatically.
 
 ### Can I add my own agents and skills?
 
@@ -212,7 +274,7 @@ Yes. Add files directly to the MuggleAI-Teams directories. Since they're symlink
 
 ### Does this work with Cursor IDE too?
 
-The agents and skills are written in Markdown and follow patterns compatible with both Claude Code and Cursor. The `scripts/sync-agents.sh` script helps synchronize agent definitions between both environments.
+The agents and skills are written in Markdown and follow patterns compatible with both Claude Code and Cursor.
 
 ---
 
@@ -220,21 +282,35 @@ The agents and skills are written in Markdown and follow patterns compatible wit
 
 MuggleAI-Teams stands on the shoulders of excellent open-source work:
 
-- **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** by [@affaanmustafa](https://github.com/affaan-m) — Source of many agents, commands, skills, and hooks that form the foundation of this collection. A massive contribution to the Claude Code ecosystem.
+### Core foundations
 
-- **[superpowers](https://github.com/obra/superpowers)** by [@obra](https://github.com/obra) — Workflow skills including brainstorming, writing-plans, executing-plans, TDD, verification, debugging, code review, and parallel dispatch patterns.
+- **[everything-claude-code](https://github.com/affaan-m/everything-claude-code)** by [@affaan-m](https://github.com/affaan-m) — Source of many agents, commands, skills, and hooks that form the foundation of this collection. Anthropic hackathon winner with 28 subagents, 116+ skills, and the continuous learning system. A massive contribution to the Claude Code ecosystem.
 
-- **[claude-seo](https://github.com/search?q=claude-seo) & [geo-seo-claude](https://github.com/search?q=geo-seo-claude)** — SEO and GEO optimization skills for AI-age search visibility.
+- **[superpowers](https://github.com/obra/superpowers)** by [Jesse Vincent](https://github.com/obra) / [Prime Radiant](https://primeradiant.com) — Workflow skills including brainstorming, writing-plans, executing-plans, TDD, verification, systematic debugging, code review, and parallel dispatch patterns. The discipline backbone of our workflow.
+
+- **[Get Shit Done](https://github.com/gsd-build/get-shit-done)** by TACHES — Context engineering and multi-agent orchestration patterns. Inspired our fresh-context-per-step approach and research-driven planning.
+
+### Skills & integrations
+
+- **[claude-seo](https://github.com/AgriciDaniel/claude-seo)** by [@AgriciDaniel](https://github.com/AgriciDaniel) — 12 SEO audit, planning, and optimization skills.
+
+- **[geo-seo-claude](https://github.com/zubair-trabzada/geo-seo-claude)** by [@zubair-trabzada](https://github.com/zubair-trabzada) — 14 Generative Engine Optimization skills for AI-age search visibility.
+
+- **[ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill)** by [@nextlevelbuilder](https://github.com/nextlevelbuilder) — UI/UX design intelligence with 50+ styles, 161 color palettes, 57 font pairings, and 99 UX guidelines.
+
+- **[SkillsMP](https://skillsmp.com/)** — Skills marketplace for discovering and sharing Claude Code skills. Used in our research workflow (Step 1A) for finding community skills relevant to each feature.
+
+### Platform & tools
 
 - **[Claude Code](https://claude.ai/code)** by [Anthropic](https://www.anthropic.com) — The platform that makes all of this possible.
 
-- **[Context7](https://context7.com)** — Live documentation lookup integration.
+- **[Context7](https://context7.com)** — Live documentation lookup integration used by our `docs-lookup` agent and `/docs` command.
 
 ---
 
 ## About
 
-Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform. MuggleAI-Teams was created and refined while building MuggleTest, a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation — all orchestrated by Claude Code agents.
+Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required. MuggleAI-Teams was created and refined while building MuggleTest, a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation — all orchestrated by Claude Code agents.
 
 ---
 
