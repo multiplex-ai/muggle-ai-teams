@@ -8,25 +8,56 @@ Extends `/learn` with a quality gate, save-location decision, and knowledge-plac
 
 ## What to Extract
 
-Look for:
+Look for TWO categories:
 
+### Category A: Technical Patterns (save as skills)
 1. **Error Resolution Patterns** — root cause + fix + reusability
 2. **Debugging Techniques** — non-obvious steps, tool combinations
 3. **Workarounds** — library quirks, API limitations, version-specific fixes
 4. **Project-Specific Patterns** — conventions, architecture decisions, integration patterns
+
+### Category B: Behavioral Rules (graduate to rules files)
+5. **User corrections** — "don't do X", "always do Y first", "stop doing Z"
+6. **Process improvements** — better ways to handle recurring situations
+7. **Communication preferences** — how the user wants information presented
+8. **Quality standards** — expectations for output quality, thoroughness, or approach
+
+Category B items are the user's feedback about HOW you work, not WHAT you build. These are more valuable than technical patterns because they prevent the same mistakes across all future sessions.
 
 ## Process
 
 1. Review the session for extractable patterns
 2. Identify the most valuable/reusable insight
 
-3. **Determine save location:**
-   - Ask: "Would this pattern be useful in a different project?"
-   - **Global** (`~/.claude/skills/learned/`): Generic patterns usable across 2+ projects (bash compatibility, LLM API behavior, debugging techniques, etc.)
-   - **Project** (`.claude/skills/learned/` in current project): Project-specific knowledge (quirks of a particular config file, project-specific architecture decisions, etc.)
-   - When in doubt, choose Global (moving Global → Project is easier than the reverse)
+3. **Determine save location based on category:**
 
-4. Draft the skill file using this format:
+   **Category A (Technical Patterns) → Skills:**
+   - Ask: "Would this pattern be useful in a different project?"
+   - **Global** (`~/.claude/skills/learned/`): Generic patterns usable across 2+ projects
+   - **Project** (`.claude/skills/learned/` in current project): Project-specific knowledge
+   - When in doubt, choose Global
+
+   **Category B (Behavioral Rules) → Rules files:**
+   - Decide which rules file the learning belongs in:
+
+   | Learning type | Target file | Why |
+   |--------------|-------------|-----|
+   | How to debug/fix bugs | `rules/behavior.md` (Debugging section) | Always-loaded behavioral rule |
+   | How to process information | `rules/behavior.md` (Processing section) | Always-loaded behavioral rule |
+   | Communication/output preferences | `rules/behavior.md` (Communication section) | Always-loaded behavioral rule |
+   | Code quality expectations | `rules/core.md` | Always-loaded principle |
+   | Testing/CI expectations | `rules/quality-gates.md` | Loaded during testing |
+   | Git/PR expectations | `rules/git.md` | Loaded during git ops |
+   | Agent dispatch corrections | `rules/agents-routing.md` | Always-loaded routing |
+   | Workflow process corrections | `workflow/reference.md` or relevant step file | Loaded during workflow |
+
+   - **Synthesize with existing rules**: Before adding, read the target file. If a related rule exists, merge into a stronger version rather than adding a duplicate.
+   - **Never save behavioral rules to memory only** — memory is unreliable (requires active recall). Rules files are always loaded.
+   - User preferences that don't fit any rules file → memory as last resort.
+
+4. Draft the output:
+
+   **For Category A**, draft a skill file using this format:
 
 ```markdown
 ---
@@ -51,16 +82,30 @@ origin: auto-extracted
 [Trigger conditions]
 ```
 
+   **For Category B**, draft a rule addition:
+   - Read the target rules file
+   - Identify where the new rule fits (which section, or new section needed)
+   - Check for existing rules that cover similar ground — if found, merge into a stronger version
+   - Draft the addition as a concise, actionable bullet or paragraph (not a skill file)
+   - If the learning is the same underlying principle as an existing rule but for a different domain, synthesize into one rule that covers both (e.g., "diagnose CSS first" + "one fix then diagnose" = "diagnose before fixing any bug")
+
 5. **Quality gate — Checklist + Holistic verdict**
 
    ### 5a. Required checklist (verify by actually reading files)
 
    Execute **all** of the following before evaluating the draft:
 
+   **For Category A:**
    - [ ] Grep `~/.claude/skills/` and relevant project `.claude/skills/` files by keyword to check for content overlap
    - [ ] Check MEMORY.md (both project and global) for overlap
    - [ ] Consider whether appending to an existing skill would suffice
    - [ ] Confirm this is a reusable pattern, not a one-off fix
+
+   **For Category B:**
+   - [ ] Read the target rules file to check for existing rules that cover the same ground
+   - [ ] If overlap found, draft a merged version that's stronger than either original
+   - [ ] Check memory files for related feedback that should be synthesized together
+   - [ ] Confirm this is a persistent behavioral preference, not a one-time situational request
 
    ### 5b. Holistic verdict
 

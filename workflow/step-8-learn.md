@@ -40,13 +40,19 @@ Ask: **"Did we learn anything that should apply to ALL future runs?"**
 
 ### Graduation Table
 
-| Learning type | Graduates to |
-|--------------|-------------|
-| Design pattern that always works | Per-repo CLAUDE.md |
-| Recurring engineer mistake | Agent definition (dispatch context) |
-| Panelist finding that applies universally | Per-repo CLAUDE.md |
-| Orchestrator decision pattern | Workflow file or memory |
-| User preference | Memory files |
+| Learning type | Graduates to | Why |
+|--------------|-------------|-----|
+| User correction about HOW to work | `rules/behavior.md` | Always loaded — prevents same mistake in all future sessions |
+| Code quality expectation | `rules/core.md` | Always loaded universal principle |
+| Testing/CI expectation | `rules/quality-gates.md` | Loaded during testing |
+| Git/PR expectation | `rules/git.md` | Loaded during git ops |
+| Agent dispatch correction | `rules/agents-routing.md` | Always loaded routing |
+| Workflow process correction | `workflow/reference.md` or step file | Loaded during workflow |
+| Design pattern that always works | Per-repo CLAUDE.md | Project-specific |
+| Recurring engineer mistake | Agent definition (dispatch context) | Agent-specific |
+| Technical pattern (error/debug/workaround) | `skills/learned/` via `/learn-eval` | On-demand skill |
+
+**Critical rule: Never save behavioral corrections to memory only.** Memory requires active recall and is unreliable. Rules files are always loaded and enforced. Memory is a last resort for things that don't fit any rules file (e.g., user preferences about non-work topics).
 
 ### Sensitive Data Check
 

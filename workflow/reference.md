@@ -15,6 +15,7 @@ Quick reference for error recovery, agent/skill lookup, and maintenance.
 | User issue unreproducible | Ask for screenshots/console errors; invoke `superpowers:systematic-debugging` |
 | Parallel file conflict | Orchestrator resolves before committing; prevent by declaring file ownership in planning |
 | No progress for 10 minutes | Checkpoint current state and alert user (stuck agent detection) |
+| Workflow step completed | Explicitly check off the sub-step (1A→1B→1C→1D→1E→1F→2→...→8). Never assume a step is complete because a skill finished — skills don't track workflow position. Panel Review (1D) and User Approval (1E) must NEVER be skipped. |
 
 ---
 
