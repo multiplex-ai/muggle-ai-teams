@@ -1,0 +1,86 @@
+# /MuggleAI-Teams → Step 8: Learn & Graduate
+
+> Part of /MuggleAI-Teams.
+> **Skill**: `claude-md-management:revise-claude-md`
+
+After every workflow run (whether successful or abandoned), the orchestrator captures learnings and graduates them into persistent rules.
+
+---
+
+## 8.1: Capture Run Log
+
+Append a **Run Log** section to the plan document:
+
+```markdown
+## Run Log
+### Panelist Performance
+| Panelist | Findings | Led to change | Rejected |
+|----------|----------|--------------|----------|
+
+### Agent Performance
+| Agent | Slices | Gate first-pass | Fix cycles |
+|-------|--------|----------------|------------|
+
+### Cost
+- Total tokens / cost for this workflow run (from `/cost`)
+
+### Lessons Learned
+- Design patterns that worked: [what and why]
+- Mistakes caught by panel: [what, who caught it, how to prevent next time]
+- Engineer dispatch improvements: [agent, recurring issue, context to add]
+```
+
+---
+
+## 8.2: Graduate Learnings into Persistent Rules
+
+Invoke `/learn-eval` to extract patterns with quality gates (checklist + holistic verdict + save-location decision). This replaces free-form "did we learn anything" — the command has a rigorous evaluation pipeline that checks for overlap, confirms reusability, and decides Global vs Project scope.
+
+Ask: **"Did we learn anything that should apply to ALL future runs?"**
+
+### Graduation Table
+
+| Learning type | Graduates to |
+|--------------|-------------|
+| Design pattern that always works | Per-repo CLAUDE.md |
+| Recurring engineer mistake | Agent definition (dispatch context) |
+| Panelist finding that applies universally | Per-repo CLAUDE.md |
+| Orchestrator decision pattern | Workflow file or memory |
+| User preference | Memory files |
+
+### Sensitive Data Check
+
+Before writing ANY learning to a persistent file, verify it contains NO:
+- API keys, passwords, tokens, or connection strings
+- Internal URLs with credentials
+- Environment variable values
+- PII or customer data
+
+If a learning references sensitive context, abstract it: "Auth endpoint must handle token refresh" NOT "Auth0 tenant xyz.auth0.com token refresh at /oauth/token"
+
+---
+
+## 8.3: Compress Rules When Needed
+
+When a CLAUDE.md file accumulates many similar rules:
+
+1. **Compress**: Merge related specific rules into fewer general rules
+   - Before: 4 rules about auth error handling → After: 1 rule covering all auth error patterns
+2. **Split**: When a CLAUDE.md exceeds ~200 lines, split into domain-specific rule files
+   - `muggle-ai-ui/CLAUDE.md` (core) + `muggle-ai-ui/docs/rules/auth.md`, `forms.md`, etc.
+   - Agent reads core CLAUDE.md (always) + relevant domain rule file (only when working on that domain)
+
+---
+
+## 8.4: How the System Gets Smarter Over Time
+
+The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, not in run logs) at the start of each new `/MuggleAI-Teams` run. Over time:
+- Designs anticipate common concerns upfront → panel finds fewer issues → fewer panelists needed
+- Engineer dispatch prompts include known pitfalls → higher first-pass quality → fewer fix cycles
+- The panel shrinks not because panelists are pruned, but because the orchestrator produces better designs that need less scrutiny
+
+---
+
+## Workflow Complete
+
+This is the final step. See `MuggleAI-Teams/workflow/reference.md` for error recovery and quick reference.
