@@ -30,48 +30,41 @@ Run `/save-session` to persist full session state (recoverable if context limits
 Run `/checkpoint create "design-approved"` to create a git-backed snapshot.
 
 ### 3. Compress design phase
-Compress the entire design phase (Steps 1A-1E) into the final approved plan document. Only the plan document carries forward into Step 4 execution — not the raw research, panelist reports, or revision history.
+
+Compress the entire design phase (Steps 1A-1E) into the final approved plan document. Only the plan document carries forward into Step 1F execution — not the raw research, panelist reports, or revision history.
+
+**Compression procedure:**
+1. Open the plan document at `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md`
+2. Ensure all sections below are filled with synthesized content (not raw notes):
+   - Research & Context (from 1A)
+   - Requirements (from 1B)
+   - Design (from 1C, revised after panel)
+   - Panel Review Report (from 1D2, consolidated by theme)
+3. **Remove** from the conversation context:
+   - Raw research notes and web search results
+   - Individual panelist reports (keep only the consolidated report)
+   - Rejected design alternatives and revision history
+   - Intermediate brainstorming output
+4. The plan document must be **self-contained** — a fresh agent reading only this document should have enough context to execute Step 1F
+5. Run `/compact` to free conversation context for the implementation phase
 
 ---
 
-## Plan Document Template Structure
+## Plan Document Verification
 
-The plan document at `docs/superpowers/plans/YYYY-MM-DD-<feature>.md` should follow this structure:
+Before compressing, verify the plan document has these sections (each written by its respective step):
+- **Research & Context** (from 1A)
+- **Requirements** (from 1B)
+- **Design** (from 1C, revised after panel)
+- **Panel Review Report** (from 1D2)
+- **Implementation Plan** (filled in Step 1F, after this step)
 
-```markdown
-# [Feature Name]
+## Completion Criteria
 
-## Research & Context
-- Current state: [what exists, affected files/services]
-- Industry research: [how others solve this, best practices found]
-- Library docs: [relevant API references]
-
-## Requirements
-- [Clarified requirements]
-- Impact analysis: [files, services, flows affected]
-- Dependencies: [what must exist first]
-- Risks: [what could go wrong]
-
-## Design
-- Goal: [one sentence]
-- Approach: [2-3 sentences]
-- Data flow / API shapes: [as needed]
-- Component structure: [if UI changes]
-- Error states & edge cases: [as needed]
-- Trade-offs: [why this approach over alternatives]
-
-## Panel Review Report
-- Panel composition: [which panelists were selected and why]
-- MUST ADDRESS: [consolidated findings, grouped by theme]
-- SHOULD ADDRESS: [consolidated, with user decisions]
-- Blind spots surfaced: [what the team hadn't considered]
-- Design revisions made: [how the design changed in response]
-
-## Implementation Plan
-- Mode: [parallel / sequential / single agent]
-- Slices:
-  - Slice 1: [description] → Agent: [X] → Test: [Y]
-  - Slice 2: ...
-```
+- [ ] User explicitly approved the design
+- [ ] Session state saved (`/save-session`)
+- [ ] Git checkpoint created (`/checkpoint create "design-approved"`)
+- [ ] Design phase compressed — plan document is self-contained
+- [ ] `/compact` run to free context
 
 ## Next → Read `MuggleAI-Teams/workflow/step-1f-plan.md`

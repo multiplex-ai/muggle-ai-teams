@@ -10,7 +10,7 @@ Analyze the codebase structure and generate token-lean architecture documentatio
 
 ## Step 2: Generate Codemaps
 
-Create or update codemaps in `docs/CODEMAPS/` (or `.reports/codemaps/`):
+Create or update codemaps in `MuggleAI-Teams/projects/<project-name>/codemaps/`:
 
 | File | Contents |
 |------|----------|
@@ -57,7 +57,7 @@ Add a freshness header to each codemap:
 
 ## Step 5: Save Analysis Report
 
-Write a summary to `.reports/codemap-diff.txt`:
+Write a summary to `MuggleAI-Teams/projects/<project-name>/codemaps/codemap-diff.txt`:
 - Files added/removed/modified since last scan
 - New dependencies detected
 - Architecture changes (new routes, new services, etc.)

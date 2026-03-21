@@ -15,7 +15,7 @@ Quick reference for error recovery, agent/skill lookup, and maintenance.
 | User issue unreproducible | Ask for screenshots/console errors; invoke `superpowers:systematic-debugging` |
 | Parallel file conflict | Orchestrator resolves before committing; prevent by declaring file ownership in planning |
 | No progress for 10 minutes | Checkpoint current state and alert user (stuck agent detection) |
-| Workflow step completed | Explicitly check off the sub-step (1A→1B→1C→1D→1E→1F→2→...→8). Never assume a step is complete because a skill finished — skills don't track workflow position. Panel Review (1D) and User Approval (1E) must NEVER be skipped. |
+| Workflow step completed | Explicitly check off the sub-step (1A→1B→1C→1D1→1D2→1E→1F→2→3→4→5→6). Never assume a step is complete because a skill finished — skills don't track workflow position. Panel Equip (1D1), Panel Review (1D2), and User Approval (1E) must NEVER be skipped. |
 
 ---
 
@@ -27,15 +27,15 @@ Quick reference for error recovery, agent/skill lookup, and maintenance.
 | Design | `feature-dev:code-architect`, `frontend-design:frontend-design`, `workflow-aware-brainstorming` | Step 1C: architecture + visual design + approach exploration |
 | Panel Review | `superpowers:dispatching-parallel-agents` + specialist panelists | Step 1D: multi-expert scrutiny of design |
 | Plan | `superpowers:writing-plans` | Step 1F: implementation slices |
-| Execute | `superpowers:executing-plans` | Running the plan sequentially |
-| Execute | `superpowers:dispatching-parallel-agents` | 2+ independent slices |
-| Execute | `superpowers:test-driven-development` | Every engineer agent slice |
-| Debug | `superpowers:systematic-debugging` | Any bug, test failure, or unexpected behavior |
-| Verify | `superpowers:verification-before-completion` | Before claiming work is done |
-| Review | `superpowers:requesting-code-review` | After all slices committed locally |
-| Review | `superpowers:receiving-code-review` | Processing reviewer findings |
-| Push & Finish | `superpowers:finishing-a-development-branch` | Push to remote + PR after review passes |
-| Learn | `claude-md-management:revise-claude-md` | Graduate learnings into persistent rules |
+| Execute (Step 2) | `superpowers:executing-plans` | Running the plan sequentially |
+| Execute (Step 2) | `superpowers:dispatching-parallel-agents` | 2+ independent slices |
+| Execute (Step 2) | `superpowers:test-driven-development` | Every engineer agent slice |
+| Debug (Step 2) | `superpowers:systematic-debugging` | Any bug, test failure, or unexpected behavior |
+| Verify (Step 3) | `superpowers:verification-before-completion` | Before claiming work is done |
+| Review (Step 4) | `superpowers:requesting-code-review` | After all slices committed locally |
+| Review (Step 4) | `superpowers:receiving-code-review` | Processing reviewer findings |
+| Push (Step 5) | `superpowers:finishing-a-development-branch` | Push to remote + PR after review passes |
+| Learn (Step 6) | `claude-md-management:revise-claude-md` | Graduate learnings into persistent rules |
 
 ---
 

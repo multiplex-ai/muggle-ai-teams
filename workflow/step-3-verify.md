@@ -1,4 +1,4 @@
-# /MuggleAI-Teams → Step 5: Verify Before Completing
+# /MuggleAI-Teams → Step 3: Verify Before Completing
 
 > Part of /MuggleAI-Teams.
 > **Skill**: `superpowers:verification-before-completion`
@@ -10,10 +10,10 @@ After all slices are committed locally, before spawning the Reviewer:
 ## Procedure
 
 1. Invoke `superpowers:verification-before-completion`
-2. Run ALL quality gates across every repo touched:
-   - `npm run typecheck` (tsc --noEmit)
-   - `npm run lint` (ESLint + any other linters)
-   - `npm test` (full test suite)
+2. Run ALL quality gates across every project touched, using commands from the project config (`MuggleAI-Teams/projects/<project-name>/<project-name>.md`):
+   - Typecheck (e.g., `npm run typecheck`, `mypy`, `go vet`)
+   - Lint (e.g., `npm run lint`, `ruff`, `golangci-lint`)
+   - Test (e.g., `npm test`, `pytest`, `go test ./...`)
    - Secret scanning
 3. Confirm all tests pass with **actual output** (not assumptions)
 4. Verify no untracked files or uncommitted changes (`git status`)
@@ -27,4 +27,11 @@ After all slices are committed locally, before spawning the Reviewer:
 - Quality gate failures → fix and re-verify
 - After 3 consecutive failures on the same gate → escalate to user (likely architectural issue, not a code fix)
 
-## Next → Read `MuggleAI-Teams/workflow/step-6-review.md`
+## Completion Criteria
+
+- [ ] All quality gates pass across every project touched
+- [ ] All tests pass with actual output verified
+- [ ] No untracked files or uncommitted changes
+- [ ] No sensitive data in committed files
+
+## Next → Read `MuggleAI-Teams/workflow/step-4-review.md`

@@ -49,4 +49,12 @@ Add to the plan document:
 - Risks: [what could go wrong]
 ```
 
+## Completion Criteria
+
+- [ ] Requirements clarified with user (ambiguities resolved)
+- [ ] Impact analysis complete — affected files, services, and flows identified
+- [ ] Dependencies mapped
+- [ ] Risks identified with mitigation strategies
+- [ ] Requirements section written in plan document
+
 ## Next → Read `MuggleAI-Teams/workflow/step-1c-design.md`

@@ -1,6 +1,6 @@
 ---
 name: doc-updater
-description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Runs /update-codemaps and /update-docs, generates docs/CODEMAPS/*, updates READMEs and guides.
+description: Documentation and codemap specialist. Use PROACTIVELY for updating codemaps and documentation. Runs /update-codemaps and /update-docs, generates project codemaps, updates READMEs and guides.
 tools: ["Read", "Write", "Edit", "Bash", "Grep", "Glob"]
 model: haiku
 ---
@@ -40,8 +40,8 @@ For each module: extract exports, map imports, identify routes, find DB models, 
 
 Output structure:
 ```
-docs/CODEMAPS/
-├── INDEX.md          # Overview of all areas
+MuggleAI-Teams/projects/<project-name>/codemaps/
+├── index.md          # Overview of all areas
 ├── frontend.md       # Frontend structure
 ├── backend.md        # Backend/API structure
 ├── database.md       # Database schema

@@ -1,4 +1,4 @@
-# /MuggleAI-Teams → Step 4: Execute Per Slice
+# /MuggleAI-Teams → Step 2: Execute Per Slice
 
 > Part of /MuggleAI-Teams. Mindset: `MuggleAI-Teams/contexts/dev.md` — write code first, explain after.
 
@@ -66,4 +66,12 @@ Move to the next slice in the plan.
 6. **If same issue persists after 2 fix attempts** → escalate to user: (A) accept risk, (B) redesign, (C) different approach
 7. Back to normal flow
 
-## Next → Read `MuggleAI-Teams/workflow/step-5-verify.md`
+## Completion Criteria
+
+- [ ] All slices executed and committed locally
+- [ ] Quality gates passed per slice (typecheck, lint, test)
+- [ ] Scope check passed per slice (no out-of-scope file changes)
+- [ ] Contract check passed (if cross-scope)
+- [ ] User confirmed each slice works via localhost testing
+
+## Next → Read `MuggleAI-Teams/workflow/step-3-verify.md`

@@ -1,4 +1,4 @@
-# /MuggleAI-Teams → Step 8: Learn & Graduate
+# /MuggleAI-Teams → Step 6: Learn & Graduate
 
 > Part of /MuggleAI-Teams.
 > **Skill**: `claude-md-management:revise-claude-md`
@@ -7,7 +7,7 @@ After every workflow run (whether successful or abandoned), the orchestrator cap
 
 ---
 
-## 8.1: Capture Run Log
+## 6.1: Capture Run Log
 
 Append a **Run Log** section to the plan document:
 
@@ -22,7 +22,7 @@ Append a **Run Log** section to the plan document:
 |-------|--------|----------------|------------|
 
 ### Cost
-- Total tokens / cost for this workflow run (from `/cost`)
+- Total cost in USD for this workflow run (from `/cost`)
 
 ### Lessons Learned
 - Design patterns that worked: [what and why]
@@ -32,7 +32,7 @@ Append a **Run Log** section to the plan document:
 
 ---
 
-## 8.2: Graduate Learnings into Persistent Rules
+## 6.2: Graduate Learnings into Persistent Rules
 
 Invoke `/learn-eval` to extract patterns with quality gates (checklist + holistic verdict + save-location decision). This replaces free-form "did we learn anything" — the command has a rigorous evaluation pipeline that checks for overlap, confirms reusability, and decides Global vs Project scope.
 
@@ -50,7 +50,7 @@ Ask: **"Did we learn anything that should apply to ALL future runs?"**
 | Workflow process correction | `workflow/reference.md` or step file | Loaded during workflow |
 | Design pattern that always works | Per-repo CLAUDE.md | Project-specific |
 | Recurring engineer mistake | Agent definition (dispatch context) | Agent-specific |
-| Technical pattern (error/debug/workaround) | `skills/learned/` via `/learn-eval` | On-demand skill |
+| Technical pattern (error/debug/workaround) | Per-repo CLAUDE.md or relevant rules file | Project/global knowledge |
 
 **Critical rule: Never save behavioral corrections to memory only.** Memory requires active recall and is unreliable. Rules files are always loaded and enforced. Memory is a last resort for things that don't fit any rules file (e.g., user preferences about non-work topics).
 
@@ -66,7 +66,7 @@ If a learning references sensitive context, abstract it: "Auth endpoint must han
 
 ---
 
-## 8.3: Compress Rules When Needed
+## 6.3: Compress Rules When Needed
 
 When a CLAUDE.md file accumulates many similar rules:
 
@@ -78,7 +78,7 @@ When a CLAUDE.md file accumulates many similar rules:
 
 ---
 
-## 8.4: How the System Gets Smarter Over Time
+## 6.4: How the System Gets Smarter Over Time
 
 The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, not in run logs) at the start of each new `/MuggleAI-Teams` run. Over time:
 - Designs anticipate common concerns upfront → panel finds fewer issues → fewer panelists needed
@@ -86,6 +86,13 @@ The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, n
 - The panel shrinks not because panelists are pruned, but because the orchestrator produces better designs that need less scrutiny
 
 ---
+
+## Completion Criteria
+
+- [ ] Run log appended to plan document
+- [ ] `/learn-eval` invoked — patterns extracted and evaluated
+- [ ] Learnings graduated to appropriate rules/CLAUDE.md files (not just memory)
+- [ ] No sensitive data in any graduated content
 
 ## Workflow Complete
 
