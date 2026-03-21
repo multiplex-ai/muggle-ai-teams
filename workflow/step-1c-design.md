@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1C: Design Proposal
+# /muggle-ai-teams → Step 1C: Design Proposal
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 
 ---
 
@@ -36,4 +36,4 @@ Proceed directly to Panel Review — user approval happens AFTER the panel scrut
 - [ ] 2-3 approaches proposed with concrete trade-offs
 - [ ] Design document written in plan file (goal, approach, data flow, trade-offs)
 
-## Next → Read `MuggleAI-Teams/workflow/step-1d1-panel-equip.md`
+## Next → Read `muggle-ai-teams/workflow/step-1d1-panel-equip.md`

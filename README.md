@@ -1,4 +1,4 @@
-# MuggleAI-Teams
+# muggle-ai-teams
 
 **Centralized AI Agent Team Management for Claude Code**
 
@@ -9,15 +9,15 @@
 
 A single, portable folder that organizes your entire Claude Code agent team — agents, skills, commands, rules, workflows, hooks, and contexts — and evolves through usage.
 
-Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA testing platform). MuggleAI-Teams was battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration, and is now open-sourced for the Claude Code community.
+Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA testing platform). muggle-ai-teams was battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration, and is now open-sourced for the Claude Code community.
 
 ---
 
 ## How Is This Different?
 
-There are several excellent projects in the Claude Code ecosystem. Here's how MuggleAI-Teams compares:
+There are several excellent projects in the Claude Code ecosystem. Here's how muggle-ai-teams compares:
 
-| | **MuggleAI-Teams** | **[Superpowers](https://github.com/obra/superpowers)** | **[Everything Claude Code](https://github.com/affaan-m/everything-claude-code)** | **[Get Shit Done](https://github.com/gsd-build/get-shit-done)** |
+| | **muggle-ai-teams** | **[Superpowers](https://github.com/obra/superpowers)** | **[Everything Claude Code](https://github.com/affaan-m/everything-claude-code)** | **[Get Shit Done](https://github.com/gsd-build/get-shit-done)** |
 |---|---|---|---|---|
 | **Focus** | Team management + organization | Development workflow skills | Agent harness optimization | Context engineering |
 | **Core idea** | One folder, symlinked everywhere, version-controlled | Composable skills that enforce a systematic dev process | Performance system with instincts, learning, and security | Fresh-context-per-task to prevent quality degradation |
@@ -28,14 +28,14 @@ There are several excellent projects in the Claude Code ecosystem. Here's how Mu
 | **Portability** | `setup.sh` symlinks to any machine | Plugin install | Plugin + manual setup | Drop-in folder |
 | **Multi-tool** | Claude Code + Cursor | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
 
-**MuggleAI-Teams doesn't replace these projects — it builds on them.** We merged the best parts of Superpowers (workflow discipline) and ECC (agents, skills, hooks) into a unified, deduplicated system, then added:
+**muggle-ai-teams doesn't replace these projects — it builds on them.** We merged the best parts of Superpowers (workflow discipline) and ECC (agents, skills, hooks) into a unified, deduplicated system, then added:
 
 - **Project-config-driven routing** — each project declares its scopes, agents, and directories; the orchestrator bootstraps new projects automatically
 - **Multi-perspective panel review** — 2-round design review with core + domain + gap panelists, SkillsMP-equipped
 - **Behavioral learning system** — user corrections graduate to always-loaded rules files, not unreliable memory
 - **Domain-based rule loading** — 80% reduction in always-loaded context (562 → 115 lines)
 - **Hierarchical workflow** — index + on-demand step files = 100% step compliance with minimal context cost
-- **Symlink architecture** — edit once in MuggleAI-Teams, available at both global and project level instantly
+- **Symlink architecture** — edit once in muggle-ai-teams, available at both global and project level instantly
 
 ---
 
@@ -44,14 +44,14 @@ There are several excellent projects in the Claude Code ecosystem. Here's how Mu
 ```bash
 # Clone into your project root
 cd ~/your-project
-git clone https://github.com/multiplex-ai/MuggleAI-Teams.git
+git clone https://github.com/multiplex-ai/muggle-ai-teams.git
 
 # Run setup (creates symlinks, backs up existing configs)
-chmod +x MuggleAI-Teams/setup.sh
-./MuggleAI-Teams/setup.sh
+chmod +x muggle-ai-teams/setup.sh
+./muggle-ai-teams/setup.sh
 
 # Start using it
-# In Claude Code, type: /MuggleAI-Teams
+# In Claude Code, type: /muggle-ai-teams
 ```
 
 **What `setup.sh` does:**
@@ -79,9 +79,9 @@ After running `setup.sh`, your Claude Code sessions automatically get:
 
 Just use Claude Code normally. The agents, rules, and hooks work in the background.
 
-### Full workflow (`/MuggleAI-Teams`)
+### Full workflow (`/muggle-ai-teams`)
 
-For larger features, type `/MuggleAI-Teams` to activate the 12-step orchestrated workflow:
+For larger features, type `/muggle-ai-teams` to activate the 12-step orchestrated workflow:
 
 ```
 Phase 1: Design (7 sub-steps)
@@ -109,7 +109,7 @@ Each phase loads only its step file on demand — the full workflow is 12 step f
 
 | Command | What it does |
 |---------|-------------|
-| `/MuggleAI-Teams` | Full orchestrated workflow |
+| `/muggle-ai-teams` | Full orchestrated workflow |
 | `/plan` | Research + requirements + implementation plan |
 | `/tdd` | Test-driven development (RED → GREEN → IMPROVE) |
 | `/code-review` | 3-pass review of uncommitted changes |
@@ -207,7 +207,7 @@ Only `reference.md` loads by default (~20 lines). Step files load on demand when
 ### Symlink system — edit once, available everywhere
 
 ```
-MuggleAI-Teams/
+muggle-ai-teams/
   agents/         <- single source of truth
   commands/
   skills/
@@ -215,14 +215,14 @@ MuggleAI-Teams/
   ...
 
 ~/.claude/
-  agents/ -> MuggleAI-Teams/agents/     (global)
-  commands/ -> MuggleAI-Teams/commands/
-  skills/ -> MuggleAI-Teams/skills/
-  rules/ -> MuggleAI-Teams/rules/
+  agents/ -> muggle-ai-teams/agents/     (global)
+  commands/ -> muggle-ai-teams/commands/
+  skills/ -> muggle-ai-teams/skills/
+  rules/ -> muggle-ai-teams/rules/
 
 your-project/.claude/
-  agents/ -> MuggleAI-Teams/agents/     (project)
-  skills/ -> MuggleAI-Teams/skills/
+  agents/ -> muggle-ai-teams/agents/     (project)
+  skills/ -> muggle-ai-teams/skills/
 ```
 
 ### Domain-based rule loading
@@ -252,7 +252,7 @@ Clone on a new machine, run `setup.sh`, and your full agent team is operational.
 
 ### How is this different from just putting files in `~/.claude/`?
 
-MuggleAI-Teams adds structure, portability, and version control. Instead of loose files accumulating in `~/.claude/`, you get an organized, git-tracked system that you can clone to any machine. The symlink architecture means you edit in one place and it works everywhere.
+muggle-ai-teams adds structure, portability, and version control. Instead of loose files accumulating in `~/.claude/`, you get an organized, git-tracked system that you can clone to any machine. The symlink architecture means you edit in one place and it works everywhere.
 
 ### Do I need to use all 186 skills?
 
@@ -264,11 +264,11 @@ No. Skills are loaded on demand based on what you're working on. Claude Code rea
 
 ### Can I use this with Superpowers or ECC?
 
-MuggleAI-Teams already includes merged versions of Superpowers workflow skills and ECC agents/commands. Installing them separately would create duplicates. If you want to add new skills from those projects, drop them into the MuggleAI-Teams directories and they'll be picked up automatically.
+muggle-ai-teams already includes merged versions of Superpowers workflow skills and ECC agents/commands. Installing them separately would create duplicates. If you want to add new skills from those projects, drop them into the muggle-ai-teams directories and they'll be picked up automatically.
 
 ### Can I add my own agents and skills?
 
-Yes. Add files directly to the MuggleAI-Teams directories. Since they're symlinked, Claude Code picks them up immediately. Your additions are version-controlled alongside everything else.
+Yes. Add files directly to the muggle-ai-teams directories. Since they're symlinked, Claude Code picks them up immediately. Your additions are version-controlled alongside everything else.
 
 ### Does this work with Cursor IDE too?
 
@@ -278,7 +278,7 @@ The agents and skills are written in Markdown and follow patterns compatible wit
 
 ## Credits & Acknowledgments
 
-MuggleAI-Teams stands on the shoulders of excellent open-source work:
+muggle-ai-teams stands on the shoulders of excellent open-source work:
 
 ### Core foundations
 
@@ -308,7 +308,7 @@ MuggleAI-Teams stands on the shoulders of excellent open-source work:
 
 ## About
 
-Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required. MuggleAI-Teams was created and refined while building MuggleTest, a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation — all orchestrated by Claude Code agents.
+Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required. muggle-ai-teams was created and refined while building MuggleTest, a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation — all orchestrated by Claude Code agents.
 
 ---
 

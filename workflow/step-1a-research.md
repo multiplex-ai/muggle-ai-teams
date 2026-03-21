@@ -1,17 +1,17 @@
-# /MuggleAI-Teams → Step 1A: Research & Context Gathering
+# /muggle-ai-teams → Step 1A: Research & Context Gathering
 
-> Part of /MuggleAI-Teams. Mindset: `MuggleAI-Teams/contexts/research.md` — read widely before concluding.
+> Part of /muggle-ai-teams. Mindset: `muggle-ai-teams/contexts/research.md` — read widely before concluding.
 
 > **Skills**: `superpowers:brainstorming`, `superpowers:writing-plans`, `frontend-design:frontend-design`
 > **Tools**: `feature-dev:code-explorer`, `feature-dev:code-architect`, `WebSearch`, `Context7`, `EnterPlanMode`
 
-All design and plan content is saved to a single document: `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md`.
+All design and plan content is saved to a single document: `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`.
 
 ---
 
 ## Step 0: Project Bootstrap (if no project config exists)
 
-If `MuggleAI-Teams/projects/<project-name>/<project-name>.md` does not exist for the target project, create one before proceeding:
+If `muggle-ai-teams/projects/<project-name>/<project-name>.md` does not exist for the target project, create one before proceeding:
 
 ### 0a. Detect tech stack
 
@@ -49,7 +49,7 @@ Example recommendation:
 
 ### 0d. Create project config
 
-After user confirms (or adjusts), create `MuggleAI-Teams/projects/<project-name>/<project-name>.md` using the template at `MuggleAI-Teams/projects/PROJECT-TEMPLATE.md`.
+After user confirms (or adjusts), create `muggle-ai-teams/projects/<project-name>/<project-name>.md` using the template at `muggle-ai-teams/projects/PROJECT-TEMPLATE.md`.
 
 ---
 
@@ -71,7 +71,7 @@ After exploring the codebase, diagnose whether existing installed skills cover t
 
 **Purpose**: Find skills we don't already have that would improve the quality of this workflow run. Examples: a Stripe skill for payment integration, a HIPAA skill for healthcare compliance, a WebSocket skill for real-time features.
 
-**Procedure**: Follow `MuggleAI-Teams/workflow/procedure-skillsmp-search.md` (shared search procedure with 5K+ stars filter and 3-point security scan).
+**Procedure**: Follow `muggle-ai-teams/workflow/procedure-skillsmp-search.md` (shared search procedure with 5K+ stars filter and 3-point security scan).
 
 **Skip if**: All needed expertise is already covered by installed skills.
 
@@ -123,4 +123,4 @@ A context summary with:
 - [ ] Library docs fetched for relevant dependencies
 - [ ] Context summary written in plan document
 
-## Next → Read `MuggleAI-Teams/workflow/step-1b-requirements.md`
+## Next → Read `muggle-ai-teams/workflow/step-1b-requirements.md`

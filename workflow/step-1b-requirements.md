@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1B: Requirements & Impact Analysis
+# /muggle-ai-teams → Step 1B: Requirements & Impact Analysis
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 
 ---
 
@@ -57,4 +57,4 @@ Add to the plan document:
 - [ ] Risks identified with mitigation strategies
 - [ ] Requirements section written in plan document
 
-## Next → Read `MuggleAI-Teams/workflow/step-1c-design.md`
+## Next → Read `muggle-ai-teams/workflow/step-1c-design.md`

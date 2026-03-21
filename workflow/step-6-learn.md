@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 6: Learn & Graduate
+# /muggle-ai-teams → Step 6: Learn & Graduate
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 > **Skill**: `claude-md-management:revise-claude-md`
 
 After every workflow run (whether successful or abandoned), the orchestrator captures learnings and graduates them into persistent rules.
@@ -80,7 +80,7 @@ When a CLAUDE.md file accumulates many similar rules:
 
 ## 6.4: How the System Gets Smarter Over Time
 
-The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, not in run logs) at the start of each new `/MuggleAI-Teams` run. Over time:
+The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, not in run logs) at the start of each new `/muggle-ai-teams` run. Over time:
 - Designs anticipate common concerns upfront → panel finds fewer issues → fewer panelists needed
 - Engineer dispatch prompts include known pitfalls → higher first-pass quality → fewer fix cycles
 - The panel shrinks not because panelists are pruned, but because the orchestrator produces better designs that need less scrutiny
@@ -96,4 +96,4 @@ The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, n
 
 ## Workflow Complete
 
-This is the final step. See `MuggleAI-Teams/workflow/reference.md` for error recovery and quick reference.
+This is the final step. See `muggle-ai-teams/workflow/reference.md` for error recovery and quick reference.

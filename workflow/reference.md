@@ -1,4 +1,4 @@
-# /MuggleAI-Teams — Reference
+# /muggle-ai-teams — Reference
 
 Quick reference for error recovery, agent/skill lookup, and maintenance.
 

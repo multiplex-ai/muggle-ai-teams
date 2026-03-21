@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1D1: Skill Search & Panel Equip
+# /muggle-ai-teams → Step 1D1: Skill Search & Panel Equip
 
-> Part of /MuggleAI-Teams. Run BEFORE Step 1D2 (Panel Review).
+> Part of /muggle-ai-teams. Run BEFORE Step 1D2 (Panel Review).
 
 ---
 
@@ -27,7 +27,7 @@ If no gaps are identified, skip to Step 1D2.
 
 ### 2. Search SkillsMP for panelist skills
 
-Follow `MuggleAI-Teams/workflow/procedure-skillsmp-search.md` (shared search procedure).
+Follow `muggle-ai-teams/workflow/procedure-skillsmp-search.md` (shared search procedure).
 
 Formulate queries based on the identified gaps. Example queries:
 - "payment security stripe PCI"
@@ -82,7 +82,7 @@ For each temporarily created panelist, ask the user:
 
 > "[Panelist name] was created for this review. Keep it for future runs?
 
-- **Yes** → Save to `MuggleAI-Teams/agents/` as a permanent agent definition
+- **Yes** → Save to `muggle-ai-teams/agents/` as a permanent agent definition
 - **No** → Discard (default)
 
 ---
@@ -94,4 +94,4 @@ For each temporarily created panelist, ask the user:
 - [ ] Augmented panel presented to user and confirmed
 - [ ] No more than 3 dynamically created panelists
 
-## Next → Read `MuggleAI-Teams/workflow/step-1d2-panel-review.md`
+## Next → Read `muggle-ai-teams/workflow/step-1d2-panel-review.md`

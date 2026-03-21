@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 4: Review Per PR
+# /muggle-ai-teams → Step 4: Review Per PR
 
-> Part of /MuggleAI-Teams. Mindset: `MuggleAI-Teams/contexts/review.md` — check logic, security, performance, tests.
+> Part of /muggle-ai-teams. Mindset: `muggle-ai-teams/contexts/review.md` — check logic, security, performance, tests.
 
 > **Skills**: `superpowers:requesting-code-review`, `superpowers:receiving-code-review`
 
@@ -46,4 +46,4 @@ Invoke `superpowers:receiving-code-review` to process findings:
 - [ ] All MUST FIX items resolved
 - [ ] Re-review passed (if MUST FIX items existed)
 
-## Next → Read `MuggleAI-Teams/workflow/step-5-push.md`
+## Next → Read `muggle-ai-teams/workflow/step-5-push.md`

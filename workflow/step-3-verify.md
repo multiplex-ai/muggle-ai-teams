@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 3: Verify Before Completing
+# /muggle-ai-teams → Step 3: Verify Before Completing
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 > **Skill**: `superpowers:verification-before-completion`
 
 After all slices are committed locally, before spawning the Reviewer:
@@ -10,7 +10,7 @@ After all slices are committed locally, before spawning the Reviewer:
 ## Procedure
 
 1. Invoke `superpowers:verification-before-completion`
-2. Run ALL quality gates across every project touched, using commands from the project config (`MuggleAI-Teams/projects/<project-name>/<project-name>.md`):
+2. Run ALL quality gates across every project touched, using commands from the project config (`muggle-ai-teams/projects/<project-name>/<project-name>.md`):
    - Typecheck (e.g., `npm run typecheck`, `mypy`, `go vet`)
    - Lint (e.g., `npm run lint`, `ruff`, `golangci-lint`)
    - Test (e.g., `npm test`, `pytest`, `go test ./...`)
@@ -34,4 +34,4 @@ After all slices are committed locally, before spawning the Reviewer:
 - [ ] No untracked files or uncommitted changes
 - [ ] No sensitive data in committed files
 
-## Next → Read `MuggleAI-Teams/workflow/step-4-review.md`
+## Next → Read `muggle-ai-teams/workflow/step-4-review.md`

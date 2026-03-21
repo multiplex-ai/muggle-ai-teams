@@ -9,7 +9,7 @@
 
 | # | Issue | Source |
 |---|-------|--------|
-| 1 | Audit all files saving to external locations (`docs/superpowers/`, `skills/learned/`). Rewrite to save in `MuggleAI-Teams/plans/` or project folders with kebab naming. | User #1 |
+| 1 | Audit all files saving to external locations (`docs/superpowers/`, `skills/learned/`). Rewrite to save in `muggle-ai-teams/plans/` or project folders with kebab naming. | User #1 |
 | 2 | SkillsMP search #1 (Step 1A): purpose is diagnosis — if we lack skills for user's need, search and install. | User #2a |
 | 3 | SkillsMP search #2 (before panel review): search for skills to equip panelists. | User #2b |
 | 4 | SkillsMP constraint: 5K+ stars only (with user override). | User #2c |
@@ -25,7 +25,7 @@
 | 14 | Eliminate `skills/learned/`. Route ALL learnings to rules/agents/CLAUDE.md where they're actively loaded. | User #11 |
 | 15 | Compliance enforcement: per-step completion criteria + transition gate. | User #12 |
 | 16 | Running checklist: use task system to track progress through steps. | User #13 |
-| 17 | Add MuggleAI-Teams.md command file to repo (currently only in ~/.claude/commands/). | My finding |
+| 17 | Add muggle-ai-teams.md command file to repo (currently only in ~/.claude/commands/). | My finding |
 | 19 | Step 1E compression has no concrete instructions. Add procedure. | My finding |
 
 ---
@@ -46,8 +46,8 @@
 - `step-8-learn.md` → `skills/learned/`
 
 **Corrected per user feedback:**
-- Plans are project-related → `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md`
-- Codemaps are project-related → `MuggleAI-Teams/projects/<project-name>/codemaps/<module-name>/` (kebab naming)
+- Plans are project-related → `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`
+- Codemaps are project-related → `muggle-ai-teams/projects/<project-name>/codemaps/<module-name>/` (kebab naming)
 - `skills/learned/` eliminated entirely by #14
 
 ### #2 — SkillsMP search #1 purpose
@@ -86,7 +86,7 @@
   - Base prompt: standard panelist instructions (MUST ADDRESS / SHOULD ADDRESS / CONSIDER format)
   - Domain knowledge: the found skill's content
   - Focus: extracted from the skill description
-- **Temporary by default**: created agents exist only for this workflow run. After the panel completes, ask user: "Payment Compliance Reviewer was created for this review. Keep it for future runs?" If yes → save to `MuggleAI-Teams/agents/`. If no → discard.
+- **Temporary by default**: created agents exist only for this workflow run. After the panel completes, ask user: "Payment Compliance Reviewer was created for this review. Keep it for future runs?" If yes → save to `muggle-ai-teams/agents/`. If no → discard.
 
 **4. Present augmented panel to user.** Before dispatching, show the full panel including any skill-equipped or newly created panelists. User confirms or adjusts.
 
@@ -139,16 +139,16 @@
 
 | Task | What | Files |
 |------|------|-------|
-| A1 | Merge Steps 2+3 into Step 1F as sub-sections. Delete `step-2-routing.md` and `step-3-parallel.md`. Renumber: step-4→step-2, step-5→step-3, step-6→step-4, step-7→step-5, step-8→step-6. Update all "Next →" footers. Update command file step table. | `step-1f-plan.md`, delete `step-2-routing.md`, delete `step-3-parallel.md`, rename step-4 through step-8, update all footers, update `MuggleAI-Teams.md` |
-| A2 | Add command file to repo | Copy `~/.claude/commands/MuggleAI-Teams.md` → `commands/MuggleAI-Teams.md` |
-| A3 | Change plan output path from `docs/superpowers/plans/` to `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md` (project-scoped, kebab naming) | `step-1a-research.md`, `step-1e-approval.md` |
-| A4 | Change codemaps/reports path from `docs/CODEMAPS/` to `MuggleAI-Teams/projects/<project-name>/codemaps/<module-name>/` (project-scoped, kebab naming) | `commands/update-codemaps.md`, `agents/doc-updater.md` |
+| A1 | Merge Steps 2+3 into Step 1F as sub-sections. Delete `step-2-routing.md` and `step-3-parallel.md`. Renumber: step-4→step-2, step-5→step-3, step-6→step-4, step-7→step-5, step-8→step-6. Update all "Next →" footers. Update command file step table. | `step-1f-plan.md`, delete `step-2-routing.md`, delete `step-3-parallel.md`, rename step-4 through step-8, update all footers, update `muggle-ai-teams.md` |
+| A2 | Add command file to repo | Copy `~/.claude/commands/muggle-ai-teams.md` → `commands/muggle-ai-teams.md` |
+| A3 | Change plan output path from `docs/superpowers/plans/` to `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md` (project-scoped, kebab naming) | `step-1a-research.md`, `step-1e-approval.md` |
+| A4 | Change codemaps/reports path from `docs/CODEMAPS/` to `muggle-ai-teams/projects/<project-name>/codemaps/<module-name>/` (project-scoped, kebab naming) | `commands/update-codemaps.md`, `agents/doc-updater.md` |
 
 ### Phase B: Make generic (remove MuggleTest-specific content)
 
 | Task | What | Files |
 |------|------|-------|
-| B1 | Replace hardcoded routing table with project-config-driven routing | `step-1f-plan.md` (new routing sub-section), `rules/agents-routing.md`, `MuggleAI-Teams.md` command |
+| B1 | Replace hardcoded routing table with project-config-driven routing | `step-1f-plan.md` (new routing sub-section), `rules/agents-routing.md`, `muggle-ai-teams.md` command |
 | B2 | Add fresh project bootstrap procedure. **If user has no idea, orchestrator provides best recommendation** based on detected tech stack and structure — not just ask and wait. | New section in `step-1a-research.md`: detect tech stack, detect structure, recommend config, create project config |
 | B3 | Handle frontend+backend in same repo | Update routing logic for monorepo, polyrepo, single-repo |
 | B4 | Platform agnosticism — detect VCS/hosting, adapt commands | `step-2` (was step-4), `step-4` (was step-6), `step-5` (was step-7) |
@@ -178,7 +178,7 @@
 | E1 | Eliminate `skills/learned/`, route all learnings to rules/agents/CLAUDE.md | step-6 (was step-8), `commands/learn-eval.md`, `commands/learn.md`, `README.md` |
 | E2 | Add completion criteria to every step file (before "Next →") | All step files |
 | E3 | Add step transition gate rule — orchestrator must verify criteria before proceeding | `rules/behavior.md` or new `rules/workflow-compliance.md` |
-| E4 | Add running checklist procedure — create tasks at workflow start, update per step | `MuggleAI-Teams.md` command file |
+| E4 | Add running checklist procedure — create tasks at workflow start, update per step | `muggle-ai-teams.md` command file |
 
 ### Execution order
 
@@ -195,7 +195,7 @@ A first (renumbers everything). B before C (SkillsMP references step numbers). D
 ## New step structure after Phase A
 
 ```
-MuggleAI-Teams.md (command entry point)
+muggle-ai-teams.md (command entry point)
   ↓
 step-1a-research.md      Research & Context + Project Bootstrap
 step-1b-requirements.md   Requirements & Impact
@@ -222,8 +222,8 @@ reference.md              Error recovery + quick reference
 
 | # | User correction | Applied to |
 |---|----------------|------------|
-| 1a | Plans are project-related → `MuggleAI-Teams/projects/<project-name>/plans/` not `MuggleAI-Teams/plans/` | #1 evaluation, A3 task |
-| 1b | Codemaps are project-related → `MuggleAI-Teams/projects/<project-name>/codemaps/` with kebab naming | #1 evaluation, A4 task |
+| 1a | Plans are project-related → `muggle-ai-teams/projects/<project-name>/plans/` not `muggle-ai-teams/plans/` | #1 evaluation, A3 task |
+| 1b | Codemaps are project-related → `muggle-ai-teams/projects/<project-name>/codemaps/` with kebab naming | #1 evaluation, A4 task |
 | 6 | Visual design goes in Step 1F (confirmed destination) | #6 evaluation |
 | 8 | Elaborate on dynamic agent creation — added full 4-step procedure with guardrails | #8 evaluation |
 | 9 | If user has no idea, orchestrator provides best recommendation — don't just ask and wait | #9 evaluation, B2 task |
