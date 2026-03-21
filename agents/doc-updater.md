@@ -40,7 +40,7 @@ For each module: extract exports, map imports, identify routes, find DB models, 
 
 Output structure:
 ```
-MuggleAI-Teams/projects/<project-name>/codemaps/
+muggle-ai-teams/projects/<project-name>/codemaps/
 ├── index.md          # Overview of all areas
 ├── frontend.md       # Frontend structure
 ├── backend.md        # Backend/API structure

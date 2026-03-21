@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1D2: Panel Review
+# /muggle-ai-teams → Step 1D2: Panel Review
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 > **Skill**: `superpowers:dispatching-parallel-agents`
 > **PREREQUISITE**: Step 1D1 must be completed first. If no augmented panel was confirmed in 1D1, go back and complete it.
 
@@ -46,7 +46,7 @@ No hard cap on revision cycles. Continue until MUST ADDRESS = 0. If the **same f
 
 ## Panelist Output Formats
 
-Each panelist subagent receives its output format from `MuggleAI-Teams/workflow/procedure-panelist-formats.md`. Include the relevant format in each panelist's dispatch prompt. All panelists use the MUST ADDRESS / SHOULD ADDRESS / CONSIDER structure. Stress Test and Blind Spot Reviewers have additional specialized sections.
+Each panelist subagent receives its output format from `muggle-ai-teams/workflow/procedure-panelist-formats.md`. Include the relevant format in each panelist's dispatch prompt. All panelists use the MUST ADDRESS / SHOULD ADDRESS / CONSIDER structure. Stress Test and Blind Spot Reviewers have additional specialized sections.
 
 ---
 
@@ -110,4 +110,4 @@ Add to the plan document:
 - [ ] Consolidated panel report written in plan document
 - [ ] Design revised based on panel feedback
 
-## Next → Read `MuggleAI-Teams/workflow/step-1e-approval.md`
+## Next → Read `muggle-ai-teams/workflow/step-1e-approval.md`

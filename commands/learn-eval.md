@@ -33,7 +33,7 @@ Category B items are the user's feedback about HOW you work, not WHAT you build.
 
    **Category A (Technical Patterns) → Rules or CLAUDE.md:**
    - Ask: "Would this pattern be useful in a different project?"
-   - **Global** (relevant rules file in `MuggleAI-Teams/rules/`): Generic patterns usable across 2+ projects
+   - **Global** (relevant rules file in `muggle-ai-teams/rules/`): Generic patterns usable across 2+ projects
    - **Project** (per-repo `CLAUDE.md`): Project-specific knowledge
    - When in doubt, choose global rules file
 

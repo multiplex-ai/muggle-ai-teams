@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 2: Execute Per Slice
+# /muggle-ai-teams → Step 2: Execute Per Slice
 
-> Part of /MuggleAI-Teams. Mindset: `MuggleAI-Teams/contexts/dev.md` — write code first, explain after.
+> Part of /muggle-ai-teams. Mindset: `muggle-ai-teams/contexts/dev.md` — write code first, explain after.
 
 > **Skills**: `superpowers:executing-plans`, `superpowers:dispatching-parallel-agents`, `superpowers:test-driven-development`
 
@@ -74,4 +74,4 @@ Move to the next slice in the plan.
 - [ ] Contract check passed (if cross-scope)
 - [ ] User confirmed each slice works via localhost testing
 
-## Next → Read `MuggleAI-Teams/workflow/step-3-verify.md`
+## Next → Read `muggle-ai-teams/workflow/step-3-verify.md`

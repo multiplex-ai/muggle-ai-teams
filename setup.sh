@@ -5,7 +5,7 @@ TEAM_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJ_DIR="$(dirname "$TEAM_DIR")"
 CLAUDE_HOME="${HOME}/.claude"
 
-echo "MuggleAI-Teams Setup"
+echo "muggle-ai-teams Setup"
 echo "===================="
 echo "Team dir: $TEAM_DIR"
 echo "Project dir: $PROJ_DIR"
@@ -25,7 +25,7 @@ for dir in agents commands skills rules; do
     mv "$target" "${target}.bak"
   fi
   ln -s "$TEAM_DIR/$dir" "$target"
-  echo "  ~/.claude/$dir → MuggleAI-Teams/$dir ✅"
+  echo "  ~/.claude/$dir → muggle-ai-teams/$dir ✅"
 done
 
 echo ""
@@ -40,19 +40,19 @@ for dir in agents skills; do
     mv "$target" "${target}.bak"
   fi
   ln -s "$TEAM_DIR/$dir" "$target"
-  echo "  .claude/$dir → MuggleAI-Teams/$dir ✅"
+  echo "  .claude/$dir → muggle-ai-teams/$dir ✅"
 done
 
 # Memory symlink
 MEMORY_DIR="$CLAUDE_HOME/projects/-Users-$(whoami)-muggleai/memory"
 if [ -d "$MEMORY_DIR" ] && [ ! -L "$TEAM_DIR/memory" ]; then
   ln -s "$MEMORY_DIR" "$TEAM_DIR/memory"
-  echo "  MuggleAI-Teams/memory → $MEMORY_DIR ✅"
+  echo "  muggle-ai-teams/memory → $MEMORY_DIR ✅"
 fi
 
 echo ""
-echo "Setup complete! MuggleAI-Teams is now active."
+echo "Setup complete! muggle-ai-teams is now active."
 echo ""
 echo "Usage:"
-echo "  New conversations: /MuggleAI-Teams"
-echo "  Old conversations: /compact then /MuggleAI-Teams"
+echo "  New conversations: /muggle-ai-teams"
+echo "  Old conversations: /compact then /muggle-ai-teams"

@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1E: User Approval Gate
+# /muggle-ai-teams → Step 1E: User Approval Gate
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 
 ---
 
@@ -34,7 +34,7 @@ Run `/checkpoint create "design-approved"` to create a git-backed snapshot.
 Compress the entire design phase (Steps 1A-1E) into the final approved plan document. Only the plan document carries forward into Step 1F execution — not the raw research, panelist reports, or revision history.
 
 **Compression procedure:**
-1. Open the plan document at `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md`
+1. Open the plan document at `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`
 2. Ensure all sections below are filled with synthesized content (not raw notes):
    - Research & Context (from 1A)
    - Requirements (from 1B)
@@ -67,4 +67,4 @@ Before compressing, verify the plan document has these sections (each written by
 - [ ] Design phase compressed — plan document is self-contained
 - [ ] `/compact` run to free context
 
-## Next → Read `MuggleAI-Teams/workflow/step-1f-plan.md`
+## Next → Read `muggle-ai-teams/workflow/step-1f-plan.md`

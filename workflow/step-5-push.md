@@ -1,9 +1,9 @@
-# /MuggleAI-Teams → Step 5: Push & Finish
+# /muggle-ai-teams → Step 5: Push & Finish
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 > **Skill**: `superpowers:finishing-a-development-branch`
 
-**Before committing or pushing, read `MuggleAI-Teams/rules/git.md` for commit message format and branch naming conventions.**
+**Before committing or pushing, read `muggle-ai-teams/rules/git.md` for commit message format and branch naming conventions.**
 
 ---
 
@@ -46,4 +46,4 @@ Do not publish PRs automatically — always confirm with the user first. One PR 
 - [ ] PR title and description prepared
 - [ ] User confirmed PR creation
 
-## Next → Read `MuggleAI-Teams/workflow/step-6-learn.md`
+## Next → Read `muggle-ai-teams/workflow/step-6-learn.md`

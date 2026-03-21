@@ -1,6 +1,6 @@
-# /MuggleAI-Teams → Step 1F: Implementation Plan
+# /muggle-ai-teams → Step 1F: Implementation Plan
 
-> Part of /MuggleAI-Teams.
+> Part of /muggle-ai-teams.
 
 ---
 
@@ -12,7 +12,7 @@ Once design is approved, continue in the same plan document. Invoke `superpowers
 
 **Narrowest-scope-first rule.** Always identify the narrowest agent scope first. Never apply a requirement universally. If a requirement spans frontend + backend, split it and assign each part explicitly.
 
-**Read the project config** at `MuggleAI-Teams/projects/<project-name>/<project-name>.md` to determine scopes, agents, directories, and commands. The config's scope table is the source of truth for routing.
+**Read the project config** at `muggle-ai-teams/projects/<project-name>/<project-name>.md` to determine scopes, agents, directories, and commands. The config's scope table is the source of truth for routing.
 
 **If no project config exists**, run the bootstrap procedure in Step 1A first.
 
@@ -112,7 +112,7 @@ Present the complete implementation plan and wait for explicit user approval bef
 
 ## Output
 
-Add to the plan document at `MuggleAI-Teams/projects/<project-name>/plans/<feature-name>.md`:
+Add to the plan document at `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`:
 
 ```markdown
 ## Implementation Plan
@@ -135,4 +135,4 @@ Add to the plan document at `MuggleAI-Teams/projects/<project-name>/plans/<featu
 - [ ] Work broken into committable slices with TDD steps
 - [ ] User approved the full implementation plan
 
-## Next → Read `MuggleAI-Teams/workflow/step-2-execute.md`
+## Next → Read `muggle-ai-teams/workflow/step-2-execute.md`

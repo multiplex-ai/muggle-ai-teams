@@ -2,7 +2,7 @@
 
 ## Step 1: Route by Project Config
 
-Every project has a config at `MuggleAI-Teams/projects/<project-name>/<project-name>.md` that declares its scopes (frontend, backend, etc.), agents, directories, and commands.
+Every project has a config at `muggle-ai-teams/projects/<project-name>/<project-name>.md` that declares its scopes (frontend, backend, etc.), agents, directories, and commands.
 
 **Routing algorithm:**
 
