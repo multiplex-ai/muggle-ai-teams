@@ -1,13 +1,13 @@
 ---
 name: workflow-aware-brainstorming
-description: Wrapper for superpowers:brainstorming that recognizes parent workflow context. Use this INSTEAD of superpowers:brainstorming when invoked from /workflow Step 1C.
+description: Wrapper for superpowers:brainstorming that recognizes parent workflow context. Use this INSTEAD of superpowers:brainstorming when invoked from /muggle-ai-teams Step 1C.
 ---
 
 # Workflow-Aware Brainstorming
 
 This skill wraps `superpowers:brainstorming` with parent workflow awareness.
 
-## When Invoked from /workflow
+## When Invoked from /muggle-ai-teams
 
 If this skill is triggered as part of `/workflow` Step 1C (Design Proposal), the following rules apply:
 
@@ -44,10 +44,10 @@ Instead, announce:
 > - Step 1E: User Approval Gate — present revised design for user sign-off
 > - Step 1F: Implementation Plan — write the plan AFTER panel review and approval
 >
-> Control returns to the /workflow orchestrator."
+> Control returns to the /muggle-ai-teams orchestrator."
 
 Then STOP. Do not proceed further. The orchestrator handles Steps 1D, 1E, and 1F.
 
-## When Invoked Standalone (not from /workflow)
+## When Invoked Standalone (not from /muggle-ai-teams)
 
 Behave exactly like `superpowers:brainstorming` — follow all its steps including the "transition to implementation" step which invokes `writing-plans`.
