@@ -81,29 +81,57 @@ Just use Claude Code normally. The agents, rules, and hooks work in the backgrou
 
 ### Full workflow (`/muggle-ai-teams`)
 
-For larger features, type `/muggle-ai-teams` to activate the 12-step orchestrated workflow:
+For larger features, type `/muggle-ai-teams`. You describe what you want. The orchestrator handles the rest.
 
+**Here's what happens when you say "Add Stripe billing to my app":**
+
+```mermaid
+flowchart TD
+    Start["You: 'Add Stripe billing'"] --> Bootstrap
+
+    subgraph Design["Phase 1: Design — you review, agents do the work"]
+        Bootstrap["1A: Orchestrator scans your repo,\ndetects stack, creates project config"] --> Research
+        Research["1A: Explores codebase, searches web,\npulls library docs, searches SkillsMP"] --> Requirements
+        Requirements["1B: Asks you 2-3 clarifying questions,\nmaps every file that will change"] --> Architect
+        Architect["1C: Dispatches architect agent,\nproposes 2-3 approaches with trade-offs"] --> Equip
+        Equip["1D1: Searches SkillsMP for\npanelist skills (e.g. PCI compliance)"] --> Panel
+        Panel["1D2: 6+ expert agents review in parallel\n— architecture, security, stress test,\nblind spots, UX, SEO"] --> Revise
+        Revise["Resolves all MUST ADDRESS findings,\nrevises design"] --> Approve
+        Approve["1E: You approve the final design"] --> Plan
+        Plan["1F: Routes to frontend/backend agents,\ndefines slices, contracts, mockups"]
+    end
+
+    subgraph Execute["Phase 2-5: Build — TDD, quality gates, code review"]
+        Slice["Step 2: Each slice: write tests first →\nimplement → quality gates → you verify locally"] --> Verify
+        Verify["Step 3: Full verification pass\nacross all touched projects"] --> Review
+        Review["Step 4: 3-pass code review\n(quality → compliance → contract)"] --> PR
+        PR["Step 5: Push + open PR"]
+    end
+
+    subgraph Learn["Phase 6: The system gets smarter"]
+        Graduate["Step 6: Extract what worked,\ngraduate corrections to rules files\nso they apply to ALL future sessions"]
+    end
+
+    Plan --> Slice
+    PR --> Graduate
+
+    style Start fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    style Approve fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    style Graduate fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
 ```
-Phase 1: Design (7 sub-steps)
-  1A Research     → Bootstrap project config, explore codebase, search SkillsMP, pull docs
-  1B Requirements → Gather requirements, map impact, identify risks
-  1C Design       → Architecture proposal with brainstorming
-  1D1 Panel Equip → Search SkillsMP for panelist skills, equip or create panelists
-  1D2 Panel Review → 2-round multi-expert review (architecture, security, stress test, blind spots)
-  1E Approval     → User sign-off + context compression
-  1F Plan         → Route to agents, decide parallel/sequential, define slices + contracts
 
-Phase 2-3: Execute & Verify
-  TDD-first per slice → quality gates → local verification → full verification pass
+**What you do vs what the orchestrator does:**
 
-Phase 4-5: Review & Push
-  3-pass code review (quality, compliance, contract) → PR
+| You | Orchestrator |
+|-----|-------------|
+| Describe the feature | Explores codebase, researches industry practices, pulls docs |
+| Answer 2-3 clarifying questions | Maps impact, identifies risks, proposes architecture |
+| Confirm the panel of reviewers | Dispatches 6+ expert agents in parallel, consolidates findings |
+| Approve the design | Routes to narrowest-scope agents, defines implementation slices |
+| Test each slice locally | Runs TDD, quality gates, scope checks, contract checks |
+| Confirm the PR | Runs 3-pass code review, extracts learnings for next time |
 
-Phase 6: Learn
-  Extract learnings → graduate to rules files or CLAUDE.md (not just memory)
-```
-
-Each phase loads only its step file on demand — the full workflow is 12 step files + 3 shared procedures, but only ~50 lines sit in your context at any time.
+Each step loads on demand — only ~50 lines in your context at any time, not the full 1500-line workflow.
 
 ### Key slash commands
 
@@ -250,29 +278,33 @@ Clone on a new machine, run `setup.sh`, and your full agent team is operational.
 
 ## FAQ
 
-### How is this different from just putting files in `~/.claude/`?
+### "I already have files in `~/.claude/`. Will this blow them away?"
 
-muggle-ai-teams adds structure, portability, and version control. Instead of loose files accumulating in `~/.claude/`, you get an organized, git-tracked system that you can clone to any machine. The symlink architecture means you edit in one place and it works everywhere.
+No. `setup.sh` backs up your existing `agents/`, `commands/`, `skills/`, and `rules/` to `.bak` directories before creating symlinks. To undo: remove the symlinks, rename the backups. Your original setup is preserved.
 
-### Do I need to use all 186 skills?
+### "186 skills sounds like it'll eat my entire context window."
 
-No. Skills are loaded on demand based on what you're working on. Claude Code reads them when relevant slash commands or agent workflows reference them. Your context window stays clean.
+Skills load on demand — Claude Code reads them only when a matching task triggers them. At rest, zero skill tokens are in your context. During a workflow run, only the current step file (~50 lines) is loaded.
 
-### Will this conflict with my existing Claude Code setup?
+### "I already use Superpowers / Everything Claude Code. Do I install both?"
 
-`setup.sh` backs up your existing `~/.claude/agents/`, `~/.claude/commands/`, `~/.claude/skills/`, and `~/.claude/rules/` to `.bak` directories before creating symlinks. You can restore them by removing the symlinks and renaming the backups.
+No. muggle-ai-teams already includes merged, deduplicated versions of both. Installing them separately creates conflicts. If those projects release new skills you want, drop the files into the muggle-ai-teams directories — they'll be picked up automatically.
 
-### Can I use this with Superpowers or ECC?
+### "Can I add my own agents and skills?"
 
-muggle-ai-teams already includes merged versions of Superpowers workflow skills and ECC agents/commands. Installing them separately would create duplicates. If you want to add new skills from those projects, drop them into the muggle-ai-teams directories and they'll be picked up automatically.
+Yes. Add files directly to `muggle-ai-teams/agents/` or `muggle-ai-teams/skills/`. Since they're symlinked to `~/.claude/`, Claude Code picks them up immediately. Your additions are version-controlled alongside everything else.
 
-### Can I add my own agents and skills?
+### "Does the full workflow run every time, even for a small bug fix?"
 
-Yes. Add files directly to the muggle-ai-teams directories. Since they're symlinked, Claude Code picks them up immediately. Your additions are version-controlled alongside everything else.
+No. The workflow is for larger features. For quick tasks, just use Claude Code normally — the agents, rules, and slash commands (`/plan`, `/tdd`, `/code-review`, `/build-fix`) work without invoking the full workflow.
 
-### Does this work with Cursor IDE too?
+### "Does this work with Cursor?"
 
-The agents and skills are written in Markdown and follow patterns compatible with both Claude Code and Cursor.
+The agents and skills are Markdown files compatible with both Claude Code and Cursor. The `.mdc` rule files at the repo root are Cursor-native.
+
+### "What if I'm mid-project on the old workflow and want to switch?"
+
+Run `scripts/migrate-to-new-workflow.sh`. It detects your existing plans, maps them to the new step numbers, and moves them to the new project-scoped paths. You resume where you left off.
 
 ---
 
