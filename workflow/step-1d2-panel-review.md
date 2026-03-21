@@ -1,7 +1,8 @@
-# /MuggleAI-Teams → Step 1D: Panel Review
+# /MuggleAI-Teams → Step 1D2: Panel Review
 
 > Part of /MuggleAI-Teams.
 > **Skill**: `superpowers:dispatching-parallel-agents`
+> **PREREQUISITE**: Step 1D1 must be completed first. If no augmented panel was confirmed in 1D1, go back and complete it.
 
 Two-round panel review. Round 1 runs core + domain panelists. The Blind Spot Reviewer's findings determine which gap panelists are needed in Round 2.
 
@@ -43,55 +44,9 @@ No hard cap on revision cycles. Continue until MUST ADDRESS = 0. If the **same f
 
 ---
 
-## Panelist Output Format (Round 1 — all panelists including domain)
+## Panelist Output Formats
 
-```
-## MUST ADDRESS (blocks implementation)
-- [finding] — [why this blocks, what goes wrong if ignored]
-
-## SHOULD ADDRESS (improves quality significantly)
-- [finding] — [concrete improvement and effort estimate]
-
-## CONSIDER (worth thinking about, not blocking)
-- [finding] — [potential benefit]
-
-## APPROVED ASPECTS (what's strong about this design)
-- [what works well and why]
-
-## RECOMMENDED GAP PANELISTS (optional — any panelist can suggest)
-- [panelist name] — [why this expertise is missing from the current review]
-```
-
-## Stress Test Reviewer Output Format
-
-```
-## UNHAPPY PATHS NOT COVERED
-- Feature: [feature name]
-  - [scenario] → [what should happen? not defined in design]
-  - [scenario] → [not mentioned]
-
-## RACE CONDITIONS
-- [description of concurrent scenario]
-
-## BOUNDARY CONDITIONS
-- [empty state / max items / special characters / etc.]
-
-## ABUSE SCENARIOS
-- [rate limiting / bot attacks / credential stuffing / etc.]
-```
-
-## Blind Spot Reviewer Output Format
-
-```
-## GAPS FOUND
-- [gap] — [why it matters] — RECOMMENDED PANELIST: [panelist name from gap roster]
-
-## MUST ADDRESS (findings that don't need a specialist)
-- [finding] — [what to fix]
-
-## NO GAP PANELIST NEEDED
-- [areas that are adequately covered]
-```
+Each panelist subagent receives its output format from `MuggleAI-Teams/workflow/procedure-panelist-formats.md`. Include the relevant format in each panelist's dispatch prompt. All panelists use the MUST ADDRESS / SHOULD ADDRESS / CONSIDER structure. Stress Test and Blind Spot Reviewers have additional specialized sections.
 
 ---
 
@@ -146,5 +101,13 @@ Add to the plan document:
 - Blind spots surfaced: [what the team hadn't considered]
 - Design revisions made: [how the design changed in response]
 ```
+
+## Completion Criteria
+
+- [ ] Round 1 panelists dispatched and reports collected
+- [ ] Round 2 dispatched if Blind Spot Reviewer found gaps (or skipped with reason)
+- [ ] All MUST ADDRESS items = 0 (resolved or user-accepted)
+- [ ] Consolidated panel report written in plan document
+- [ ] Design revised based on panel feedback
 
 ## Next → Read `MuggleAI-Teams/workflow/step-1e-approval.md`

@@ -30,8 +30,8 @@ There are several excellent projects in the Claude Code ecosystem. Here's how Mu
 
 **MuggleAI-Teams doesn't replace these projects — it builds on them.** We merged the best parts of Superpowers (workflow discipline) and ECC (agents, skills, hooks) into a unified, deduplicated system, then added:
 
-- **Scope-first agent routing** — requirements go to the narrowest agent, not broadcast universally
-- **Multi-perspective panel review** — 2-round design review with core + domain + gap panelists
+- **Project-config-driven routing** — each project declares its scopes, agents, and directories; the orchestrator bootstraps new projects automatically
+- **Multi-perspective panel review** — 2-round design review with core + domain + gap panelists, SkillsMP-equipped
 - **Behavioral learning system** — user corrections graduate to always-loaded rules files, not unreliable memory
 - **Domain-based rule loading** — 80% reduction in always-loaded context (562 → 115 lines)
 - **Hierarchical workflow** — index + on-demand step files = 100% step compliance with minimal context cost
@@ -81,31 +81,29 @@ Just use Claude Code normally. The agents, rules, and hooks work in the backgrou
 
 ### Full workflow (`/MuggleAI-Teams`)
 
-For larger features, type `/MuggleAI-Teams` to activate the 8-phase orchestrated workflow:
+For larger features, type `/MuggleAI-Teams` to activate the 12-step orchestrated workflow:
 
 ```
-Phase 1: Design (6 sub-steps)
-  1A Research    → Explore codebase, search SkillsMP, pull library docs
-  1B Requirements → Gather requirements, map impact
-  1C Design      → Architecture proposal with brainstorming
-  1D Panel Review → Multi-expert review (architecture, security, stress test, blind spots)
-  1E Approval    → User sign-off before implementation
-  1F Plan        → Implementation slices with acceptance criteria
+Phase 1: Design (7 sub-steps)
+  1A Research     → Bootstrap project config, explore codebase, search SkillsMP, pull docs
+  1B Requirements → Gather requirements, map impact, identify risks
+  1C Design       → Architecture proposal with brainstorming
+  1D1 Panel Equip → Search SkillsMP for panelist skills, equip or create panelists
+  1D2 Panel Review → 2-round multi-expert review (architecture, security, stress test, blind spots)
+  1E Approval     → User sign-off + context compression
+  1F Plan         → Route to agents, decide parallel/sequential, define slices + contracts
 
-Phase 2-3: Dispatch
-  Route to narrowest agent scope → parallel execution where possible
+Phase 2-3: Execute & Verify
+  TDD-first per slice → quality gates → local verification → full verification pass
 
-Phase 4-5: Implement & Verify
-  TDD-first → quality gates (typecheck, lint, test) → local verification
-
-Phase 6-7: Review & Push
+Phase 4-5: Review & Push
   3-pass code review (quality, compliance, contract) → PR
 
-Phase 8: Learn
-  Extract learnings → graduate to rules files (not just memory)
+Phase 6: Learn
+  Extract learnings → graduate to rules files or CLAUDE.md (not just memory)
 ```
 
-Each phase loads only its step file on demand — the full workflow is 14 files but only ~50 lines sit in your context at any time.
+Each phase loads only its step file on demand — the full workflow is 12 step files + 3 shared procedures, but only ~50 lines sit in your context at any time.
 
 ### Key slash commands
 
@@ -185,9 +183,9 @@ Loaded on demand:
   testing-php.md       # PHP testing
 ```
 
-### `/workflow` — 14-step hierarchical workflow
+### `/workflow` — 12-step hierarchical workflow + 3 shared procedures
 
-Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them.
+Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-skillsmp-search.md`, `procedure-panelist-formats.md`) are loaded by subagents, not the orchestrator — keeping context lean.
 
 ### `/hooks` — 12 automated guards
 
@@ -242,7 +240,7 @@ When you correct Claude's behavior during a project, the learning system (`/lear
 | Code quality expectations | `rules/core.md` (always loaded) |
 | Testing/CI expectations | `rules/quality-gates.md` |
 | Git conventions | `rules/git.md` |
-| Technical patterns | `skills/learned/` |
+| Technical patterns | Rules files or project `CLAUDE.md` |
 
 ### Portability
 

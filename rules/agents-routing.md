@@ -1,20 +1,38 @@
 # Agent Routing: Scope First, Then Task Type
 
-## Step 1: Route by Sub-Project Scope
+## Step 1: Route by Project Config
 
-Always identify the narrowest agent scope first:
+Every project has a config at `MuggleAI-Teams/projects/<project-name>/<project-name>.md` that declares its scopes (frontend, backend, etc.), agents, directories, and commands.
 
-| Requirement type | Agent |
-|-----------------|-------|
-| UI components, pages, styling, React hooks, frontend state | **frontend-engineer** (muggle-ai-ui) |
-| REST API endpoints, controllers, services, DB access, queues | **backend-engineer** (muggle-ai-prompt-service) |
-| MCP tool definitions, protocol proxying | **general-engineer** (muggle-ai-mcp) |
-| Electron app, browser automation, local test execution | **general-engineer** (muggle-ai-teaching-service) |
-| API contract change (request/response shape) | Both frontend + backend engineers |
-| Auth, billing, external service integration | **backend-engineer** (muggle-ai-prompt-service) |
-| Documentation visible to end users | **general-engineer** (muggle-ai-docs) |
+**Routing algorithm:**
 
-If a requirement spans frontend + backend, split it and assign each part explicitly. Never apply a requirement universally.
+1. Read the project config for the affected project
+2. Match the requirement to a scope using the config's scope table
+3. Dispatch the agent listed for that scope
+4. If no project config exists, run the bootstrap procedure in Step 1A
+
+**If a requirement spans multiple scopes**, split it and assign each part to its scope's agent. Define a contract artifact that both agents conform to.
+
+### Scope-to-agent mapping (generic)
+
+| Requirement type | Typical agent | Notes |
+|-----------------|---------------|-------|
+| UI components, pages, styling, hooks, frontend state | **frontend-engineer** | Read project config for root dirs |
+| API endpoints, controllers, services, DB access, queues | **backend-engineer** | Read project config for root dirs |
+| CLI tools, MCP definitions, protocol layers | **general-engineer** | |
+| Desktop/mobile app, native features | **general-engineer** | |
+| API contract change (request/response shape) | **Both frontend + backend** | Split the requirement |
+| Auth, billing, external service integration | **backend-engineer** | Unless purely frontend-side |
+| Documentation | Handle directly or **general-engineer** | |
+
+This table is a fallback. The project config is the source of truth — it may override these defaults (e.g., a Python project might use general-engineer for its API layer).
+
+### Repo structures supported
+
+- **Monorepo** (multiple sub-projects): One config per sub-project. Route to the narrowest scope.
+- **Single repo** (frontend + backend in same repo): One config with multiple scopes. Each scope has its own root directory.
+- **Single-scope repo** (e.g., pure frontend): One config with one scope.
+- **Polyrepo** (separate repos): One config per repo.
 
 ## Step 2: Dispatch by Task Type Within Scope
 

@@ -31,11 +31,11 @@ Category B items are the user's feedback about HOW you work, not WHAT you build.
 
 3. **Determine save location based on category:**
 
-   **Category A (Technical Patterns) → Skills:**
+   **Category A (Technical Patterns) → Rules or CLAUDE.md:**
    - Ask: "Would this pattern be useful in a different project?"
-   - **Global** (`~/.claude/skills/learned/`): Generic patterns usable across 2+ projects
-   - **Project** (`.claude/skills/learned/` in current project): Project-specific knowledge
-   - When in doubt, choose Global
+   - **Global** (relevant rules file in `MuggleAI-Teams/rules/`): Generic patterns usable across 2+ projects
+   - **Project** (per-repo `CLAUDE.md`): Project-specific knowledge
+   - When in doubt, choose global rules file
 
    **Category B (Behavioral Rules) → Rules files:**
    - Decide which rules file the learning belongs in:
@@ -96,9 +96,9 @@ origin: auto-extracted
    Execute **all** of the following before evaluating the draft:
 
    **For Category A:**
-   - [ ] Grep `~/.claude/skills/` and relevant project `.claude/skills/` files by keyword to check for content overlap
+   - [ ] Grep relevant rules files and project CLAUDE.md for content overlap
    - [ ] Check MEMORY.md (both project and global) for overlap
-   - [ ] Consider whether appending to an existing skill would suffice
+   - [ ] Consider whether updating an existing rule would suffice
    - [ ] Confirm this is a reusable pattern, not a one-off fix
 
    **For Category B:**

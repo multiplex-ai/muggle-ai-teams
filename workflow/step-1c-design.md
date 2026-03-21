@@ -10,24 +10,11 @@
 
 Dispatch `feature-dev:code-architect` agent to design the architecture based on existing codebase patterns. Do NOT design it yourself.
 
-### 2. Visual design (if UI changes)
+### 2. Propose 2-3 approaches
 
-**Do NOT invoke `frontend-design:frontend-design` yet.** Visual mockups happen AFTER panel review (Step 1D), because the panel may change the design significantly, making early mockups wasted work.
+Invoke `workflow-aware-brainstorming` for each approach with concrete trade-offs covering: performance, cost, complexity, maintainability, risk.
 
-### 3. Propose 2-3 approaches
-
-Invoke brainstorming for each approach with concrete trade-offs covering: performance, cost, complexity, maintainability, risk.
-
-#### Skill Routing for Brainstorming (CRITICAL)
-
-| Context | Skill to use |
-|---------|-------------|
-| Inside `/MuggleAI-Teams` workflow (you are here) | `workflow-aware-brainstorming` — recognizes parent workflow, stops before writing-plans, returns control to orchestrator for Step 1D |
-| Standalone (no `/MuggleAI-Teams` active) | `superpowers:brainstorming` — follows its own full flow including transition to writing-plans |
-
-**NEVER use `superpowers:brainstorming` directly inside `/MuggleAI-Teams`.** It will hijack the control flow and skip Panel Review (1D) and User Approval (1E).
-
-### 4. Write design document
+### 3. Write design document
 
 Add to the plan document:
 - Goal (one sentence)
@@ -43,4 +30,10 @@ Add to the plan document:
 
 Proceed directly to Panel Review — user approval happens AFTER the panel scrutinizes the design (Step 1E).
 
-## Next → Read `MuggleAI-Teams/workflow/step-1d-panel-review.md`
+## Completion Criteria
+
+- [ ] Architecture designed by `feature-dev:code-architect` (not self-designed)
+- [ ] 2-3 approaches proposed with concrete trade-offs
+- [ ] Design document written in plan file (goal, approach, data flow, trade-offs)
+
+## Next → Read `MuggleAI-Teams/workflow/step-1d1-panel-equip.md`
