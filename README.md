@@ -86,50 +86,25 @@ For larger features, type `/muggle-ai-teams`. You describe what you want. The or
 **Here's what happens when you say "Add Stripe billing to my app":**
 
 ```mermaid
-flowchart TD
-    Start["You: 'Add Stripe billing'"] --> Bootstrap
+flowchart LR
+    You["You: describe\nwhat you want"] --> Design
+    Design["1A-1F: Research\nDesign → Panel Review\nYou approve"] --> Build
+    Build["Step 2-5: TDD per slice\nQuality gates\nCode review → PR"] --> Learn
+    Learn["Step 6: Graduate\nlearnings to rules"]
 
-    subgraph Design["Phase 1: Design — you review, agents do the work"]
-        Bootstrap["1A: Orchestrator scans your repo,\ndetects stack, creates project config"] --> Research
-        Research["1A: Explores codebase, searches web,\npulls library docs, searches SkillsMP"] --> Requirements
-        Requirements["1B: Asks you 2-3 clarifying questions,\nmaps every file that will change"] --> Architect
-        Architect["1C: Dispatches architect agent,\nproposes 2-3 approaches with trade-offs"] --> Equip
-        Equip["1D1: Searches SkillsMP for\npanelist skills (e.g. PCI compliance)"] --> Panel
-        Panel["1D2: 6+ expert agents review in parallel\n— architecture, security, stress test,\nblind spots, UX, SEO"] --> Revise
-        Revise["Resolves all MUST ADDRESS findings,\nrevises design"] --> Approve
-        Approve["1E: You approve the final design"] --> Plan
-        Plan["1F: Routes to frontend/backend agents,\ndefines slices, contracts, mockups"]
-    end
-
-    subgraph Execute["Phase 2-5: Build — TDD, quality gates, code review"]
-        Slice["Step 2: Each slice: write tests first →\nimplement → quality gates → you verify locally"] --> Verify
-        Verify["Step 3: Full verification pass\nacross all touched projects"] --> Review
-        Review["Step 4: 3-pass code review\n(quality → compliance → contract)"] --> PR
-        PR["Step 5: Push + open PR"]
-    end
-
-    subgraph Learn["Phase 6: The system gets smarter"]
-        Graduate["Step 6: Extract what worked,\ngraduate corrections to rules files\nso they apply to ALL future sessions"]
-    end
-
-    Plan --> Slice
-    PR --> Graduate
-
-    style Start fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
-    style Approve fill:#fff3e0,stroke:#ef6c00,color:#e65100
-    style Graduate fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style You fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    style Design fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+    style Build fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    style Learn fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
 ```
 
-**What you do vs what the orchestrator does:**
+**What happens inside each phase:**
 
-| You | Orchestrator |
-|-----|-------------|
-| Describe the feature | Explores codebase, researches industry practices, pulls docs |
-| Answer 2-3 clarifying questions | Maps impact, identifies risks, proposes architecture |
-| Confirm the panel of reviewers | Dispatches 6+ expert agents in parallel, consolidates findings |
-| Approve the design | Routes to narrowest-scope agents, defines implementation slices |
-| Test each slice locally | Runs TDD, quality gates, scope checks, contract checks |
-| Confirm the PR | Runs 3-pass code review, extracts learnings for next time |
+| Phase | Steps | What the orchestrator does | What you do |
+|-------|-------|---------------------------|-------------|
+| **Design** | 1A-1F | Scans repo, detects stack, researches industry practices, proposes architecture, searches SkillsMP for panelist skills, dispatches 6+ expert reviewers in parallel, resolves all findings, defines implementation slices | Answer 2-3 questions, confirm reviewers, approve design |
+| **Build** | 2-5 | TDD per slice (tests first → implement → quality gates), scope checks, contract checks, 3-pass code review, push + PR | Test each slice locally, confirm PR |
+| **Learn** | 6 | Extracts what worked, graduates corrections to rules files so they apply to ALL future sessions | Nothing — automatic |
 
 Each step loads on demand — only ~50 lines in your context at any time, not the full 1500-line workflow.
 
@@ -211,7 +186,7 @@ Loaded on demand:
   testing-php.md       # PHP testing
 ```
 
-### `/workflow` — 12-step hierarchical workflow + 3 shared procedures
+### `/workflow` — 12 step files + 3 shared procedures
 
 Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-skillsmp-search.md`, `procedure-panelist-formats.md`) are loaded by subagents, not the orchestrator — keeping context lean.
 
