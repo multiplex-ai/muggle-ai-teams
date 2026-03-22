@@ -102,6 +102,7 @@ Step 6: Learn & Graduate (ONCE, after ALL phases are done)
 7. Do NOT skip Panel Equip (1D1), Panel Review (1D2), or User Approval (1E)
 8. **Bugs**: Diagnose root cause BEFORE proposing any fix. Never guess. (`superpowers:systematic-debugging`)
 9. **Feedback**: Evaluate ALL items BEFORE implementing any. Never process as narrative. (feedback-as-checklist protocol)
+10. **Checklist rule**: Whenever multiple items arrive at once — bug reports, review findings, user feedback, panel findings, or any batch of work — create a sub-task tracking file BEFORE acting on any item. Check off each item as it's resolved. This applies at ANY step, not just Steps 2 and 4.
 
 ## Common Failure Modes — Do NOT Do These
 
