@@ -8,7 +8,10 @@
 
 ## Task Management Warning
 
-**Do NOT create TaskCreate tasks for individual slices.** Slice tracking happens in sub-task files (per `procedure-subtask-tracking.md`) or as inline progress notes — never as top-level tasks. Creating slice tasks hijacks the workflow task list and causes the orchestrator to lose sight of Steps 3 (Verify), 4 (Review), 5 (Push), and 6 (Learn) after slices complete. The workflow step tasks created at session start are the permanent backbone — they must remain visible throughout.
+**Do NOT create TaskCreate tasks for individual slices.** Creating slice tasks hijacks the workflow task list and causes the orchestrator to lose sight of Steps 3 (Verify), 4 (Review), 5 (Push), and 6 (Learn) after slices complete. The workflow step tasks created at session start are the permanent backbone — they must remain visible throughout.
+
+**BEFORE executing any slice, create a sub-task tracking file:**
+`muggle-ai-teams/projects/<project>/tracking/step-2-<phase>-slices.md` with a checkbox per slice. Check off each slice as it's committed. This file is NOT committed to git — it's local tracking only. Do NOT skip this — "mental tracking" leads to lost slices and skipped steps.
 
 ---
 

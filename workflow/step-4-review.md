@@ -20,6 +20,8 @@ Invoke `superpowers:requesting-code-review`:
 
 ## Receive Review
 
+**Create a sub-task tracking file** before processing fixes: `muggle-ai-teams/projects/<project>/tracking/step-4-<phase>-fixes.md` with a checkbox per finding. Check off each fix as it's committed. Do NOT track fixes mentally.
+
 Invoke `superpowers:receiving-code-review` to process findings:
 
 ### Processing rules
