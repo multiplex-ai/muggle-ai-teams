@@ -23,39 +23,45 @@
 
 ---
 
-## Per Slice Execution
+## Per Slice Execution — MANDATORY GATE SEQUENCE
 
-### 1. Spawn the engineer agent with:
+Each slice MUST pass through ALL 7 gates in order. **No gate may be skipped. No next slice may be dispatched until all gates pass.** The tracking file enforces this — each gate is a sub-checkbox under the slice.
+
+### Gate 1. Execute — Spawn the engineer agent with:
 - Slice details + applicable stack rules
 - **Instruction to follow TDD** (`superpowers:test-driven-development`): write failing test → implement → pass → refactor
 - Scope (files to touch, files NOT to touch)
 - Contract (if cross-repo)
 
-### 2. Review the agent's structured summary
-- All quality gates must pass (typecheck, lint + secret scanning, test)
-- **Scope check**: Run `git diff --name-only` and verify all modified files are within the declared scope. If the agent touched files outside scope, flag and revert before proceeding.
-- **Contract check** (parallel cross-repo slices only): Verify the implementation matches the contract artifact defined in the plan. If mismatched, send back to engineer with the specific discrepancy.
+### Gate 2. Scope check
+- Run `git diff --name-only` and verify all modified files are within the declared scope.
+- If the agent touched files outside scope, flag and revert before proceeding.
+- **Contract check** (parallel cross-repo slices only): Verify the implementation matches the contract artifact defined in the plan.
+- Update tracking file: `- [x] Scope check passed`
 
-### 3. Give the user localhost test instructions
+### Gate 3. Localhost test instructions — BLOCKING
+- Post specific steps the user can follow to verify the slice works locally.
+- **STOP HERE. Do not proceed to Gate 4 until the user responds.**
 
-Provide specific steps the user can follow to verify the slice works locally.
+### Gate 4. User confirmation — BLOCKING
+- Wait for the user to confirm the slice works.
+- **Do not proceed until the user explicitly confirms.** No implicit confirmation. No "the user didn't object so I'll continue."
+- If the user reports issues → enter fix cycle (see below).
+- Update tracking file: `- [x] User confirmed`
 
-### 4. Wait for user confirmation
+### Gate 5. Commit
+- Stage ONLY in-scope files (never `git add -A`).
+- Commit with `type(scope): description` format.
+- Verify clean working tree with `git status --short`.
+- Update tracking file: `- [x] Committed (hash: <sha>)`
 
-Do not proceed until the user confirms the slice works.
+### Gate 6. Update tracking
+- Mark the slice as complete in the tracking file with all sub-gates checked off.
+- **Read the tracking file back** to confirm it's written correctly.
 
-### 5. Run `/verify pre-commit`
-
-Run `/verify pre-commit` for a structured PASS/FAIL report covering: build, types, lint, tests, console.log audit.
-
-### 6. Commit or fix
-
-- If verified + confirmed → commit locally, then `/checkpoint create "slice-N"` for rollback safety
-- If issues → enter fix cycle (see below)
-
-### 7. Next slice
-
-Move to the next slice in the plan.
+### Gate 7. Next slice
+- **Pre-flight check: Read the tracking file.** Verify the previous slice has ALL gates checked. If any gate is unchecked, STOP — do not dispatch the next agent.
+- Only then proceed to Gate 1 for the next slice.
 
 ---
 
