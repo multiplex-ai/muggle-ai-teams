@@ -86,25 +86,21 @@ For larger features, type `/muggle-ai-teams`. You describe what you want. The or
 **Here's what happens when you say "Add Stripe billing to my app":**
 
 ```mermaid
-flowchart LR
-    You["You: describe\nwhat you want"] --> Design
-    Design["1A-1F: Research\nDesign → Panel Review\nYou approve"] --> Build
-    Build["Step 2-5: TDD per slice\nQuality gates\nCode review → PR"] --> Learn
-    Learn["Step 6: Graduate\nlearnings to rules"]
+flowchart TD
+    A["You: 'Add Stripe billing'"] --> B["1A Research — scan repo, web search, pull docs"]
+    B --> C["1B Requirements — clarify, map impact"]
+    C --> D["1C Design — architect proposes approaches"]
+    D --> E["1D Panel — 6+ experts review in parallel"]
+    E --> F["1E You approve"]
+    F --> G["1F Plan — route to agents, define slices"]
+    G --> H["2-3 Execute — TDD per slice, quality gates"]
+    H --> I["4-5 Review — 3-pass code review, PR"]
+    I --> J["6 Learn — graduate to rules"]
 
-    style You fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
-    style Design fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
-    style Build fill:#fff3e0,stroke:#ef6c00,color:#e65100
-    style Learn fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    style A fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    style F fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    style J fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
 ```
-
-**What happens inside each phase:**
-
-| Phase | Steps | What the orchestrator does | What you do |
-|-------|-------|---------------------------|-------------|
-| **Design** | 1A-1F | Scans repo, detects stack, researches industry practices, proposes architecture, searches SkillsMP for panelist skills, dispatches 6+ expert reviewers in parallel, resolves all findings, defines implementation slices | Answer 2-3 questions, confirm reviewers, approve design |
-| **Build** | 2-5 | TDD per slice (tests first → implement → quality gates), scope checks, contract checks, 3-pass code review, push + PR | Test each slice locally, confirm PR |
-| **Learn** | 6 | Extracts what worked, graduates corrections to rules files so they apply to ALL future sessions | Nothing — automatic |
 
 Each step loads on demand — only ~50 lines in your context at any time, not the full 1500-line workflow.
 
