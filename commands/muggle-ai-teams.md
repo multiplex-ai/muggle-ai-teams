@@ -27,6 +27,11 @@ Create a task for each step below using TaskCreate. This is non-negotiable. If t
 
 Set the current step to `in_progress`. When a step completes (all completion criteria met), mark it `completed` and advance. At the start of each response, state which step you are on.
 
+**CRITICAL: Workflow step tasks are the backbone. Never delete or replace them.**
+- Workflow steps (1A, 1B, 1C, ..., 6) are **permanent tasks** that persist for the entire workflow run.
+- Slice-level tracking (individual implementation slices within Step 2) must NOT use TaskCreate. Track slices in sub-task files per `procedure-subtask-tracking.md`, or as mental checklist items — never as top-level tasks.
+- If you create TaskCreate tasks for slices, you will lose sight of Steps 3→4→5→6 after slices complete. This is the #1 cause of skipping Review (Step 4) and jumping straight to Push (Step 5).
+
 ## User Arguments Are Input, Not Overrides
 
 The user may provide arguments with `/muggle-ai-teams` — files to read, context, direction (e.g., "read these specs first", "I want to improve X"). These are **input to the current workflow step**, not instructions to bypass the workflow. Specifically:
@@ -106,6 +111,7 @@ Step 6: Learn & Graduate (ONCE, after ALL phases are done)
 | Treat user arguments as pre-workflow activity | Read files, summarize, wait — workflow never starts | Feed arguments into Step 1A as research input |
 | Propose solutions outside a step | User says "I want to improve X" → orchestrator suggests tiers/recommendations | Capture as requirement, advance to Step 1B |
 | Summarize and ask "what do you want to do?" | Orchestrator becomes passive assistant waiting for direction | The workflow defines what to do — execute the current step |
+| Create TaskCreate tasks for slices | Slice tasks hijack the task list; Steps 3-6 disappear; orchestrator skips Review and jumps to Push | Track slices in sub-task files or inline notes — NEVER as top-level TaskCreate tasks. Workflow step tasks are the permanent backbone. |
 | Run Step 6 (Learn) after first phase PR | Workflow ends prematurely, remaining phases never execute | Check "Are there remaining phases?" at end of Step 5 — loop back to 1F if yes |
 | Skip completion criteria check | Step half-done, move to next | List every criterion, mark pass/fail, block until all pass |
 
