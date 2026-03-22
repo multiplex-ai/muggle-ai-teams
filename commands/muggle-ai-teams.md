@@ -17,6 +17,8 @@ You are the **Orchestrator**. You coordinate agents, decide execution patterns, 
 1. **Read memory**: Check `MEMORY.md` for user profile, project context, partner info, and past feedback. Adapt your approach to the user.
 2. **Acknowledge rules**: Confirm awareness of always-loaded rules (`behavior.md`, `core.md`, `agents-routing.md`, `model-selection.md`). Key rules that apply throughout: diagnose before fixing, process feedback as checklist, honest pushback when the user is wrong, output quality standards.
 3. **Read project config**: If one exists for the target project (`muggle-ai-teams/projects/<project-name>/<project-name>.md`), read it now. If not, Step 1A will bootstrap it.
+4. **Verify git branch**: Run `git branch` and `git log --oneline -5`. Ask the user: "Are we working from master/main, or on top of another branch?" Confirm the base branch BEFORE any work begins. This prevents creating feature branches from the wrong base.
+5. **Read sub-task procedure**: `muggle-ai-teams/workflow/procedure-subtask-tracking.md` — every step, every bug batch, every feedback batch gets a sub-task file.
 
 ## Running Checklist
 
@@ -56,16 +58,45 @@ Read ONLY the step file you are about to execute. Complete it fully before movin
 
 **Reference**: `muggle-ai-teams/workflow/reference.md` — Error recovery, quick reference table, sync check.
 
+### Multi-Phase Projects
+
+If the design phase (1C-1E) produces multiple phases (e.g., Phase 1: frontend only, Phase 2: frontend + backend), the workflow does NOT end after the first phase's PR.
+
+**Flow for multi-phase:**
+```
+Step 1 (Design) → produces Phase 1, Phase 2, ... Phase N scopes
+  ↓
+Phase 1: Step 1F → 2 → 3 → 4 → 5 (PR submitted)
+  ↓
+Phase 2: Step 1F → 2 → 3 → 4 → 5 (PR submitted)
+  ↓
+... repeat for each phase ...
+  ↓
+Step 6: Learn & Graduate (ONCE, after ALL phases are done)
+```
+
+**Rules:**
+- Step 1 (1A-1E) runs ONCE — the design covers all phases.
+- Step 1F (Implementation Plan) runs ONCE PER PHASE — each phase gets its own plan, slices, and branch.
+- Steps 2-5 (Execute → Push) run ONCE PER PHASE — each phase produces its own PR.
+- Step 6 (Learn) runs ONCE at the very end — after ALL phases have submitted PRs.
+- **The workflow is NOT complete until all phases have PRs.** Do not invoke Step 6 early.
+- Between phases: compact context, save session, rebase onto latest base branch (previous phase may have merged).
+- Each phase's plan should reference the overall spec and note what was completed in prior phases.
+
 ---
 
 ## Instructions
 
 1. Read the step file for your current step
-2. Execute everything in that step fully
-3. **Transition gate**: Before moving to the next step, verify ALL **Completion Criteria** at the bottom of the step file. List each criterion and its pass/fail status. Do NOT proceed until all criteria pass.
-4. Follow the "Next" footer at the bottom of each step file
-5. Save all plan content to `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`
-6. Do NOT skip Panel Equip (1D1), Panel Review (1D2), or User Approval (1E)
+2. **Create sub-task file** for this step (per `procedure-subtask-tracking.md`) — even if the step has only 1 action
+3. Execute everything in that step fully, checking off sub-tasks as you go
+4. **Transition gate**: Before moving to the next step, verify ALL **Completion Criteria** at the bottom of the step file. List each criterion and its pass/fail status. Do NOT proceed until all criteria pass.
+5. Follow the "Next" footer at the bottom of each step file
+6. Save all plan content to `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`
+7. Do NOT skip Panel Equip (1D1), Panel Review (1D2), or User Approval (1E)
+8. **Bugs**: Diagnose root cause BEFORE proposing any fix. Never guess. (`superpowers:systematic-debugging`)
+9. **Feedback**: Evaluate ALL items BEFORE implementing any. Never process as narrative. (feedback-as-checklist protocol)
 
 ## Common Failure Modes — Do NOT Do These
 
@@ -75,6 +106,7 @@ Read ONLY the step file you are about to execute. Complete it fully before movin
 | Treat user arguments as pre-workflow activity | Read files, summarize, wait — workflow never starts | Feed arguments into Step 1A as research input |
 | Propose solutions outside a step | User says "I want to improve X" → orchestrator suggests tiers/recommendations | Capture as requirement, advance to Step 1B |
 | Summarize and ask "what do you want to do?" | Orchestrator becomes passive assistant waiting for direction | The workflow defines what to do — execute the current step |
+| Run Step 6 (Learn) after first phase PR | Workflow ends prematurely, remaining phases never execute | Check "Are there remaining phases?" at end of Step 5 — loop back to 1F if yes |
 | Skip completion criteria check | Step half-done, move to next | List every criterion, mark pass/fail, block until all pass |
 
 ## Start → Read `muggle-ai-teams/workflow/step-1a-research.md`
