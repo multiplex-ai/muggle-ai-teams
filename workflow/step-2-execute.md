@@ -6,6 +6,12 @@
 
 ---
 
+## Task Management Warning
+
+**Do NOT create TaskCreate tasks for individual slices.** Slice tracking happens in sub-task files (per `procedure-subtask-tracking.md`) or as inline progress notes — never as top-level tasks. Creating slice tasks hijacks the workflow task list and causes the orchestrator to lose sight of Steps 3 (Verify), 4 (Review), 5 (Push), and 6 (Learn) after slices complete. The workflow step tasks created at session start are the permanent backbone — they must remain visible throughout.
+
+---
+
 ## Dispatch Strategy
 
 - **2+ independent slices** (e.g. parallel frontend + backend): Invoke `superpowers:dispatching-parallel-agents` to run them simultaneously
