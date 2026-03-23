@@ -18,7 +18,7 @@ Part of the **Muggle AI** open-source ecosystem:
 
 muggle-ai-teams handles *how work gets done* (design → implement → review → deliver). muggle-ai-works handles *QA verification* (test generation, browser replay, cloud results). Together, they form a complete AI-assisted development workflow with built-in quality assurance.
 
-Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA testing platform). Battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration.
+Built by the team behind [MuggleTest](https://www.muggletest.com) (AI-powered QA testing platform). Battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration.
 
 ---
 
@@ -367,7 +367,7 @@ muggle-ai-teams stands on the shoulders of excellent open-source work:
 
 ## About
 
-Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required.
+Built by the team behind **[MuggleTest](https://www.muggletest.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required.
 
 **Muggle AI open-source ecosystem:**
 - **[muggle-ai-teams](https://github.com/multiplex-ai/muggle-ai-teams)** — Agent orchestration, workflow, skills, and rules (this repo)
