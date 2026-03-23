@@ -1,0 +1,37 @@
+{
+  "name": "@muggleai/teams",
+  "version": "1.0.0",
+  "description": "Adaptive agent team orchestration for Claude Code — agents, skills, commands, rules, workflows, and hooks",
+  "type": "module",
+  "files": [
+    "agents",
+    "commands",
+    "skills",
+    "rules",
+    "workflow",
+    "hooks",
+    "contexts",
+    "projects/PROJECT-TEMPLATE.md",
+    "scripts/postinstall.mjs"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.mjs",
+    "setup": "bash setup.sh"
+  },
+  "keywords": [
+    "claude-code",
+    "ai-agents",
+    "workflow",
+    "orchestration",
+    "muggle-ai",
+    "skills",
+    "mcp"
+  ],
+  "author": "Muggle AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/multiplex-ai/muggle-ai-teams.git"
+  },
+  "homepage": "https://github.com/multiplex-ai/muggle-ai-teams"
+}

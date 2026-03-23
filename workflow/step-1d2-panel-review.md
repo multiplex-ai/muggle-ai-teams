@@ -1,5 +1,11 @@
 # /muggle-ai-teams → Step 1D2: Panel Review
 
+> **Tier guard**: If tier = standard, skip the full panel. Dispatch 1 architect agent for a focused quick review (obvious issues? security concerns? missing edge cases?). Then proceed directly to Step 1E.
+
+> **Note**: Panel review is now more focused because specialist agents (Step 1C) already wrote domain-expert design sections. Panelists catch cross-domain issues and gaps, not basic domain mistakes.
+
+> **Load rules**: core.md, agents-advanced.md, model-selection.md
+
 > Part of /muggle-ai-teams.
 > **Skill**: `superpowers:dispatching-parallel-agents`
 > **PREREQUISITE**: Step 1D1 must be completed first. If no augmented panel was confirmed in 1D1, go back and complete it.

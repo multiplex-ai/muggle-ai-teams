@@ -2,6 +2,8 @@
 
 > Part of /muggle-ai-teams.
 
+> **Load rules**: coding.md, testing.md, planning.md, agents-routing.md
+
 ---
 
 ## Procedure
@@ -82,13 +84,9 @@ interface CreateFeatureResponse {
 }
 ```
 
-### 4. Visual design (if UI changes)
+### 4. Visual mockups
 
-If the design includes user-facing changes, invoke `frontend-design:frontend-design` now to create visual mockups. The panel review (Step 1D2) has finalized the design, so mockups won't be wasted.
-
-**Before creating mockups:** Examine existing app styling — read the Tailwind config, globals.css, and existing component patterns. Never guess fonts, colors, or spacing.
-
-Mockups inform the frontend slice definitions in step 5.
+Visual mockups are generated in Step 1E (before approval). Reference them here if they inform slice definitions.
 
 ### 5. Break work into committable slices with TDD steps
 
@@ -103,10 +101,72 @@ For each slice, specify:
 - **Contract reference**: Which contract artifact applies (if cross-scope)
 - **TDD steps**: What tests to write first
 - **Localhost test instructions**: How the user verifies it works
+- **QA test instruction** (for user-facing slices only): A natural-language browser
+  test case description for muggle-ai-works automated QA. Must describe observable
+  UI actions and verifications.
+  Example: "Navigate to /login, enter valid email and password, click Submit,
+  verify redirect to /dashboard, verify username displayed in header"
+  **Omit for backend-only slices** — these are verified by unit tests (Gate 3),
+  not browser QA. Mark as `QA: N/A (backend-only)`.
 
 ### 6. Get user approval on the full plan before executing
 
 Present the complete implementation plan and wait for explicit user approval before proceeding to Step 2.
+
+---
+
+## Non-Coding Mode (if mission = non-coding)
+
+When the mission is non-coding, adapt the implementation plan:
+
+### 1. Route the requirement (adapted)
+Instead of routing to engineer agents, route to specialist agents equipped with relevant skills. Use the non-coding specialist table from Step 1C.
+
+### 2. No parallel vs sequential decision needed for code
+Instead, decide the section execution order:
+- Independent sections → parallel specialists
+- Sequential sections (B depends on A) → sequential execution
+
+### 3. No contract artifact needed
+Skip TypeScript interface / API shape definitions.
+
+### 4. Break work into deliverable sections (replaces code slices)
+
+Each section should be:
+- A self-contained part of the final deliverable
+- Reviewable independently by the user
+- Clear about which specialist owns it
+
+For each section, specify:
+- **Specialist**: Which specialist agent writes this section (with equipped skill)
+- **Scope**: What this section covers and what it does NOT cover
+- **Inputs**: Research findings, user context, or prior sections needed
+- **Output format**: Markdown, HTML, email draft, spreadsheet, etc.
+- **Review criteria**: How the user should evaluate this section
+
+Example (pitch deck):
+```
+- Section 1: Cover + Problem Statement → Investor Specialist (investor-materials)
+- Section 2: Solution + Product Demo → Investor Specialist + Design Specialist (ui-ux-pro-max)
+- Section 3: Market Size + Traction → Investor Specialist (investor-materials)
+- Section 4: Business Model + Financials → Investor Specialist (investor-materials)
+- Section 5: Team + Ask → Investor Specialist (investor-materials)
+- Section 6: Visual Assembly → Presentation Specialist (frontend-slides)
+```
+
+Example (trip planning):
+```
+- Section 1: Flight options + booking → Planning Specialist (WebSearch)
+- Section 2: Hotel research + booking → Planning Specialist (WebSearch)
+- Section 3: Daily itinerary → Planning Specialist (WebSearch)
+- Section 4: Restaurant reservations → Planning Specialist (WebSearch)
+- Section 5: Final compiled itinerary → Orchestrator (combine all)
+```
+
+### 5. No QA test instructions needed
+Non-coding sections are verified by user review, not automated QA.
+
+### 6. Get user approval (same as coding mode)
 
 ---
 
@@ -123,6 +183,7 @@ Add to the plan document at `muggle-ai-teams/projects/<project-name>/plans/<feat
 - Slices:
   - Slice 1: [description] → Agent: [X] → Scope: [files] → Test: [Y]
   - Slice 2: ...
+- QA test instructions: [per-slice test descriptions for muggle-ai-works]
 ```
 
 ## Completion Criteria
@@ -131,8 +192,9 @@ Add to the plan document at `muggle-ai-teams/projects/<project-name>/plans/<feat
 - [ ] Requirements routed to agents via project config
 - [ ] Parallel vs sequential decision documented with rationale
 - [ ] Contract artifact defined (if cross-scope)
-- [ ] Visual mockups created (if UI changes)
+- [ ] Visual mockups referenced from Step 1E (if UI changes)
 - [ ] Work broken into committable slices with TDD steps
 - [ ] User approved the full implementation plan
+- [ ] Deliverable sections defined with specialists (if non-coding)
 
 ## Next → Read `muggle-ai-teams/workflow/step-2-execute.md`

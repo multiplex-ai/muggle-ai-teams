@@ -9,7 +9,16 @@
 
 A single, portable folder that organizes your entire Claude Code agent team — agents, skills, commands, rules, workflows, hooks, and contexts — and evolves through usage.
 
-Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA testing platform). muggle-ai-teams was battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration, and is now open-sourced for the Claude Code community.
+Part of the **Muggle AI** open-source ecosystem:
+
+| Package | Purpose | Install |
+|---------|---------|---------|
+| **muggle-ai-teams** (this repo) | Agent orchestration, workflow, skills, rules | `npm install @muggleai/teams` |
+| **[muggle-ai-works](https://github.com/multiplex-ai/muggle-ai-works)** | QA testing MCP server + autonomous dev pipeline | `npm install @muggleai/works` |
+
+muggle-ai-teams handles *how work gets done* (design → implement → review → deliver). muggle-ai-works handles *QA verification* (test generation, browser replay, cloud results). Together, they form a complete AI-assisted development workflow with built-in quality assurance.
+
+Built by the team behind [MuggleTest](https://www.muggle-ai.com) (AI-powered QA testing platform). Battle-tested building MuggleTest across 6 sub-projects with multi-agent orchestration.
 
 ---
 
@@ -26,7 +35,7 @@ There are several excellent projects in the Claude Code ecosystem. Here's how mu
 | **Rules** | 16 domain-split files, loaded on demand | Via skill enforcement | Multi-language rule sets | XML-structured prompts |
 | **Learning system** | Behavioral rules graduate to always-loaded files | N/A | Instinct-based with confidence scoring | N/A |
 | **Portability** | `setup.sh` symlinks to any machine | Plugin install | Plugin + manual setup | Drop-in folder |
-| **Multi-tool** | Claude Code + Cursor | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
+| **Multi-tool** | Claude Code (full), Cursor (partial) | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
 
 **muggle-ai-teams doesn't replace these projects — it builds on them.** We merged the best parts of Superpowers (workflow discipline) and ECC (agents, skills, hooks) into a unified, deduplicated system, then added:
 
@@ -41,27 +50,33 @@ There are several excellent projects in the Claude Code ecosystem. Here's how mu
 
 ## Quick Start
 
-```bash
-# Clone into your project root
-cd ~/your-project
-git clone https://github.com/multiplex-ai/muggle-ai-teams.git
+### Option A: npm install (recommended — auto-updates)
 
-# Run setup (creates symlinks, backs up existing configs)
-chmod +x muggle-ai-teams/setup.sh
-./muggle-ai-teams/setup.sh
+```bash
+npm install @muggleai/teams
 
 # Start using it
 # In Claude Code, type: /muggle-ai-teams
 ```
 
-**What `setup.sh` does:**
+Update to latest: `npm update @muggleai/teams`
 
-1. Symlinks `agents/`, `commands/`, `skills/`, `rules/` into `~/.claude/` (global)
-2. Symlinks `agents/`, `skills/` into `.claude/` (project-level)
-3. Links memory to Claude's persistent memory directory
-4. Backs up any existing directories before overwriting
+### Option B: Git clone (for contributors)
 
-No dependencies. No build step. Works on macOS and Linux.
+```bash
+cd ~/your-project
+git clone https://github.com/multiplex-ai/muggle-ai-teams.git
+chmod +x muggle-ai-teams/setup.sh
+./muggle-ai-teams/setup.sh
+```
+
+**What both methods do:**
+
+1. Install `agents/`, `commands/`, `skills/`, `rules/` into `~/.claude/` (global)
+2. Back up any existing directories before overwriting
+3. npm install copies files (update with `npm update`); git clone symlinks them (edit in place)
+
+No build step required. Works on macOS and Linux.
 
 ---
 
@@ -83,26 +98,44 @@ Just use Claude Code normally. The agents, rules, and hooks work in the backgrou
 
 For larger features, type `/muggle-ai-teams`. You describe what you want. The orchestrator handles the rest.
 
-**Here's what happens when you say "Add Stripe billing to my app":**
+**The workflow adapts to task complexity:**
+
+| Tier | When | What happens |
+|------|------|-------------|
+| **Quick** | Small fix, typo, config | Routes to `/muggle-do` — autonomous code → test → QA → PR |
+| **Standard** | Normal feature, refactor | Specialist-designed, per-slice QA, skip panel review |
+| **Full** | Architecture, security, multi-service | Full panel review, regression sweep, all safeguards |
+
+The orchestrator triages in Step 1A (reads project config + git stat, scores complexity) and recommends a tier. You confirm or override.
+
+The workflow also supports **non-coding missions** (documents, presentations, emails, trip planning). Same design rigor, different execution: specialist agents write content sections instead of code, with user review per section instead of automated QA. No git, no PRs — just quality deliverables.
 
 ```mermaid
 flowchart TD
-    A["You: 'Add Stripe billing'"] --> B["1A Research — scan repo, web search, pull docs"]
-    B --> C["1B Requirements — clarify, map impact"]
-    C --> D["1C Design — architect proposes approaches"]
-    D --> E["1D Panel — 6+ experts review in parallel"]
-    E --> F["1E You approve"]
-    F --> G["1F Plan — route to agents, define slices"]
-    G --> H["2-3 Execute — TDD per slice, quality gates"]
-    H --> I["4-5 Review — 3-pass code review, PR"]
-    I --> J["6 Learn — graduate to rules"]
+    A["You: describe task"] --> T["1A Triage — scan repo, score complexity"]
+    T -->|Quick| MD["/muggle-do — autonomous pipeline"]
+    T -->|Standard| B["1A Research — 1 web search, code explorer"]
+    T -->|Full| BF["1A Research — 3+ searches, SkillsMP, docs"]
+    B --> C["1B Requirements"]
+    BF --> C
+    C --> D["1C Design — specialist agents write sections"]
+    D -->|Standard| F["1E Approve (with mockups)"]
+    D -->|Full| E["1D Panel — experts review in parallel"]
+    E --> F
+    F --> G["1F Plan — slices with QA instructions"]
+    G --> H["2 Execute — TDD + per-slice QA via Muggle AI"]
+    H --> I["3-4 Verify + Review"]
+    I --> J["5 Push + publish QA results"]
+    J --> K["6 Learn — graduate to rules"]
 
     style A fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
     style F fill:#fff3e0,stroke:#ef6c00,color:#e65100
-    style J fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    style K fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
 ```
 
 Each step loads on demand — only ~50 lines in your context at any time, not the full 1500-line workflow.
+
+**Works for non-coding tasks too.** Say "build me an investor pitch deck" and the same workflow runs — specialists design the deck structure, execute section by section, review for quality, and deliver the final output. No code involved.
 
 ### Key slash commands
 
@@ -126,6 +159,16 @@ These rules enforce how Claude works with you, loaded in every conversation:
 - **Process feedback as checklist** — extract every comment into a numbered table before evaluating
 - **Honest pushback** — challenge you when you're wrong, with reasoning
 - **Output quality** — readable mockups, sufficient detail, no cramming
+
+### QA automation (via muggle-ai-works)
+
+When [muggle-ai-works](https://github.com/multiplex-ai/muggle-ai-works) is installed, the workflow integrates Muggle AI's QA testing:
+
+- **Per-slice QA** (Step 2) — Each implementation slice is tested against localhost via Muggle AI before committing. The slice's test instructions (written in Step 1F) feed directly to muggle-ai-works as test cases.
+- **Regression sweep** (Step 3, full tier) — After all slices, replay all project test scripts to catch cross-slice interaction bugs.
+- **Publish results** (Step 5) — QA results are published to Muggle AI cloud and linked in the PR description.
+
+Install muggle-ai-works: `npm install @muggleai/works`
 
 ---
 
@@ -184,7 +227,7 @@ Loaded on demand:
 
 ### `/workflow` — 12 step files + 3 shared procedures
 
-Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-skillsmp-search.md`, `procedure-panelist-formats.md`) are loaded by subagents, not the orchestrator — keeping context lean.
+Step 1A includes built-in triage that routes tasks to 3 tiers (Quick → /muggle-do, Standard → streamlined, Full → complete). Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-skillsmp-search.md`, `procedure-panelist-formats.md`) are loaded by subagents, not the orchestrator — keeping context lean.
 
 ### `/hooks` — 12 automated guards
 
@@ -249,6 +292,23 @@ Clone on a new machine, run `setup.sh`, and your full agent team is operational.
 
 ## FAQ
 
+### "Which platforms does this work with?"
+
+**Full support: Claude Code.** The orchestrated workflow (parallel agent dispatch, per-slice QA, task tracking, hooks, MCP integration) requires Claude Code's Agent tool, Skill tool, TaskCreate, and hook system.
+
+**Partial support: Cursor.** Reads the markdown agent/skill files and supports MCP (so muggle-ai-works tools work). But cannot spawn subagent specialists in parallel, run hooks, or track workflow tasks. Use the step files as manual guidance rather than automated orchestration.
+
+**Not supported: Codex, Trae, Antigravity, other platforms.** The workflow files are readable markdown, so any AI assistant can follow them as instructions — but the automated orchestration (parallel dispatch, gate enforcement, skill equipping) won't work without the tools above. Contributions to port the orchestration layer are welcome.
+
+| Capability | Claude Code | Cursor | Others |
+|-----------|------------|--------|--------|
+| Read workflow step files | Yes | Yes | Yes |
+| Agent tool (parallel specialists) | Yes | No | No |
+| MCP (muggle-ai-works QA) | Yes | Yes | Varies |
+| Skills / Commands | Yes | Partial | No |
+| Task tracking | Yes | No | No |
+| Hooks (auto-format, typecheck) | Yes | No | No |
+
 ### "I already have files in `~/.claude/`. Will this blow them away?"
 
 No. `setup.sh` backs up your existing `agents/`, `commands/`, `skills/`, and `rules/` to `.bak` directories before creating symlinks. To undo: remove the symlinks, rename the backups. Your original setup is preserved.
@@ -267,11 +327,7 @@ Yes. Add files directly to `muggle-ai-teams/agents/` or `muggle-ai-teams/skills/
 
 ### "Does the full workflow run every time, even for a small bug fix?"
 
-No. The workflow is for larger features. For quick tasks, just use Claude Code normally — the agents, rules, and slash commands (`/plan`, `/tdd`, `/code-review`, `/build-fix`) work without invoking the full workflow.
-
-### "Does this work with Cursor?"
-
-The agents and skills are Markdown files compatible with both Claude Code and Cursor. The `.mdc` rule files at the repo root are Cursor-native.
+No. The workflow now has 3 tiers. Quick tasks (typos, small fixes) auto-route to `/muggle-do` for autonomous execution. Standard features skip panel review and get lighter research. Only architectural or security-sensitive changes run the full workflow with panel review. The triage happens automatically in Step 1A — you confirm the tier before proceeding.
 
 ### "What if I'm mid-project on the old workflow and want to switch?"
 
@@ -311,7 +367,13 @@ muggle-ai-teams stands on the shoulders of excellent open-source work:
 
 ## About
 
-Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required. muggle-ai-teams was created and refined while building MuggleTest, a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation — all orchestrated by Claude Code agents.
+Built by the team behind **[MuggleTest](https://www.muggle-ai.com)** — an AI-powered QA testing platform that makes software testing accessible to everyone, no coding required.
+
+**Muggle AI open-source ecosystem:**
+- **[muggle-ai-teams](https://github.com/multiplex-ai/muggle-ai-teams)** — Agent orchestration, workflow, skills, and rules (this repo)
+- **[muggle-ai-works](https://github.com/multiplex-ai/muggle-ai-works)** — Unified MCP server for QA testing + autonomous dev pipeline (`/muggle-do`)
+
+Both repos were created and refined while building MuggleTest — a multi-service platform spanning 6 sub-projects with frontend, backend, MCP servers, Electron apps, and documentation.
 
 ---
 

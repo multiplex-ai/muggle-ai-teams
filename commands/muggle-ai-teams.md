@@ -48,7 +48,7 @@ Read ONLY the step file you are about to execute. Complete it fully before movin
 
 | Step | Name | File |
 |------|------|------|
-| 1A | Research & Context Gathering | `muggle-ai-teams/workflow/step-1a-research.md` |
+| 1A | Research, Triage & Context Gathering | `muggle-ai-teams/workflow/step-1a-research.md` |
 | 1B | Requirements & Impact Analysis | `muggle-ai-teams/workflow/step-1b-requirements.md` |
 | 1C | Design Proposal | `muggle-ai-teams/workflow/step-1c-design.md` |
 | 1D1 | Skill Search & Panel Equip | `muggle-ai-teams/workflow/step-1d1-panel-equip.md` |
@@ -62,6 +62,23 @@ Read ONLY the step file you are about to execute. Complete it fully before movin
 | 6 | Learn & Graduate | `muggle-ai-teams/workflow/step-6-learn.md` |
 
 **Reference**: `muggle-ai-teams/workflow/reference.md` — Error recovery, quick reference table, sync check.
+
+### Complexity Tiers
+
+Step 1A includes a built-in triage that scores task complexity and routes to one of three tiers:
+- **Quick** (score 0-2): Hands off to `/muggle-do` for autonomous execution
+- **Standard** (score 3-6): Streamlined workflow — skips Steps 1D1 and 1D2 (panel review)
+- **Full** (score 7+): Complete workflow with panel review and regression sweep
+
+The user confirms the tier recommendation before proceeding.
+
+### Mission Types
+
+Step 1A Phase 0 classifies every task as **coding** or **non-coding** before complexity scoring:
+- **Coding**: Changes code, config, tests, infrastructure → full development workflow (git, QA, PR)
+- **Non-coding**: Documents, presentations, emails, planning, research, bookings → content workflow (no git, no QA, user review per section)
+
+Both mission types use the same step sequence (1A → 6). Each step has a coding mode and a non-coding mode that adapts automatically based on the mission classification.
 
 ### Multi-Phase Projects
 
@@ -99,7 +116,7 @@ Step 6: Learn & Graduate (ONCE, after ALL phases are done)
 4. **Transition gate**: Before moving to the next step, verify ALL **Completion Criteria** at the bottom of the step file. List each criterion and its pass/fail status. Do NOT proceed until all criteria pass.
 5. Follow the "Next" footer at the bottom of each step file
 6. Save all plan content to `muggle-ai-teams/projects/<project-name>/plans/<feature-name>.md`
-7. Do NOT skip Panel Equip (1D1), Panel Review (1D2), or User Approval (1E)
+7. Do NOT skip User Approval (1E). Panel Equip (1D1) and Panel Review (1D2) are mandatory for full tier only — standard tier skips them.
 8. **Bugs**: Diagnose root cause BEFORE proposing any fix. Never guess. (`superpowers:systematic-debugging`)
 9. **Feedback**: Evaluate ALL items BEFORE implementing any. Never process as narrative. (feedback-as-checklist protocol)
 10. **Checklist rule**: Whenever multiple items arrive at once — bug reports, review findings, user feedback, panel findings, or any batch of work — create a sub-task tracking file BEFORE acting on any item. Check off each item as it's resolved. This applies at ANY step, not just Steps 2 and 4.
@@ -115,5 +132,6 @@ Step 6: Learn & Graduate (ONCE, after ALL phases are done)
 | Create TaskCreate tasks for slices | Slice tasks hijack the task list; Steps 3-6 disappear; orchestrator skips Review and jumps to Push | Track slices in sub-task files or inline notes — NEVER as top-level TaskCreate tasks. Workflow step tasks are the permanent backbone. |
 | Run Step 6 (Learn) after first phase PR | Workflow ends prematurely, remaining phases never execute | Check "Are there remaining phases?" at end of Step 5 — loop back to 1F if yes |
 | Skip completion criteria check | Step half-done, move to next | List every criterion, mark pass/fail, block until all pass |
+| Skip QA in Step 2 | Bugs discovered late in Step 3/4, causing batch fixes | Run per-slice QA via muggle-ai-works in Gate 4 of Step 2 |
 
 ## Start → Read `muggle-ai-teams/workflow/step-1a-research.md`
