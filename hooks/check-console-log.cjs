@@ -14,7 +14,7 @@
  */
 
 const fs = require('fs');
-const { isGitRepo, getGitModifiedFiles, readFile, log } = require('./lib/utils');
+const { isGitRepo, getGitModifiedFiles, readFile, log } = require('./lib/utils.cjs');
 
 // Files where console.log is expected and should not trigger warnings
 const EXCLUDED_PATTERNS = [

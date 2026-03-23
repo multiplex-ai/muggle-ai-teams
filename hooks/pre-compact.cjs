@@ -17,7 +17,7 @@ const {
   ensureDir,
   appendFile,
   log
-} = require('./lib/utils');
+} = require('./lib/utils.cjs');
 
 async function main() {
   const sessionsDir = getSessionsDir();

@@ -113,7 +113,7 @@ function detectFormatter(projectRoot) {
  */
 function getRunnerFromPackageManager(projectRoot) {
   const isWin = process.platform === 'win32';
-  const { getPackageManager } = require('./package-manager');
+  const { getPackageManager } = require('./package-manager.cjs');
   const pm = getPackageManager({ projectDir: projectRoot });
   const execCmd = pm?.config?.execCmd || 'npx';
   const [rawBin = 'npx', ...prefix] = execCmd.split(/\s+/).filter(Boolean);

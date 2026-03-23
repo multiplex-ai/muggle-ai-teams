@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { commandExists, getClaudeDir, readFile, writeFile } = require('./utils');
+const { commandExists, getClaudeDir, readFile, writeFile } = require('./utils.cjs');
 
 // Package manager definitions
 const PACKAGE_MANAGERS = {
