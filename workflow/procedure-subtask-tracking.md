@@ -4,6 +4,21 @@ This procedure applies to ALL workflow steps and to ALL bug fix / feedback batch
 
 ---
 
+## When to Use a Tracking File vs Inline Tracking
+
+**Tracking FILE required** (3+ discrete items):
+- Step 2: slice execution (gate-level checkboxes per slice)
+- Step 4: review fix items (MUST FIX / SHOULD FIX tracking)
+- Any step processing a batch (bug reports, feedback items, panel findings)
+
+**Inline tracking sufficient** (1-2 items):
+- Step 1A, 1B, 1C, 1E: single-action steps — track in conversation
+- Step 3, 5, 6: linear checklists — use completion criteria as tracker
+
+This reduces overhead for simple steps while maintaining rigor for complex ones.
+
+---
+
 ## When to Create Sub-Tasks
 
 1. **Every workflow step**: When you start a step, create a sub-task file listing every action in that step. Even if the step has only 1 action — create the file anyway.

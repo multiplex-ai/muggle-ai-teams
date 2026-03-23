@@ -1,5 +1,7 @@
 # /muggle-ai-teams → Step 1D1: Skill Search & Panel Equip
 
+> **Tier guard**: If tier = standard, SKIP this step entirely. Proceed directly to Step 1E (`muggle-ai-teams/workflow/step-1e-approval.md`).
+
 > Part of /muggle-ai-teams. Run BEFORE Step 1D2 (Panel Review).
 
 ---

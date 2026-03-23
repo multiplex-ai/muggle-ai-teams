@@ -1,21 +1,32 @@
 # /muggle-ai-teams → Step 1E: User Approval Gate
 
 > Part of /muggle-ai-teams.
+> **Load rules**: core.md, git.md, context-management.md
 
 ---
 
 ## Procedure
+
+### 0. Generate visual mockups (if frontend changes)
+
+IF the design includes user-facing changes:
+  a. Read Tailwind config, globals.css, and existing component patterns — never guess fonts, colors, or spacing
+  b. Invoke `frontend-design:frontend-design` to generate visual mockups
+  c. These mockups will be presented alongside the design doc for approval
+
+IF no user-facing changes: skip this step.
 
 Present the user with:
 
 1. **Final design document** (revised after panel review)
 2. **Consolidated panel report** (what was found, what was addressed, what was deferred)
 3. **Risk assessment** (remaining risks after addressing panel feedback)
+4. **Visual mockups** (if generated above)
 
 ### Decision
 
 - **User approves** → proceed to Step 1F (Implementation Plan)
-- **User requests changes** → revise and optionally re-run affected panelists, then return here
+- **User requests changes** → revise and optionally re-run affected panelists, then return here. If UI design changed, re-generate mockups before re-presenting.
 
 ---
 
@@ -65,6 +76,7 @@ Before compressing, verify the plan document has these sections (each written by
 - [ ] Session state saved (`/save-session`)
 - [ ] Git checkpoint created (`/checkpoint create "design-approved"`)
 - [ ] Design phase compressed — plan document is self-contained
+- [ ] Visual mockups generated (if frontend changes)
 - [ ] `/compact` run to free context
 
 ## Next → Read `muggle-ai-teams/workflow/step-1f-plan.md`

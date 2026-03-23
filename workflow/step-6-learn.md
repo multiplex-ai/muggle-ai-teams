@@ -1,6 +1,7 @@
 # /muggle-ai-teams → Step 6: Learn & Graduate
 
 > Part of /muggle-ai-teams.
+> **Load rules**: core.md
 > **Skill**: `claude-md-management:revise-claude-md`
 
 After every workflow run (whether successful or abandoned), the orchestrator captures learnings and graduates them into persistent rules.
