@@ -13,7 +13,7 @@ const {
   getTempDir,
   writeFile,
   log
-} = require('./lib/utils.cjs');
+} = require('./lib/utils');
 
 async function main() {
   const sessionId = (process.env.CLAUDE_SESSION_ID || 'default').replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
