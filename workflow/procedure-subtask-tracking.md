@@ -96,9 +96,10 @@ For Step 2 (Execute Per Slice), each slice MUST have gate-level sub-checkboxes. 
 When the user reports multiple bugs:
 
 1. **Extract**: List EVERY bug into a numbered sub-task file. Use the feedback-as-checklist protocol (extract ALL items before evaluating).
-2. **Diagnose**: For each bug, diagnose the root cause BEFORE proposing a fix. Use `superpowers:systematic-debugging` if needed. Write the diagnosis next to each sub-task.
-3. **Fix**: Fix bugs one at a time (or in logical groups). Commit each fix batch separately.
-4. **Verify**: After fixing, check off the sub-task and verify the fix.
+2. **Diagnose**: For each bug, diagnose root cause + blast radius BEFORE proposing a fix (per `rules/behavior.md`). Use `superpowers:systematic-debugging`. Write the diagnosis next to each sub-task: root cause with file:line, affected files, and why they won't break.
+3. **Cross-check**: Before fixing, check if any bugs share root causes or overlapping blast radii — fixing one may fix (or break) another.
+4. **Fix**: Fix bugs one at a time (or in logical groups). Commit each fix batch separately.
+5. **Verify**: After fixing, check off the sub-task and verify the fix.
 
 ---
 

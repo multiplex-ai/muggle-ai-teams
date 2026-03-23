@@ -62,7 +62,7 @@ When the mission is non-coding, verification checks completeness against require
 
 ## If Verification Fails
 
-- Quality gate failures → fix and re-verify
+- Quality gate failures → **diagnose before fixing** (per `rules/behavior.md`): identify root cause + blast radius, then fix and re-verify. Do not blindly patch to make the gate pass.
 - After 3 consecutive failures on the same gate → escalate to user (likely architectural issue, not a code fix)
 
 ## Completion Criteria
