@@ -128,18 +128,24 @@ Update tracking: `- [x] QA: PASS (runId: <id>, screenshots: <N>)` or `- [x] QA: 
 ## Fix Cycle (when user reports issues)
 
 > **Skill**: `superpowers:systematic-debugging`
+> **Rule**: `rules/behavior.md` — Diagnose Before Fixing (root cause + blast radius required)
 
 1. User describes issue
 2. Invoke `superpowers:systematic-debugging` — structured diagnosis, not guessing:
    - Reproduce the issue
    - Form hypothesis
    - Verify with evidence
-   - Fix root cause, not symptoms
-3. Triage: which agent? Bug, missing feature, or adjustment?
-4. Spawn correct Engineer with fix scope + TDD
-5. Quality gates → user re-tests → commit locally
-6. **If same issue persists after 2 fix attempts** → escalate to user: (A) accept risk, (B) redesign, (C) different approach
-7. Back to normal flow
+3. **Map blast radius** before proposing any fix (per `rules/behavior.md`):
+   - Who calls the broken code? What state does it touch?
+   - Will the fix change a return value, prop shape, API contract, or CSS class others depend on?
+   - Is anything relying on the current (buggy) behavior as if correct?
+   - Are the affected areas covered by tests? If not, write them first.
+4. Only propose a fix when you can name: root cause with file:line, every affected file, and why they won't break.
+5. Triage: which agent? Bug, missing feature, or adjustment?
+6. Spawn correct Engineer with fix scope + TDD
+7. Quality gates → user re-tests → commit locally
+8. **If same issue persists after 2 fix attempts** → escalate to user: (A) accept risk, (B) redesign, (C) different approach
+9. Back to normal flow
 
 ## Non-Coding Mode (if mission = non-coding)
 

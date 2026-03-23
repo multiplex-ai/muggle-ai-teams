@@ -35,8 +35,8 @@ Invoke `superpowers:receiving-code-review` to process findings:
 
 | Severity | Action |
 |----------|--------|
-| **MUST FIX** | Engineer fixes with TDD → quality gates → user re-tests → commit locally |
-| **SHOULD FIX** | Engineer fixes → quality gates → commit locally |
+| **MUST FIX** | Diagnose root cause + blast radius (per `rules/behavior.md`) → Engineer fixes with TDD → quality gates → user re-tests → commit locally |
+| **SHOULD FIX** | Diagnose root cause + blast radius → Engineer fixes → quality gates → commit locally |
 | **NITPICK** | Fix if trivial, skip if not |
 
 ### Escalation

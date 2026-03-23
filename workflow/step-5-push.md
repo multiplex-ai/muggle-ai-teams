@@ -26,7 +26,7 @@ Poll CI status using the project's hosting platform. Defaults:
 - **Bitbucket**: Check pipeline status via web
 - **No CI**: Skip; rely on local quality gates from Step 3
 
-If CI fails, diagnose and fix before proceeding.
+If CI fails, **diagnose before fixing** (per `rules/behavior.md`): identify root cause + blast radius. Do not blindly patch CI errors — they may indicate issues the local quality gates missed.
 
 ### 3. Invoke `superpowers:finishing-a-development-branch`
 
