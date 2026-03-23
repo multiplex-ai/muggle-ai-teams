@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const { isHookEnabled } = require('./lib/hook-flags');
+const { isHookEnabled } = require('./lib/hook-flags.cjs');
 
 const [, , hookId, profilesCsv] = process.argv;
 if (!hookId) {
