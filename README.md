@@ -377,6 +377,14 @@ Both repos were created and refined while building MuggleTest — a multi-servic
 
 ---
 
+## Version History
+
+| Version | Date | Highlights |
+|---------|------|-----------|
+| **1.0** | 2026-03-23 | Adaptive complexity tiers (Quick/Standard/Full), specialist-driven design, per-slice QA via muggle-ai-works, non-coding mission support, explicit rule loading, npm plugin (`@muggleai/teams`), platform compatibility documentation |
+
+---
+
 ## License
 
 [MIT](LICENSE) — Use it, fork it, make it yours.
