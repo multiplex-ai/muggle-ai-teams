@@ -109,9 +109,11 @@ For larger features, type `/muggle-ai-teams`. You describe what you want. The or
 The orchestrator triages in Step 1A (reads project config + git history, scores complexity) and recommends a tier. You confirm or override.
 
 ```
-You describe task → 1A Triage → Quick? → Done in minutes.
-                                 ↓
-                    Design → [Panel] → Plan → Execute → Review → Push → Learn
+You describe what you want → Auto-triage
+
+Quick     → Execute → Done.
+Standard  → Research → Design → Build → Test → Review → Ship
+Full      → Research → Design → Panel → Build → Test → Review → Ship
 ```
 
 Each step loads on demand (~50 lines in context at a time). Click any step below to see what happens inside.
