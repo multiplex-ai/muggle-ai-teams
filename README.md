@@ -4,8 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Agents](https://img.shields.io/badge/agents-29-green)]()
-[![Skills](https://img.shields.io/badge/skills-186-orange)]()
-[![Commands](https://img.shields.io/badge/commands-52-purple)]()
+[![Skills](https://img.shields.io/badge/skills-207-orange)]()
+[![Commands](https://img.shields.io/badge/commands-54-purple)]()
 
 A single, portable folder that organizes your entire Claude Code agent team — agents, skills, commands, rules, workflows, hooks, and contexts — and evolves through usage.
 
@@ -31,7 +31,7 @@ There are several excellent projects in the Claude Code ecosystem. Here's how mu
 | **Focus** | Team management + organization | Development workflow skills | Agent harness optimization | Context engineering |
 | **Core idea** | One folder, symlinked everywhere, version-controlled | Composable skills that enforce a systematic dev process | Performance system with instincts, learning, and security | Fresh-context-per-task to prevent quality degradation |
 | **Agents** | 29 specialized roles with scope-first routing | Skill-based (no standalone agents) | 28 subagents | Multi-agent orchestration via waves |
-| **Skills** | 186 (merged + deduplicated) | ~15 core workflow skills | 116+ | Embedded in prompts |
+| **Skills** | 207 (merged + deduplicated) | ~15 core workflow skills | 116+ | Embedded in prompts |
 | **Rules** | 16 domain-split files, loaded on demand | Via skill enforcement | Multi-language rule sets | XML-structured prompts |
 | **Learning system** | Behavioral rules graduate to always-loaded files | N/A | Instinct-based with confidence scoring | N/A |
 | **Portability** | `setup.sh` symlinks to any machine | Plugin install | Plugin + manual setup | Drop-in folder |
@@ -87,10 +87,10 @@ No build step required. Works on macOS and Linux.
 After running `setup.sh`, your Claude Code sessions automatically get:
 
 - **29 agents** dispatched based on task type (coding, review, debugging, etc.)
-- **52 slash commands** — type `/plan`, `/tdd`, `/code-review`, `/build-fix` anytime
-- **186 skills** loaded on demand when relevant
+- **54 slash commands** — type `/plan`, `/tdd`, `/code-review`, `/build-fix` anytime
+- **207 skills** loaded on demand when relevant
 - **16 rules** enforcing code quality, behavioral standards, and routing decisions
-- **12 hooks** running automatically (typecheck on edit, formatting, session tracking)
+- **16 hooks** running automatically (typecheck on edit, formatting, cost tracking, dispatch enforcement)
 
 Just use Claude Code normally. The agents, rules, and hooks work in the background.
 
@@ -106,34 +106,75 @@ For larger features, type `/muggle-ai-teams`. You describe what you want. The or
 | **Standard** | Normal feature, refactor | Specialist-designed, per-slice QA, skip panel review |
 | **Full** | Architecture, security, multi-service | Full panel review, regression sweep, all safeguards |
 
-The orchestrator triages in Step 1A (reads project config + git stat, scores complexity) and recommends a tier. You confirm or override.
+The orchestrator triages in Step 1A (reads project config + git history, scores complexity) and recommends a tier. You confirm or override.
 
-The workflow also supports **non-coding missions** (documents, presentations, emails, trip planning). Same design rigor, different execution: specialist agents write content sections instead of code, with user review per section instead of automated QA. No git, no PRs — just quality deliverables.
-
-```mermaid
-flowchart TD
-    A["You: describe task"] --> T["1A Triage — scan repo, score complexity"]
-    T -->|Quick| MD["/muggle-do — autonomous pipeline"]
-    T -->|Standard| B["1A Research — 1 web search, code explorer"]
-    T -->|Full| BF["1A Research — 3+ searches, SkillsMP, docs"]
-    B --> C["1B Requirements"]
-    BF --> C
-    C --> D["1C Design — specialist agents write sections"]
-    D -->|Standard| F["1E Approve (with mockups)"]
-    D -->|Full| E["1D Panel — experts review in parallel"]
-    E --> F
-    F --> G["1F Plan — slices with QA instructions"]
-    G --> H["2 Execute — TDD + per-slice QA via Muggle AI"]
-    H --> I["3-4 Verify + Review"]
-    I --> J["5 Push + publish QA results"]
-    J --> K["6 Learn — graduate to rules"]
-
-    style A fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
-    style F fill:#fff3e0,stroke:#ef6c00,color:#e65100
-    style K fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+```
+You describe task → 1A Triage → Quick? → /muggle-do (autonomous)
+                                 ↓
+                    Design → [Panel] → Plan → Execute → Review → Push → Learn
 ```
 
-Each step loads on demand — only ~50 lines in your context at any time, not the full 1500-line workflow.
+Each step loads on demand (~50 lines in context at a time). Click any step below to see what happens inside.
+
+<details>
+<summary><strong>1A Research</strong> — scan repo, search web, find relevant skills</summary>
+
+Reads project config, runs code explorer on affected areas, searches SkillsMP for community skills. Standard tier gets 1 web search; Full tier gets 3+ searches and live doc lookups.
+</details>
+
+<details>
+<summary><strong>1B Requirements</strong> — restate what "done" looks like</summary>
+
+Extracts acceptance criteria from the user's description. Produces a numbered list of requirements with explicit scope boundaries (what's in, what's out).
+</details>
+
+<details>
+<summary><strong>1C Design</strong> — specialist agents draft the approach</summary>
+
+Routes to the right specialist (frontend-engineer, backend-engineer, architect) based on project config. Each specialist writes their section of the design doc. Includes mockups for UI work.
+</details>
+
+<details>
+<summary><strong>1D Panel Review</strong> — experts review in parallel (Full tier only)</summary>
+
+2-round review: Round 1 dispatches 3-5 panelists (core + domain + gap) in parallel. Round 2 synthesizes findings into a verdict. Skipped for Standard tier.
+</details>
+
+<details>
+<summary><strong>1E Approval</strong> — user confirms before any code is written</summary>
+
+Presents the design with mockups. User approves, requests changes, or overrides the tier. No code is written until this gate passes.
+</details>
+
+<details>
+<summary><strong>1F Plan</strong> — break into slices with QA instructions</summary>
+
+Creates implementation slices, each with: files to touch, test instructions for QA, and a completion criteria. Slices are ordered by dependency.
+</details>
+
+<details>
+<summary><strong>2 Execute</strong> — TDD + per-slice QA via Muggle AI</summary>
+
+Each slice follows TDD (test first, then implement). After each slice passes locally, it's tested against localhost via muggle-ai-works. Independent slices run in parallel.
+</details>
+
+<details>
+<summary><strong>3-4 Verify + Review</strong> — quality gates and code review</summary>
+
+Step 3: typecheck, lint, full test suite. Step 4: 3-pass code review (quality, compliance, contract). Findings are fixed before proceeding.
+</details>
+
+<details>
+<summary><strong>5 Push</strong> — PR + publish QA results</summary>
+
+Creates branch, pushes, opens PR with description and test plan. QA results from muggle-ai-works are published to cloud and linked in the PR.
+</details>
+
+<details>
+<summary><strong>6 Learn</strong> — graduate corrections to rules</summary>
+
+Extracts behavioral corrections from the session and writes them to the appropriate rules file — so the same mistake never happens again.
+</details>
 
 **Works for non-coding tasks too.** Say "build me an investor pitch deck" and the same workflow runs — specialists design the deck structure, execute section by section, review for quality, and deliver the final output. No code involved.
 
@@ -185,7 +226,7 @@ Install muggle-ai-works: `npm install @muggleai/works`
 | **Language-specific** | `cpp-reviewer`, `go-reviewer`, `java-reviewer`, `kotlin-reviewer`, `python-reviewer`, `rust-reviewer` + matching build-resolvers |
 | **Operations** | `loop-operator`, `harness-optimizer`, `database-reviewer` |
 
-### `/commands` — 52 slash commands
+### `/commands` — 54 slash commands
 
 Development: `/plan`, `/tdd`, `/code-review`, `/build-fix`, `/e2e`, `/verify`, `/quality-gate`
 
@@ -197,7 +238,7 @@ Skills & learning: `/learn`, `/learn-eval`, `/evolve`, `/skill-create`, `/skill-
 
 Operations: `/loop-start`, `/loop-status`, `/devfleet`, `/multi-execute`, `/model-route`
 
-### `/skills` — 186 domain skills
+### `/skills` — 207 domain skills
 
 Organized into directories covering: AI/ML patterns, backend frameworks (Django, FastAPI, Express, Spring Boot, Laravel), frontend patterns, SEO/GEO optimization, cloud infrastructure, database migrations, testing strategies, content writing, deployment patterns, and more.
 
@@ -225,16 +266,16 @@ Loaded on demand:
   testing-php.md       # PHP testing
 ```
 
-### `/workflow` — 12 step files + 3 shared procedures
+### `/workflow` — 12 step files + 4 shared procedures
 
-Step 1A includes built-in triage that routes tasks to 3 tiers (Quick → /muggle-do, Standard → streamlined, Full → complete). Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-skillsmp-search.md`, `procedure-panelist-formats.md`) are loaded by subagents, not the orchestrator — keeping context lean.
+Step 1A includes built-in triage that routes tasks to 3 tiers (Quick → /muggle-do, Standard → streamlined, Full → complete). Only `reference.md` loads by default (~20 lines). Step files load on demand when the workflow reaches them. Shared procedures (`procedure-agent-dispatch.md`, `procedure-skillsmp-search.md`, `procedure-panelist-formats.md`, `procedure-subtask-tracking.md`) are loaded by subagents, not the orchestrator — keeping context lean.
 
-### `/hooks` — 12 automated guards
+### `/hooks` — 16 automated guards
 
 - **PostToolUse**: Auto-format + typecheck after every file edit
-- **PreToolUse**: Warn before creating documentation files
-- **Stop**: Check for console.log, suggest compaction, track costs, save session
-- **SessionStart**: Load session context
+- **PreToolUse**: Warn before creating documentation files, enforce dispatch procedures
+- **Stop**: Check for console.log, suggest compaction, track costs, save session, quality gates
+- **SessionStart**: Load session context, check hook enablement
 
 ### `/contexts` — 3 behavioral modes
 
@@ -313,7 +354,7 @@ Clone on a new machine, run `setup.sh`, and your full agent team is operational.
 
 No. `setup.sh` backs up your existing `agents/`, `commands/`, `skills/`, and `rules/` to `.bak` directories before creating symlinks. To undo: remove the symlinks, rename the backups. Your original setup is preserved.
 
-### "186 skills sounds like it'll eat my entire context window."
+### "207 skills sounds like it'll eat my entire context window."
 
 Skills load on demand — Claude Code reads them only when a matching task triggers them. At rest, zero skill tokens are in your context. During a workflow run, only the current step file (~50 lines) is loaded.
 
@@ -381,6 +422,8 @@ Both repos were created and refined while building MuggleTest — a multi-servic
 
 | Version | Date | Highlights |
 |---------|------|-----------|
+| **1.2** | 2026-03-27 | Dispatch enforcement hooks, realistic cost estimates, agent budget caps, procedure-agent-dispatch checklist |
+| **1.1** | 2026-03-26 | Workflow v2 redesign — cost/reliability/observability overhaul, plugin system, setup refactor |
 | **1.0** | 2026-03-23 | Adaptive complexity tiers (Quick/Standard/Full), specialist-driven design, per-slice QA via muggle-ai-works, non-coding mission support, explicit rule loading, npm plugin (`@muggleai/teams`), platform compatibility documentation |
 
 ---
