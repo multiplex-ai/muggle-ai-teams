@@ -1,0 +1,22 @@
+{
+  "name": "muggle-ai-teams",
+  "version": "1.0.0",
+  "description": "Adaptive agent team orchestration for Claude Code — agents, skills, commands, rules, workflows, and hooks for Muggle AI QA platform",
+  "author": {
+    "name": "Muggle AI",
+    "url": "https://github.com/multiplex-ai"
+  },
+  "homepage": "https://github.com/multiplex-ai/muggle-ai-teams",
+  "repository": "https://github.com/multiplex-ai/muggle-ai-teams",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "ai-agents",
+    "workflow",
+    "orchestration",
+    "muggle-ai",
+    "skills",
+    "qa-testing",
+    "multi-agent"
+  ]
+}
