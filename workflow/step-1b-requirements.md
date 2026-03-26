@@ -1,102 +1,58 @@
 # /muggle-ai-teams → Step 1B: Requirements & Impact Analysis
 
-> Part of /muggle-ai-teams.
-
 > **Load rules**: core.md
 
+**Non-coding?** Adapt: replace "files/services/flows" with "deliverables/sections/external actions."
+
 ---
 
-## Procedure
+## 1. Clarify requirements
 
-### 1. Clarify requirements
+Ask questions one at a time until the feature is fully understood. Do not assume — get explicit answers.
 
-Ask questions one at a time until the feature is fully understood. Do not assume — get explicit answers from the user.
+## 1b. Proactive needs discovery — know MORE than what user asked for
 
-### 2. Impact analysis
+Don't just clarify what the user said. Identify what the user **didn't say but probably needs**. Based on the task type, proactively check:
 
-Map every file, service, flow, and external system that will be affected. Be exhaustive:
-- Which files will be modified?
-- Which services will be touched?
-- Which user flows will change?
-- Which external systems (Auth0, Stripe, Firebase, Azure, etc.) are involved?
+| If user wants to... | Proactively ask about |
+|---------------------|----------------------|
+| Build a website/page | SEO/GEO optimization? Pricing strategy? Analytics tracking? Mobile responsive? |
+| Build an API | Auth strategy? Rate limiting? Versioning? Error format? |
+| Build a feature | Edge cases? Error states? Loading states? Empty states? Permissions? |
+| Launch a product | Go-to-market plan? Content strategy? Email sequences? Social presence? |
+| Fix a bug | Other symptoms? Related bugs? Regression risk? Test coverage gap? |
 
-### 3. Dependency mapping
+Present findings: "You asked for X. Based on similar projects, you likely also need Y and Z. Should we include these in scope?"
 
-Identify what must exist before this feature can work:
-- Data dependencies (schemas, migrations)
-- API dependencies (endpoints that must exist)
-- Auth dependencies (permissions, roles)
-- Infrastructure dependencies (queues, caches, services)
+The user may say no — that's fine. But **never ship something the user will regret** because we didn't ask.
 
-### 4. Risk identification
+## 2. Impact analysis
+
+Map every file, service, flow, and external system affected:
+- Which files modified? Which services touched?
+- Which user flows change? Which external systems involved?
+
+## 3. Dependency mapping
+
+What must exist before this works?
+- Data (schemas, migrations), API (endpoints), Auth (permissions), Infrastructure (queues, caches)
+
+## 4. Risk identification
 
 What could go wrong?
-- Data loss scenarios
-- Breaking changes to existing APIs or UI
-- Performance regression
-- Security exposure
-- Race conditions or concurrency issues
-
-### Non-Coding Mode (if mission = non-coding)
-
-When the mission is non-coding, adapt the analysis:
-
-#### 1. Clarify requirements (same approach)
-Ask questions until the deliverable is fully understood. Key questions for non-coding:
-- What is the final deliverable? (document, presentation, email, plan, booking)
-- Who is the audience? (investors, clients, team, personal)
-- What format? (markdown, HTML slides, PDF, email draft, spreadsheet)
-- What tone/style? (formal, casual, persuasive, informational)
-- Any constraints? (budget, timeline, word count, specific platforms)
-
-#### 2. Scope analysis (replaces impact analysis)
-Instead of mapping files and services, map:
-- **Deliverables**: What outputs will be produced?
-- **Sections/components**: What parts make up each deliverable?
-- **External actions**: Any bookings, sends, or third-party interactions needed?
-- **Research needed**: What information must be gathered first?
-
-#### 3. Dependency mapping (adapted)
-- Content dependencies (what info is needed before writing each section?)
-- Sequential dependencies (does section B require section A to be done first?)
-- External dependencies (waiting on user input, third-party availability?)
-
-#### 4. Risk identification (adapted)
-- Audience mismatch (wrong tone, wrong level of detail)
-- Missing information (user hasn't provided key context)
-- External failures (bookings unavailable, services down)
-- Scope creep (simple email becomes full campaign)
-
----
+- Data loss, breaking changes, performance regression, security exposure, race conditions
 
 ## Output
 
-Add to the plan document:
-
-```markdown
-## Requirements
-- [Clarified requirements]
-- Impact analysis: [files, services, flows affected]
-- Dependencies: [what must exist first]
-- Risks: [what could go wrong]
-```
-
-**Non-coding output variant:**
-```markdown
-## Requirements
-- [Clarified requirements — deliverable, audience, format, tone]
-- Scope: [deliverables and their sections]
-- Dependencies: [content and external dependencies]
-- Risks: [audience mismatch, missing info, scope creep]
-```
+Add to plan document: clarified requirements, impact analysis, dependencies, risks.
 
 ## Completion Criteria
 
-- [ ] Requirements clarified with user (ambiguities resolved)
-- [ ] Impact analysis complete — affected files, services, and flows identified
-- [ ] Scope analysis complete (non-coding: deliverables and sections mapped)
+- [ ] Requirements clarified (ambiguities resolved)
+- [ ] Proactive needs surfaced and user decided (include or exclude)
+- [ ] Impact analysis complete (files, services, flows)
 - [ ] Dependencies mapped
-- [ ] Risks identified with mitigation strategies
+- [ ] Risks identified with mitigations
 - [ ] Requirements section written in plan document
 
 ## Next → Read `muggle-ai-teams/workflow/step-1c-design.md`

@@ -1,110 +1,61 @@
 # /muggle-ai-teams → Step 5: Push & Finish
 
-> Part of /muggle-ai-teams.
 > **Skill**: `superpowers:finishing-a-development-branch`
 > **Load rules**: git.md
 
-**Before committing or pushing, read `muggle-ai-teams/rules/git.md` for commit message format and branch naming conventions.**
+**Non-coding?** Read `workflow/ref-non-coding-design.md` (Non-Coding Delivery section).
 
 ---
 
-## Procedure
+## 1. Push to remote
 
-When Reviewer approves:
+`git push -u origin <branch>` (new) or `git push` (existing). Read project config VCS section.
 
-### 1. Push all commits to remote
+## 2. Wait for CI
 
-Read the project config's **VCS & Hosting** section for the correct commands. Defaults:
-- **Git**: `git push -u origin <branch>` (new branch) or `git push` (existing)
-- **No VCS**: Skip this step; deliver changes as patches or direct file copies
+GitHub: `gh run list --branch <branch>`. If CI fails → diagnose before fixing (per `rules/behavior.md`).
 
-### 2. Wait for CI
+## 3. Create PR
 
-Poll CI status using the project's hosting platform. Defaults:
-- **GitHub**: `gh run list --branch <branch>`
-- **GitLab**: `glab ci list`
-- **Bitbucket**: Check pipeline status via web
-- **No CI**: Skip; rely on local quality gates from Step 3
+Invoke `superpowers:finishing-a-development-branch`.
+- Title: `type(scope): Short description` (under 70 chars)
+- Body: What, How, Why, Test plan
+- Confirm with user before creating. One PR = one thing.
 
-If CI fails, **diagnose before fixing** (per `rules/behavior.md`): identify root cause + blast radius. Do not blindly patch CI errors — they may indicate issues the local quality gates missed.
+## 4. Publish QA results (if QA ran in Step 2)
 
-### 3. Invoke `superpowers:finishing-a-development-branch`
+1. Read tracking file — collect QA run IDs
+2. Offer batch publish to Muggle AI cloud
+3. If yes: `muggle-local-publish-test-script` per run ID
+4. Add QA summary table to PR description
 
-### 4. Provide PR title + description
+## 5. Delivery summary
 
-Follow the commit/PR naming conventions:
-- PR title: `type(scope): Short description` (under 70 chars)
-- PR body: What changed, How, Why, Test plan
+Report: files changed, tests passing/added, commits, cost from `/cost`.
 
-### 5. User opens PR
+## 6. PHASE CHECK — DO NOT SKIP
 
-Do not publish PRs automatically — always confirm with the user first. One PR does one thing on its own branch.
+**Before going to Step 6, read the plan document and check: are there remaining phases?**
 
-### 6. Publish QA results to cloud (if QA ran in Step 2)
+Read `muggle-ai-teams/projects/<project>/tracking/phases.md` (created in Step 1F).
 
-If per-slice QA ran during Step 2 (check tracking file for QA run IDs):
+- **Remaining phases exist** → DO NOT go to Step 6. Instead:
+  1. Mark current phase complete in `phases.md`
+  2. Run `/save-session` + `/compact`
+  3. Loop back to **Step 1F** for the next phase's plan
+  4. State: "Phase N/M complete. Starting Phase N+1: [name]"
 
-1. Read the tracking file — collect all QA run IDs from per-slice results
-2. Offer batch publish:
-   > "QA tests ran for N slices. Publish all results to Muggle AI cloud? (y/skip)"
-3. If yes: call `muggle-local-publish-test-script` for each run ID
-4. Add QA summary to PR description:
-   ```markdown
-   ## QA Results
-   | Slice | Test Case | Result | Run ID |
-   |-------|-----------|--------|--------|
-   | ... | ... | PASS/FAIL | ... |
+- **All phases complete** → Proceed to Step 6.
 
-   Full results: [cloud dashboard link]
-   ```
-5. If full tier regression sweep ran (Step 3): include regression results too
-
-If no QA ran: skip this section.
-
-## Non-Coding Mode (if mission = non-coding)
-
-When the mission is non-coding, delivery replaces push. No git, no PR, no CI.
-
-### Procedure
-
-#### 1. Compile final deliverable
-- Assemble all approved sections into the final output
-- Apply final formatting (markdown → slides, markdown → PDF, etc.)
-- If using `frontend-slides` skill: generate HTML presentation
-- If email: format for the target platform
-
-#### 2. Present to user
-- Show the complete deliverable
-- Provide the file path(s) where outputs are saved
-- For multi-format: list all outputs (e.g., "pitch-deck.md + pitch-deck.html")
-
-#### 3. External actions (if pending)
-- If any bookings, sends, or actions were deferred to delivery:
-  - List them with details
-  - Get user confirmation for each before executing
-  - Record confirmations
-
-#### 4. Handoff
-- Summarize what was delivered
-- Note any follow-up actions the user needs to take
-- If applicable: "You can now send this email", "Open pitch-deck.html in your browser", etc.
-
-### Skip
-- No git push, no PR, no CI check
-- No QA publishing
+**This check is MANDATORY. The workflow is NOT complete until ALL phases have PRs.**
 
 ## Completion Criteria
 
-- [ ] All commits pushed to remote
-- [ ] CI passes (or no CI configured)
-- [ ] PR title and description prepared
-- [ ] User confirmed PR creation
-- [ ] QA results published to cloud (if QA ran) or skipped
+- [ ] Pushed to remote
+- [ ] CI passes (or no CI)
+- [ ] PR created with user confirmation
+- [ ] QA published (if applicable)
+- [ ] Delivery summary presented
+- [ ] **Phase check done** — remaining phases identified or all phases confirmed complete
 
-### Completion Criteria (Non-Coding)
-- [ ] Final deliverable compiled and formatted
-- [ ] User received all output files
-- [ ] External actions completed (if any)
-- [ ] Follow-up actions communicated to user
-
-## Next → Read `muggle-ai-teams/workflow/step-6-learn.md`
+## Next → If phases remain: `muggle-ai-teams/workflow/step-1f-plan.md` | If all done: `muggle-ai-teams/workflow/step-6-learn.md`
