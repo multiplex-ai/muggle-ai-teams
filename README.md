@@ -78,16 +78,18 @@ muggle-ai-teams is a `claude code agents` workflow that routes each task to the 
 
 | Tier | Cost | What happens |
 |------|------|-------------|
-| Quick | $0.50 – $2 | Direct execution — done in minutes |
-| Standard | $5 – $20 | Research → design → build → test → review → ship |
-| Full | $50 – $100+ | Everything above, plus expert panel review and regression sweep |
+| **Quick** | Small fix, typo, config | Direct execution — single agent, quality gates, done in minutes |
+| **Standard** | Normal feature, refactor | Specialist-designed, per-slice QA, skip panel review |
+| **Full** | Architecture, security, multi-service | Full panel review, regression sweep, all safeguards |
+
+The orchestrator triages in Step 1A (reads project config + git history, scores complexity) and recommends a tier. You confirm or override.
 
 ```
-You describe what you want
-       ↓
-Quick? → Done in minutes.
-       ↓
-Research → Design → Build → Test → Review → Ship
+You describe what you want → Auto-triage
+
+Quick     → Execute → Done.
+Standard  → Research → Design → Build → Test → Review → Ship
+Full      → Research → Design → Panel → Build → Test → Review → Ship
 ```
 
 The workflow triages complexity, recommends a tier, and waits for your confirmation before writing any code.

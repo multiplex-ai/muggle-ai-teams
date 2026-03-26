@@ -15,12 +15,19 @@
 
 Score 0-2 = Quick, 3-6 = Standard, 7+ = Full
 
-**Quick (non-coding)**: Invoke the matching skill directly. No workflow needed.
-- "pitch deck" / "investor" → investor-materials
-- "cold email" / "outreach" → cold-email
-- "slides" / "presentation" → frontend-slides
-- "blog post" / "article" → article-writing
-- "landing page copy" → copywriting
+**Quick (non-coding)**: Dispatch the matching specialist agent directly from Step 1A (inline Quick execution). The orchestrator routes using the specialist table in `workflow/ref-non-coding-design.md`, equips the agent with relevant skills, checks the output, and presents to user for approval.
+
+Routing priority:
+1. Match specialist table → dispatch with skills
+2. No match → search local skills for domain keywords
+3. No local skills → search SkillsMP + GitHub for community skills
+4. Nothing found → ask user whether to proceed with general research or install a skill first
+
+Examples:
+- "pitch deck" → Investor Specialist with investor-materials, sales-enablement
+- "cold email" → Outreach Specialist with cold-email, copywriting
+- "edit this video" → search skills → Video Specialist with video-editing, remotion-video
+- "optimize README" → Content Specialist with copywriting, ai-seo
 
 ## Non-Coding Research Adjustments
 

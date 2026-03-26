@@ -45,18 +45,17 @@ Quick reference for error recovery, agent/skill lookup, and maintenance.
 
 | Scenario | Use | Why |
 |----------|-----|-----|
-| Typo, config change, small bug | /muggle-do | Autonomous, fast, built-in QA |
-| "Just do it" — clear requirements | /muggle-do | No design phase needed |
+| Typo, config change, small bug | /muggle-ai-teams (Quick) | Single agent dispatch, quality gates, fast |
+| "Just do it" — clear requirements | /muggle-ai-teams (Quick) | No design phase needed |
 | New feature, unclear scope | /muggle-ai-teams (standard) | Needs requirements + design |
 | Architectural change, multi-service | /muggle-ai-teams (full) | Needs panel review |
 | Security-sensitive changes | /muggle-ai-teams (full) | Needs security panel |
 | Refactoring 10+ files | /muggle-ai-teams (full) | Needs impact analysis |
 
-Note: /muggle-ai-teams triage (Step 1A Phase 1) auto-routes Quick tasks to /muggle-do.
 
 ## Workflow Tiers
 
-**Quick tier**: `1A (triage only) → /muggle-do` (autonomous: code → test → QA → PR)
+**Quick tier**: `1A (triage + inline dispatch)` — single agent, quality gates, user confirm, commit. No design phase, no planning phase.
 
 **Standard tier**: `1A → 1B → 1C → 1E (with mockups) → 1F → 2 (per-slice QA) → 3 → 4 → 5 (publish) → 6`
 
@@ -66,11 +65,11 @@ Note: /muggle-ai-teams triage (Step 1A Phase 1) auto-routes Quick tasks to /mugg
 
 | Task | Mission | Tier Example |
 |------|---------|-------------|
-| "Fix login bug" | Coding | Quick → /muggle-do |
+| "Fix login bug" | Coding | Quick → inline dispatch |
 | "Add dashboard page" | Coding | Standard |
 | "Redesign auth system" | Coding | Full |
 | "Write investor pitch deck" | Non-coding | Standard (2 deliverables, investor-facing) |
-| "Draft a cold email" | Non-coding | Quick → direct skill invocation |
+| "Draft a cold email" | Non-coding | Quick → specialist dispatch |
 | "Plan Tokyo trip with hotels" | Non-coding | Standard (3+ deliverables, external actions) |
 | "Build full marketing campaign" | Non-coding | Full (5+ deliverables, multi-channel) |
 
