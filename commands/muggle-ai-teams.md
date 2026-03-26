@@ -50,7 +50,7 @@ Read ONLY the current step file. Complete it fully before the next.
 | 5 | Push | `workflow/step-5-push.md` |
 | 6 | Learn | `workflow/step-6-learn.md` |
 
-**Tiers**: Quick (0-2) → `/muggle-do` | Standard (3-6) → skip 1D1/1D2 | Full (7+) → complete
+**Tiers**: Quick (0-2) → inline dispatch | Standard (3-6) → skip 1D1/1D2 | Full (7+) → complete
 **Multi-phase**: Steps 1F-5 loop per phase. Step 6 runs ONCE after ALL phases. See `workflow/ref-session-boundaries.md`.
 
 ---

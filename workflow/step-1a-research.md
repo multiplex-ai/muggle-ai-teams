@@ -48,12 +48,55 @@ Tell the user: "Based on [tier], estimated cost is $X-Y. You'll get [quality lev
 
 **This is a go/no-go decision point.** If the user says the cost is too high, discuss scope reduction or tier downgrade before continuing.
 
+## 3c. QA Availability Check
+
+Check if muggle-ai-works is installed (test if muggle MCP tools are available in the current session).
+
+- **Installed**: QA gates apply as normal in Steps 2 and 3.
+- **Not installed + frontend-related task**: Suggest to user: "muggle-ai-works adds browser QA testing to verify your changes visually. Install with `npm install @muggleai/works`. Skip for now?" Record decision in plan document.
+- **Not installed + non-frontend task**: Proceed silently. No mention needed.
+- **User declines**: Proceed. QA gates in Step 2 become `QA: skipped (muggle-ai-works not installed)`.
+
+This check applies to ALL tiers (Quick, Standard, Full).
+
 ## 4. Route
 
-- **Quick (0-2)**: Hand off to `/muggle-do` with context. **STOP.**
+- **Quick (0-2)**: Execute inline (see Quick Execution below). **STOP after Quick completes.**
 - **Standard / Full**: Continue to Phase 5.
 
 Tier can be escalated later (1B, 1C, 1F) if unexpected complexity is discovered.
+
+### Quick Execution (inline — no design, no planning)
+
+Quick tier skips Steps 1B-1F and executes directly. The orchestrator dispatches a single agent, checks the result, and commits.
+
+**Agent routing for Quick:**
+
+For coding tasks, use the project config scope table:
+| Requirement type | Agent |
+|-----------------|-------|
+| Frontend (UI, pages, styling) | frontend-engineer |
+| Backend (API, services, DB) | backend-engineer |
+| General (CLI, config, docs) | general-engineer |
+
+For non-coding tasks, use the specialist routing:
+1. **Check specialist table** in `workflow/ref-non-coding-design.md` for a domain match
+2. **No match → search local skills** for domain keywords → spawn agent named after the task (e.g., "Video Editor") equipped with matched skills
+3. **No local skills → search SkillsMP + GitHub** for community skills (follow `workflow/procedure-skillsmp-search.md`) → install and equip
+4. **Nothing found → tell user**: "No specialist skills found for [domain]. Want me to proceed with general research, or find and install a skill first?"
+
+**Quick execution gates (all mandatory):**
+
+| Gate | Coding | Non-coding |
+|------|--------|------------|
+| 1. Dispatch agent | Engineer with task + project config | Specialist with task + skills |
+| 2. Scope check | `git diff --name-only` within expected files | Review output matches scope |
+| 3. Quality gates | typecheck, lint, test | Content quality review |
+| 4. QA (if applicable) | muggle-ai-works for frontend (if installed) | N/A |
+| 5. User confirm | **BLOCKING** — present results, wait for yes | **BLOCKING** — present output |
+| 6. Commit/deliver | Stage and commit | Save to file / deliver |
+
+**After Quick completes → STOP.** Do not continue to Step 1B. Quick tier is self-contained.
 
 ## 5. Research — Complete ALL items for your tier
 
