@@ -2,99 +2,74 @@
 
 > Part of /muggle-ai-teams.
 > **Load rules**: core.md
-> **Skill**: `claude-md-management:revise-claude-md`
 
-After every workflow run (whether successful or abandoned), the orchestrator captures learnings and graduates them into persistent rules.
+After every workflow run (whether successful or abandoned), the orchestrator reflects on the run and graduates learnings so the system gets smarter with every use.
 
 ---
 
 ## 6.1: Capture Run Log
 
-Append a **Run Log** section to the plan document:
+Append to the plan document — template at `workflow/ref-run-log-template.md`. Sections: what went well, what went poorly, panelist performance, user feedback, bug root causes, cost.
 
-```markdown
-## Run Log
-### Panelist Performance
-| Panelist | Findings | Led to change | Rejected |
-|----------|----------|--------------|----------|
+## 6.2: Reflect
 
-### Agent Performance
-| Agent | Slices | Gate first-pass | Fix cycles |
-|-------|--------|----------------|------------|
-
-### Cost
-- Total cost in USD for this workflow run (from `/cost`)
-
-### Lessons Learned
-- Design patterns that worked: [what and why]
-- Mistakes caught by panel: [what, who caught it, how to prevent next time]
-- Engineer dispatch improvements: [agent, recurring issue, context to add]
-```
+From the run log, identify learnings:
+1. **What went well** — WHY it worked, which agent/skill/step contributed
+2. **What went poorly** — root cause (bad step? wrong agent? missing skill? vague rule?)
+3. **User feedback** — highest priority, direct signals
+4. **Bug root causes** — prevention rule for this class of bug in ALL projects
 
 ---
 
-## 6.2: Graduate Learnings into Persistent Rules
+## 6.3: Graduate — Write to the Right Place
 
-Invoke `/learn-eval` to extract patterns with quality gates (checklist + holistic verdict + save-location decision). This replaces free-form "did we learn anything" — the command has a rigorous evaluation pipeline that checks for overlap, confirms reusability, and decides Global vs Project scope.
+### Scope Decision (MANDATORY — do this FIRST for every learning)
 
-Ask: **"Did we learn anything that should apply to ALL future runs?"**
+Before choosing a target file, classify each learning's scope:
 
-### Graduation Table
+| Scope | Test | Where it lives |
+|-------|------|----------------|
+| **Project-only** | Would this learning be wrong or irrelevant in a different project? (e.g., "use zustand not Redux", "this API returns paginated results") | Per-repo `CLAUDE.md` or project config |
+| **Global** | Would this learning apply to ANY project regardless of stack/domain? (e.g., "never use floating-point for currency", "always diagnose before fixing") | `rules/*.md`, agent definitions, workflow steps |
 
-| Learning type | Graduates to | Why |
-|--------------|-------------|-----|
-| User correction about HOW to work | `rules/behavior.md` | Always loaded — prevents same mistake in all future sessions |
-| Code quality expectation | `rules/core.md` | Always loaded universal principle |
-| Testing/CI expectation | `rules/quality-gates.md` | Loaded during testing |
-| Git/PR expectation | `rules/git.md` | Loaded during git ops |
-| Agent dispatch correction | `rules/agents-routing.md` | Always loaded routing |
-| Workflow process correction | `workflow/reference.md` or step file | Loaded during workflow |
-| Design pattern that always works | Per-repo CLAUDE.md | Project-specific |
-| Recurring engineer mistake | Agent definition (dispatch context) | Agent-specific |
-| Technical pattern (error/debug/workaround) | Per-repo CLAUDE.md or relevant rules file | Project/global knowledge |
+**When in doubt, default to project-only.** It's easy to promote a project learning to global later. A wrong global rule pollutes every future project.
 
-**Critical rule: Never save behavioral corrections to memory only.** Memory requires active recall and is unreliable. Rules files are always loaded and enforced. Memory is a last resort for things that don't fit any rules file (e.g., user preferences about non-work topics).
+**Anti-pattern:** Writing a React-specific pattern to `rules/core.md` where it applies to Go projects too. Stack-specific learnings belong in the repo's `CLAUDE.md`, not in global rules.
 
-### Sensitive Data Check
+### Target Selection
 
-Before writing ANY learning to a persistent file, verify it contains NO:
-- API keys, passwords, tokens, or connection strings
-- Internal URLs with credentials
-- Environment variable values
-- PII or customer data
+Learnings must be written where they will be **automatically loaded** in future runs. The target depends on what kind of learning it is — use judgment:
 
-If a learning references sensitive context, abstract it: "Auth endpoint must handle token refresh" NOT "Auth0 tenant xyz.auth0.com token refresh at /oauth/token"
+| Learning about... | Graduate to | Examples |
+|-------------------|------------|---------|
+| How to work with user | `rules/behavior.md` | "User wants terse responses", "Always diagnose before fixing" |
+| Workflow process | Workflow step file (`workflow/step-*.md`) | "Step 1A should check for existing PRs first" |
+| Agent behavior | Agent definition (`~/.claude/agents/<agent>.md`) | "Frontend engineer should always check responsive layout" |
+| Agent dispatch / routing | `rules/agents-routing.md` | "CSS bugs need frontend-engineer, not general-engineer" |
+| Panelist selection | `workflow/step-1d1-panel-equip.md` | "Security panelist not needed for pure UI tasks" |
+| Skill usage | Skill file or step that invokes it | "TDD skill should skip for config-only changes" |
+| Code quality / testing | `rules/core.md` or `rules/quality-gates.md` | "Always test error boundaries in React components" |
+| Git/PR convention | `rules/git.md` | "Include migration steps in PR description" |
+| Bug class prevention | Per-repo `CLAUDE.md` or `rules/core.md` | "Never use floating-point for currency calculations" |
+| Project-specific pattern | Per-repo `CLAUDE.md` | "This project uses zustand, not Redux" |
+| Model selection | `rules/model-selection.md` | "Sonnet can't handle X type of task" |
 
----
+**Never save to memory only** — memory requires active recall and is unreliable. Rules, agents, steps, and skills are automatically loaded.
 
-## 6.3: Compress Rules When Needed
+**Sensitive data check**: Before writing, verify no secrets, tokens, PII, or internal URLs. Abstract sensitive context.
 
-When a CLAUDE.md file accumulates many similar rules:
-
-1. **Compress**: Merge related specific rules into fewer general rules
-   - Before: 4 rules about auth error handling → After: 1 rule covering all auth error patterns
-2. **Split**: When a CLAUDE.md exceeds ~200 lines, split into domain-specific rule files
-   - `muggle-ai-ui/CLAUDE.md` (core) + `muggle-ai-ui/docs/rules/auth.md`, `forms.md`, etc.
-   - Agent reads core CLAUDE.md (always) + relevant domain rule file (only when working on that domain)
-
----
-
-## 6.4: How the System Gets Smarter Over Time
-
-The orchestrator reads past learnings (now in CLAUDE.md and agent definitions, not in run logs) at the start of each new `/muggle-ai-teams` run. Over time:
-- Designs anticipate common concerns upfront → panel finds fewer issues → fewer panelists needed
-- Engineer dispatch prompts include known pitfalls → higher first-pass quality → fewer fix cycles
-- The panel shrinks not because panelists are pruned, but because the orchestrator produces better designs that need less scrutiny
+**Compress when needed**: If a target file accumulates many similar rules, merge related ones into fewer general rules.
 
 ---
 
 ## Completion Criteria
 
-- [ ] Run log appended to plan document
-- [ ] `/learn-eval` invoked — patterns extracted and evaluated
-- [ ] Learnings graduated to appropriate rules/CLAUDE.md files (not just memory)
+- [ ] Run log captured (what went well, what went poorly, panelist performance, user feedback, bug causes)
+- [ ] Learnings identified across all 4 categories
+- [ ] Each learning scoped correctly (project-only vs global) — when in doubt, project-only
+- [ ] Each learning graduated to the correct target (step, rule, agent, skill, or project config)
 - [ ] No sensitive data in any graduated content
 
 ## Workflow Complete
 
-This is the final step. See `muggle-ai-teams/workflow/reference.md` for error recovery and quick reference.
+This is the final step. The goal: **every run makes the next run better.**

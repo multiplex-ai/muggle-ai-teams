@@ -22,11 +22,44 @@ Present the user with:
 2. **Consolidated panel report** (what was found, what was addressed, what was deferred)
 3. **Risk assessment** (remaining risks after addressing panel feedback)
 4. **Visual mockups** (if generated above)
+5. **Detailed cost-quality estimate** (see below)
+
+### Cost-Quality Contract (present before asking for approval)
+
+Now that design is done and slices are known, provide a detailed estimate:
+
+```
+## Cost-Quality Estimate
+
+Spent so far (design phase): $X (from /cost)
+
+Estimated remaining:
+- N slices × ~$Y per slice (Sonnet engineer + quality gates) = $Z
+- Code review (Opus reviewer, 3-pass) = ~$A
+- QA per user-facing slice = ~$B each
+- Total estimated: $TOTAL
+
+Quality contract:
+✅ Guaranteed: typecheck + lint + test pass, TDD enforced, code review done
+✅ Guaranteed: per-slice QA for user-facing changes
+✅ Guaranteed: all acceptance criteria have corresponding slices
+⚠️ Not guaranteed: requirements are correct (that's what Steps 1A-1E tried to ensure)
+
+Acceptance criteria coverage:
+- [criterion 1] → covered by Slice X ✓
+- [criterion 2] → covered by Slice Y ✓
+- [criterion 3] → NOT covered (gap) ⚠️
+
+Proceed with implementation? (yes / adjust scope / stop)
+```
+
+**This is the commit decision.** The user sees exactly what they're paying for and what quality they'll get. If there are coverage gaps, address them before proceeding.
 
 ### Decision
 
 - **User approves** → proceed to Step 1F (Implementation Plan)
-- **User requests changes** → revise and optionally re-run affected panelists, then return here. If UI design changed, re-generate mockups before re-presenting.
+- **User requests changes** → revise scope, re-estimate, re-present
+- **User stops** → save session, no further cost incurred
 
 ---
 
