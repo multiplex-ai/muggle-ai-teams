@@ -102,14 +102,14 @@ For larger features, type `/muggle-ai-teams`. You describe what you want. The or
 
 | Tier | When | What happens |
 |------|------|-------------|
-| **Quick** | Small fix, typo, config | Routes to `/muggle-do` — autonomous code → test → QA → PR |
+| **Quick** | Small fix, typo, config | Direct execution — single agent, quality gates, done in minutes |
 | **Standard** | Normal feature, refactor | Specialist-designed, per-slice QA, skip panel review |
 | **Full** | Architecture, security, multi-service | Full panel review, regression sweep, all safeguards |
 
 The orchestrator triages in Step 1A (reads project config + git history, scores complexity) and recommends a tier. You confirm or override.
 
 ```
-You describe task → 1A Triage → Quick? → /muggle-do (autonomous)
+You describe task → 1A Triage → Quick? → Done in minutes.
                                  ↓
                     Design → [Panel] → Plan → Execute → Review → Push → Learn
 ```
