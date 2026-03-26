@@ -1,0 +1,19 @@
+{
+  "name": "muggle-ai-teams",
+  "owner": {
+    "name": "Muggle AI",
+    "email": "team@muggle-ai.com"
+  },
+  "metadata": {
+    "description": "Adaptive agent team orchestration — agents, skills, commands, workflows, and hooks for the Muggle AI QA platform",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "muggle-ai-teams",
+      "source": ".",
+      "description": "Adaptive agent team orchestration for Claude Code — 29 agents, 200+ skills, 54 commands, and quality-gate hooks",
+      "version": "1.0.0"
+    }
+  ]
+}
