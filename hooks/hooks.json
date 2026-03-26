@@ -62,6 +62,16 @@
             "timeout": 5000
           }
         ]
+      },
+      {
+        "matcher": "tool == 'Agent'",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch-skill-reminder.js",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "Stop": [

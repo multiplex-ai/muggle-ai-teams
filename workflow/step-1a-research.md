@@ -40,9 +40,11 @@ After scoring, present the cost-quality contract:
 |------|----------|-------------|-------------------|
 | Quick ($0.5-2) | Sonnet engineer only | Working code, tests pass | No design review, no QA, no panel |
 | Standard ($5-20) | Opus orchestrator + Sonnet engineers | Design + TDD + per-slice QA + code review | No panel review, no regression sweep |
-| Full ($20-50+) | Full team | Everything above + panel + regression sweep | Requirements correctness not guaranteed |
+| Full ($50-100+) | Full team | Everything above + panel + regression sweep | Requirements correctness not guaranteed |
 
 Tell the user: "Based on [tier], estimated cost is $X-Y. You'll get [quality level]. Proceed?"
+
+**Cost warning for Full tier**: Full tier involves Opus orchestrator through 12 steps, specialist design agents, 6-panelist Opus review, per-slice execution, 3-pass code review, and learning. **Expect $50 minimum for Full tier, potentially $100+ for complex multi-phase projects.** The design phase alone (Steps 1A-1E) typically costs $30-50 before any code is written.
 
 **This is a go/no-go decision point.** If the user says the cost is too high, discuss scope reduction or tier downgrade before continuing.
 

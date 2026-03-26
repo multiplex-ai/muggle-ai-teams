@@ -65,6 +65,8 @@ Read ONLY the current step file. Complete it fully before the next.
 - **Multi-skill OK**: One agent can have multiple skills (e.g., frontend-engineer with /ui-ux-pro-max + /frontend-patterns, or Go-To-Market agent with /ai-seo + /pricing-strategy).
 - **No duplicate skills**: Don't equip overlapping skills that do the same thing (e.g., don't give one agent /skillsfrontend + /skillsforfrontend + /skillsfrontendmaster).
 
+**Agent dispatch**: Before EVERY agent dispatch, follow `workflow/procedure-agent-dispatch.md`. Read relevant skills, include full text in prompt. The PreToolUse hook will remind you.
+
 **After every agent returns**: Re-read tracking file. State "Completed N/M. Next: [name]".
 
 **Session boundaries**: Save + new session at natural boundaries. See `workflow/ref-session-boundaries.md`.

@@ -15,6 +15,9 @@
 | Process 8+ items without batching | Items 6-8 lost | Max 5 per batch, verify, then next |
 | Send vague bug to engineer | Sonnet fails 3-5 tries | Orchestrator diagnoses first → fix spec |
 | Dispatch agent without skills | Generic output | Every dispatch has ## Skills section |
+| Dispatch agent without execution budget | Agent reads forever, never produces output | Every dispatch has ## Budget section with read limits and output-first rule |
+| Give one agent 10+ files | Agent explores for 30-60 min, gets stuck | Max 5 files per agent. Split into multiple focused agents |
+| Run large agent in background | Stall goes unnoticed for 48+ min | Run critical-path agents in foreground. Monitor background agents |
 | Forget remaining slices | List scrolled away | Re-read tracking after every agent return |
 | Orchestrator writes code directly | Loses sight of task list | ALWAYS dispatch to sub-agent |
 | Complete Phase 1 then go to Step 6 | Workflow ends prematurely | Step 5 checks phases.md |
