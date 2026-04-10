@@ -645,3 +645,58 @@ When the user asks you to create a video:
 7. **Render** — Use CLI or programmatic rendering to output the final video
 
 For more details on any API, read the reference files in `references/` or consult the [Remotion docs](https://www.remotion.dev/docs/).
+
+## Lessons Learned (from production use)
+
+### objectFit: contain breaks coordinate mapping
+
+When using `objectFit: 'contain'` on `<Img>`, images with different aspect ratios than the canvas get margins. **Any overlay positioning (cursors, text, click effects) must account for the contain layout.**
+
+```typescript
+// Compute contain margins before mapping coordinates
+function getContainLayout(imageWidth: number, imageHeight: number) {
+  const imageAspect = imageWidth / imageHeight;
+  const canvasAspect = 1920 / 1080;
+  if (imageAspect > canvasAspect) {
+    // Wider: fit width, bars top/bottom
+    const displayHeight = 1920 / imageAspect;
+    return { offsetX: 0, offsetY: (1080 - displayHeight) / 2, displayWidth: 1920, displayHeight };
+  } else {
+    // Taller: fit height, bars left/right
+    const displayWidth = 1080 * imageAspect;
+    return { offsetX: (1920 - displayWidth) / 2, offsetY: 0, displayWidth, displayHeight: 1080 };
+  }
+}
+```
+
+Always pass source image `{width, height}` to coordinate mapping functions. A 28px offset is clearly visible at 1080p.
+
+### Reusable scenes must use proportional timing for ALL parameters
+
+When a scene component is reused across compositions with different `durationInFrames`, every animation parameter must scale — not just keyframe positions.
+
+**Bad:** `charsPerSecond={6}` — typing gets cut off in shorter compositions.
+**Good:** `charsPerSecond = textLength / (availableRatio * durationInFrames / fps)`
+
+Use `const t = (ratio: number) => Math.round(ratio * durationInFrames)` for keyframes, AND calculate rates dynamically for TypeWriter, scroll speed, etc.
+
+### Self-check rendered output at full scale
+
+Never declare a scene "passes" from small cropped images. Always:
+1. Render stills at key frames via `npx remotion still`
+2. Serve via `python3 -m http.server`
+3. Open in Playwright browser at full viewport size
+4. Compare cursor/text positions against original screenshot elements
+5. Use before/after diff (stack vertically) to verify alignment
+
+### Editing text out of JPEG screenshots
+
+Don't paint solid rectangles — JPEG compression artifacts make them visible. Instead, clone pixels per-column from an adjacent empty region:
+
+```python
+# Clone from row above text, preserving JPEG block patterns per column
+for x in range(text_x_start, text_x_end):
+    source_pixel = img.getpixel((x, y_above_text))
+    for y in range(text_y_start, text_y_end):
+        img.putpixel((x, y), source_pixel)
+```

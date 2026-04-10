@@ -1,75 +1,120 @@
-# /muggle-ai-teams → Step 6: Learn & Graduate
+# /muggle-ai-teams → Step 6: Learn & Evolve
 
 > Part of /muggle-ai-teams.
 > **Load rules**: core.md
 
-After every workflow run (whether successful or abandoned), the orchestrator reflects on the run and graduates learnings so the system gets smarter with every use.
+After every workflow run (whether successful or abandoned), the orchestrator extracts learnings and **applies them directly to the workflow files**. This step is NOT done until target files are actually modified.
+
+The goal: **every run makes the next run better by mutating the system itself.**
 
 ---
 
-## 6.1: Capture Run Log
+## 6.1: Extract Learnings
 
-Append to the plan document — template at `workflow/ref-run-log-template.md`. Sections: what went well, what went poorly, panelist performance, user feedback, bug root causes, cost.
+From the conversation history, extract EVERY learning into a typed table. Sources:
 
-## 6.2: Reflect
+| Source | Priority | Examples |
+|--------|----------|---------|
+| **User correction** | P0 — always apply | "don't do X", "this is wrong", "you should have done Y" |
+| **User confirmation** | P1 — capture validated approach | "yes exactly", "good now", accepting unusual choice |
+| **Repeated failure** | P1 — prevent recurrence | Same mistake made 2+ times before getting it right |
+| **Process gap** | P2 — workflow missed something | Step that should exist but doesn't, check that should happen but didn't |
+| **Tool/technique discovery** | P2 — new capability | Found a better way to do something mid-run |
 
-From the run log, identify learnings:
-1. **What went well** — WHY it worked, which agent/skill/step contributed
-2. **What went poorly** — root cause (bad step? wrong agent? missing skill? vague rule?)
-3. **User feedback** — highest priority, direct signals
-4. **Bug root causes** — prevention rule for this class of bug in ALL projects
+### Extraction Table (MANDATORY — fill before proceeding)
+
+| # | Learning | Source | Type | Confidence | Target File |
+|---|---------|--------|------|------------|-------------|
+| 1 | ... | user correction / repeated failure / etc. | skill / step / agent / rule | HIGH / MEDIUM | exact file path |
+
+**Types:**
+
+| Type | What changed | Target |
+|------|-------------|--------|
+| `skill` | How to use a tool/framework/technique | `~/.claude/skills/<skill>/SKILL.md` |
+| `step` | Workflow process improvement | `workflow/step-*.md` or `workflow/ref-*.md` |
+| `agent` | How an agent should behave | `~/.claude/agents/<agent>.md` or project agent config |
+| `rule` | Universal behavioral rule | `rules/*.md` |
+| `project` | Project-specific pattern | `projects/<name>/<name>.md` or per-repo `CLAUDE.md` |
 
 ---
 
-## 6.3: Graduate — Write to the Right Place
+## 6.2: Confidence-Based Routing
 
-### Scope Decision (MANDATORY — do this FIRST for every learning)
+Not all learnings have equal certainty. Route based on confidence:
 
-Before choosing a target file, classify each learning's scope:
+| Confidence | Criteria | Action |
+|-----------|---------|--------|
+| **HIGH** | User explicitly corrected/confirmed, OR same mistake happened 2+ times | **Apply directly** — modify the target file now |
+| **MEDIUM** | Orchestrator observation, single occurrence, no user signal | **Apply as `<!-- PENDING: ... -->` comment** in target file — promoted to permanent after 3 runs where it proves useful |
+| **LOW** | Speculative improvement, untested theory | **Log only** — append to plan document's run log, do NOT modify workflow files |
 
-| Scope | Test | Where it lives |
-|-------|------|----------------|
-| **Project-only** | Would this learning be wrong or irrelevant in a different project? (e.g., "use zustand not Redux", "this API returns paginated results") | Per-repo `CLAUDE.md` or project config |
-| **Global** | Would this learning apply to ANY project regardless of stack/domain? (e.g., "never use floating-point for currency", "always diagnose before fixing") | `rules/*.md`, agent definitions, workflow steps |
+**User corrections are always HIGH confidence.** Don't second-guess them.
 
-**When in doubt, default to project-only.** It's easy to promote a project learning to global later. A wrong global rule pollutes every future project.
+---
 
-**Anti-pattern:** Writing a React-specific pattern to `rules/core.md` where it applies to Go projects too. Stack-specific learnings belong in the repo's `CLAUDE.md`, not in global rules.
+## 6.3: Apply — Mutate the Target Files
 
-### Target Selection
+For each HIGH confidence learning, **edit the target file now**. This is the critical step — if you skip this, the learning is lost.
 
-Learnings must be written where they will be **automatically loaded** in future runs. The target depends on what kind of learning it is — use judgment:
+### Application Rules
 
-| Learning about... | Graduate to | Examples |
-|-------------------|------------|---------|
-| How to work with user | `rules/behavior.md` | "User wants terse responses", "Always diagnose before fixing" |
-| Workflow process | Workflow step file (`workflow/step-*.md`) | "Step 1A should check for existing PRs first" |
-| Agent behavior | Agent definition (`~/.claude/agents/<agent>.md`) | "Frontend engineer should always check responsive layout" |
-| Agent dispatch / routing | `rules/agents-routing.md` | "CSS bugs need frontend-engineer, not general-engineer" |
-| Panelist selection | `workflow/step-1d1-panel-equip.md` | "Security panelist not needed for pure UI tasks" |
-| Skill usage | Skill file or step that invokes it | "TDD skill should skip for config-only changes" |
-| Code quality / testing | `rules/core.md` or `rules/quality-gates.md` | "Always test error boundaries in React components" |
-| Git/PR convention | `rules/git.md` | "Include migration steps in PR description" |
-| Bug class prevention | Per-repo `CLAUDE.md` or `rules/core.md` | "Never use floating-point for currency calculations" |
-| Project-specific pattern | Per-repo `CLAUDE.md` | "This project uses zustand, not Redux" |
-| Model selection | `rules/model-selection.md` | "Sonnet can't handle X type of task" |
+1. **Additive by default.** Add new rules/checks/sections. Never delete existing rules unless the user explicitly says one is wrong.
+2. **Include the "why".** Every added rule must include a one-line reason: `(Why: [what went wrong without this rule])`.
+3. **Place near related content.** Don't dump all learnings at the bottom of a file. Find the section where the learning belongs.
+4. **Merge duplicates.** If a learning overlaps with an existing rule, strengthen the existing rule rather than adding a duplicate.
+5. **Scope correctly.** A React-specific learning doesn't belong in `rules/core.md`. A universal principle doesn't belong in a project config.
 
-**Never save to memory only** — memory requires active recall and is unreliable. Rules, agents, steps, and skills are automatically loaded.
+### Application Checklist (per learning)
 
-**Sensitive data check**: Before writing, verify no secrets, tokens, PII, or internal URLs. Abstract sensitive context.
+- [ ] Target file read
+- [ ] Relevant section identified
+- [ ] Content written (with "Why:" line)
+- [ ] No sensitive data (secrets, tokens, PII, internal URLs)
+- [ ] Verified the edit doesn't break the file's structure
 
-**Compress when needed**: If a target file accumulates many similar rules, merge related ones into fewer general rules.
+### What Gets Written Where
+
+| Learning about... | Target file | What to add |
+|-------------------|------------|-------------|
+| How to work with user | `rules/behavior.md` | Behavioral rule |
+| Workflow step missing a check | `workflow/step-*.md` | New checklist item or section |
+| Reference doc missing info | `workflow/ref-*.md` | New section or updated guidance |
+| Skill has a gotcha/pattern | `~/.claude/skills/<skill>/SKILL.md` | "Lessons Learned" section entry |
+| Agent should do X differently | Agent definition file | Updated instruction |
+| Routing was wrong | `rules/agents-routing.md` | Updated routing table or note |
+| Quality gate missed something | `rules/quality-gates.md` | New gate or check |
+| Research phase skipped something | `workflow/step-1a-research.md` or ref doc | New research checklist item |
+| Non-coding task pattern | `workflow/ref-non-coding-*.md` | Updated guidance or example |
+
+---
+
+## 6.4: Verify Applications
+
+After all edits, list what was changed:
+
+```
+## Changes Applied (Step 6)
+| # | File Modified | What Was Added | Confidence |
+|---|--------------|---------------|------------|
+| 1 | workflow/ref-non-coding-triage.md | Research "what good looks like" section | HIGH |
+| 2 | ~/.claude/skills/remotion-video/SKILL.md | Lessons Learned: contain mapping | HIGH |
+```
+
+Present to user for acknowledgment.
 
 ---
 
 ## Completion Criteria
 
-- [ ] Run log captured (what went well, what went poorly, panelist performance, user feedback, bug causes)
-- [ ] Learnings identified across all 4 categories
-- [ ] Each learning scoped correctly (project-only vs global) — when in doubt, project-only
-- [ ] Each learning graduated to the correct target (step, rule, agent, skill, or project config)
+- [ ] Extraction table filled with ALL learnings from the run
+- [ ] Each learning classified by confidence (HIGH / MEDIUM / LOW)
+- [ ] HIGH confidence learnings: target files **actually edited** (not just recommended)
+- [ ] MEDIUM confidence: added as `<!-- PENDING -->` comments in target files
+- [ ] LOW confidence: logged in plan document only
+- [ ] Changes summary presented to user
 - [ ] No sensitive data in any graduated content
 
-## Workflow Complete
+**The step is NOT complete until files are modified.** A reflection without file edits is a failed Step 6.
 
-This is the final step. The goal: **every run makes the next run better.**
+## Workflow Complete

@@ -35,3 +35,15 @@ Examples:
 - **Keep**: WebSearch (research the domain/topic), Context7 (if using specific tools/frameworks)
 - **Add**: Search for relevant skills to equip specialists
 - **Add**: Web research for domain best practices
+
+## MANDATORY: Research "What Good Looks Like"
+
+For creative deliverables (videos, presentations, marketing content, design), **always research best-in-class examples before proposing a design or storyboard**. The user's brief tells you WHAT they want; research tells you HOW good versions of that thing are structured.
+
+Steps:
+1. WebSearch for 3-5 best-in-class examples in the domain (e.g., "best SaaS demo videos 2026")
+2. Analyze: structure, pacing, narrative arc, hook, common patterns
+3. Present findings to user alongside your proposed approach
+4. Let research inform the design — don't just execute the user's rough brief verbatim
+
+**Why this exists:** A product demo video was built directly from a rough storyboard without studying what makes product videos effective. The first version "didn't make sense" because it lacked narrative structure (hook, problem→solution, pacing). Multiple revision rounds were needed that research would have prevented.
