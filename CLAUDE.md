@@ -70,7 +70,7 @@ Each project declares its scopes, agents, directories, and commands in `projects
 
 ### Rules Loading
 
-Rules in `rules/` split into always-loaded (core.md, behavior.md, agents-routing.md, model-selection.md) and on-demand (coding.md, testing.md, git.md, etc.). This reduces base context usage.
+Rules in `rules/` split into always-loaded (core.md, behavior.md, first-principles.md, agents-routing.md, model-selection.md) and on-demand (coding.md, testing.md, git.md, etc.). This reduces base context usage.
 
 ### Agent → Model Routing
 
