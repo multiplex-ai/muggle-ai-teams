@@ -41,7 +41,15 @@ If more than 5 slices, group into batches of max 5. Note batch boundaries in the
 
 ## 4. Multi-phase tracking (if design produced multiple phases)
 
-If the design (Steps 1C-1E) defined multiple phases, create a phase tracking file:
+**DEFAULT: do NOT split into tracks/phases.** Complete all discussed work in one Step 2 Execute pass.
+
+**Only split when:**
+- User explicitly requests track-splitting
+- Design has hard external dependencies (e.g., a launch date that genuinely caps execution time and forces a subset to ship first)
+
+**Why**: Splitting causes workflow-state confusion. After "Track A done" the orchestrator is tempted to jump to Step 3 Verify / Step 4 Review / Step 5 Push, leaving Track B floating without a re-entry point. The user (the human) loses track of when/how to resume Track B. Default to one execution pass.
+
+If the design (Steps 1C-1E) genuinely requires multiple phases AND the user has confirmed the split:
 
 `muggle-ai-teams/projects/<project>/tracking/phases.md`
 

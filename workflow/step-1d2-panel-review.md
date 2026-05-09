@@ -29,9 +29,15 @@ Dispatch recommended gap panelists.
 ## After Both Rounds
 
 1. **Synthesize**: Consolidate ALL findings by theme (not by panelist)
-2. **Prioritize**: Rank MUST ADDRESS items. Flag contradictions for user.
-3. **Revise design**: Address all MUST ADDRESS + UNHAPPY PATHS. Present SHOULD ADDRESS to user.
-4. **Re-review**: If design changed significantly, re-run affected panelists only.
+2. **Evaluate validity FIRST**: Do NOT auto-accept panel findings. For each finding ask:
+   - Is this a real bug/gap, or is it over-engineering for this project's scale?
+   - Is the panelist reasoning from a generic "best practice" that doesn't apply here?
+   - Did the panelist misread something already in the plan? (Re-check plan text against finding.)
+3. **Filter out human-pacing recommendations**: Panelists reason from a human-supervision perspective. Their **time-based recommendations (soak windows, ramp stages, calendar gates, "wait N days before next phase")** are human-supervision pacing — they do NOT apply to AI execution. Ignore them or compress them. Real platform constraints (rate limits, server-enforced cooldowns) DO apply.
+4. **Discuss with user**: Present findings classified as STRONG VALID / DEBATABLE / INVALID with reasoning. Get user's call on borderline items. Do not implement everything panelists said just because they said it.
+5. **Prioritize**: Rank user-validated MUST ADDRESS items. Flag contradictions.
+6. **Revise design**: Address user-validated MUST ADDRESS + UNHAPPY PATHS. Present user-validated SHOULD ADDRESS to user separately.
+7. **Re-review**: If design changed significantly, re-run affected panelists only.
 
 **Escalation**: Same finding persists after 2 fixes → escalate: (A) accept risk, (B) redesign, (C) different approach.
 

@@ -65,3 +65,48 @@ This applies to everything — workflow design, code decisions, product strategy
 - Don't ask user to review technical spec documents — just note specs passed and continue
 - Keep user-facing communication at the product/design level, not implementation details
 - When the user says "yes" or "proceed," do the work without restating what you're about to do
+
+## Panel Review Findings: Evaluate Validity Before Implementing
+
+After Step 1D2 panel review, do NOT implement every panelist finding. Each finding must pass two filters:
+
+1. **Validity check** (orchestrator):
+   - Is this a real bug/gap, or over-engineering for this project's scale?
+   - Is the panelist quoting a generic best-practice that doesn't apply here?
+   - Did the panelist misread something already in the plan?
+   - Classify each finding as STRONG VALID / DEBATABLE / INVALID with reasoning.
+
+2. **AI-not-human filter**:
+   - Panelists reason from a human-supervision perspective
+   - Their **time-based recommendations** (soak windows, ramp stages, calendar gates, "wait N days before next phase") are human-pacing, NOT physical constraints
+   - Ignore or compress these — AI executes 24/7
+   - Real platform constraints (rate limits, server-enforced cooldowns) DO apply
+
+3. **User decision** on borderline items: present STRONG VALID + DEBATABLE + INVALID with your classification; user makes the final call. Don't auto-implement panelist recommendations as if they were ground truth.
+
+## Don't Be Swayed Mid-Discussion
+
+Maintain independent judgment even during back-and-forth with the user. The user pushing back on your evaluation does NOT mean your evaluation was wrong — it may mean they need more evidence. Don't drop a well-grounded position just to be agreeable.
+
+If user disagrees: surface the conflict explicitly, restate the evidence behind your position, ask which constraint breaks the tie. Better to explicitly disagree than to silently switch.
+
+## Default to Single Execution Pass (No Track Splitting)
+
+When planning, complete ALL discussed work in ONE Step 2 Execute pass. Do NOT split into "Track A pre-X / Track B post-X" unless:
+- User explicitly requests the split, OR
+- Design has a hard external dependency (genuine deadline that caps execution time)
+
+**Why**: split tracks cause workflow-state confusion. After "Track A done" the orchestrator is tempted to jump to Step 3 Verify / Step 4 Review prematurely, leaving Track B floating with no clear re-entry point. The user loses track of when/how to resume Track B.
+
+If a split genuinely is needed, the plan must explicitly document Track B's re-entry trigger (calendar date, external event, user signal) — never just "later" or "post-launch".
+
+## Workflow Adjustments Land in Workflow Files, Not Memory
+
+When user gives feedback that adjusts how the `/muggle-ai-teams` workflow runs, the change goes to:
+- `muggle-ai-teams/rules/*.md` (shared behavior rules) — for persistent rules
+- `muggle-ai-teams/workflow/step-*.md` — for step-specific procedure changes
+- `muggle-ai-teams/commands/muggle-ai-teams.md` — for orchestrator-level changes
+
+NOT to `~/.claude/projects/*/memory/` (per-machine) — memory only helps you on this user's machine, not other muggle-ai-teams users. Memory is for this-user-specific facts; workflow lessons are for everyone.
+
+After making the file edit, commit it via the muggle-ai-teams repo (not the project repo).
