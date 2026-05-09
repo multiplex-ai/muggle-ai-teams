@@ -110,3 +110,23 @@ When user gives feedback that adjusts how the `/muggle-ai-teams` workflow runs, 
 NOT to `~/.claude/projects/*/memory/` (per-machine) — memory only helps you on this user's machine, not other muggle-ai-teams users. Memory is for this-user-specific facts; workflow lessons are for everyone.
 
 After making the file edit, commit it via the muggle-ai-teams repo (not the project repo).
+
+## "Orchestrator Handles" Anti-Pattern
+
+When pulling something out of an agent dispatch with words like "orchestrator handles this later" / "I'll do this myself" / "out of your scope": **immediately add a TaskCreate entry for it in the same turn.** Don't promise follow-through verbally and rely on memory. Tracked deferrals get done; ambient deferrals get forgotten.
+
+Examples observed in practice:
+- "wire 3 paper routine triggers (orchestrator handles)" → forgot for 30+ turns until user audited
+- "tagging is orchestrator-side" → missed phases 0/1/2 tags entirely
+- "global commands cleanup is outside repo, defer" → never followed through
+- "the plist update is out of git scope" → still pending
+
+Pattern: 4 deferrals, 0 follow-throughs without user prompt. The fix is mechanical: when you say "I'll do X later," the next thing in the response should be a TaskCreate or TaskUpdate carrying that X. If you can't make it a task, do it now.
+
+## Don't Declare Done Prematurely Mid-Multi-Phase
+
+When work is genuinely multi-phase (Track A + Track B, or Phase 1-N), **do NOT advance to Step 3 Verify / Step 4 Review / Step 5 Push after only Phase A finishes.** Step 2 Execute is not complete until ALL phases are.
+
+Workflow-state confusion observed in practice: after "Track A done" the orchestrator marked Step 5 Push in_progress and pushed prematurely (Track A only, leaving Track B in floating state). The user lost track of when/how to resume Track B.
+
+Rule: Step 2 Execute completes only when ALL planned work has shipped. Verify/Review/Push happen ONCE at the end, not per phase.

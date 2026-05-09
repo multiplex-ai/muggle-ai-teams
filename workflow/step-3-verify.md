@@ -22,6 +22,27 @@ Quality gates already passed per-slice in Step 2. Just verify:
 4. **Regression sweep** (if Muggle MCP available): replay ALL test scripts via `muggle-local-execute-replay`
 5. If regression found → fix cycle (diagnose first)
 
+## Real-Data Testing Default
+
+When verifying routines, scheduled jobs, or anything that fetches/produces real data: **run them with REAL data, not stubs/dry-runs/synthetic fixtures.** Dry-runs only validate spec syntax. Real fires expose:
+- Schema drift between what the spec says and what platforms actually return
+- Self-disable gates triggering unexpectedly
+- Cross-routine race conditions on shared yaml files
+- Data-freshness recycling (same items returned run-after-run)
+
+If a routine produces output others depend on, run it real, observe the real output, classify the result strictly.
+
+## PASS Criterion Strict
+
+PASS = "ran completely fine with no observations worth noting." Any small issue = WARN, not PASS. Examples that are WARN, not PASS:
+- Routine completed but recycled results from prior run (data freshness)
+- Real-world data gap surfaced (zero high-fit candidates in a category)
+- Search-strategy fallback fired (e.g., `site:x.com` empty, broader search worked)
+- Spec drift surfaced and self-corrected during execution
+- Routing inconsistency (output points to wrong target file but the file resolves)
+
+WARN doesn't mean broken — it means worth surfacing for follow-up. Strict classification prevents "looks good" creep.
+
 ## If Verification Fails
 
 Diagnose before fixing (per `rules/behavior.md`). After 3 failures on same gate → escalate to user.
@@ -32,5 +53,7 @@ Diagnose before fixing (per `rules/behavior.md`). After 3 failures on same gate 
 - [ ] No sensitive data
 - [ ] Quality gates pass (full tier: comprehensive; standard: per-slice already done)
 - [ ] Regression sweep passed or skipped (full tier only)
+- [ ] Routines verified with REAL data (not dry-runs)
+- [ ] Every WARN classified — fix or document; do NOT label as PASS
 
 ## Next → Read `muggle-ai-teams/workflow/step-4-review.md`
