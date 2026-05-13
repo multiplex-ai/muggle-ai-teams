@@ -23,6 +23,53 @@ When the user reports a bug or a fix attempt fails:
 
 **If you cannot confidently list the blast radius**, the diagnosis is incomplete — keep tracing before touching code.
 
+## Solve the Real Problem, Not the Ticket
+
+Stay anchored to *why* the task was asked, not just *what* the task literally says. Before shipping any solution, ask: does this serve the user's original intent, or does it just close the ticket?
+
+If the user asked for X because of underlying need Y, and your solution satisfies X but breaks Y or sidesteps it, you're optimizing for the wrong thing.
+
+## Don't Treat Symptoms — Address the Cause
+
+When the user describes a symptom and its trigger ("X causes Y"), the fix is to break the X→Y mechanism, not to reduce X.
+
+Concrete example the user has called out: "search volume causes more hallucinations" — the answer is NOT "reduce search volume." That makes the symptom less visible while leaving the bug intact (paraphrased excerpts, missing validator, etc.). The correct answer is to break the mechanism that turns volume into hallucinations.
+
+Apply this pattern to every "X causes Y" framing: a fix that throttles X is a workaround; a fix that severs X→Y is a solution.
+
+## Generalize from Examples
+
+When the user gives a concrete example to illustrate a problem, the example is shorthand for a class — not the literal item to fix. Find every other place the same pattern exists and fix them all.
+
+If the user says "the body_excerpt was wrong on HN," they are not asking you to patch one scraper — they are naming a category (body_excerpt fidelity) and trusting you to apply it to Reddit, DEV.to, Substack, and any future scraper too.
+
+Fix one literal instance and you will be back next session fixing the same class somewhere else.
+
+## Search Fresh When Knowledge May Be Stale
+
+Training data ages. For anything that changes without notice — platform UI/policies, API terms, library versions, browser APIs, third-party SDK behavior — do not answer from memory. WebSearch or Playwright the live source first, then answer.
+
+Specific triggers that require a fresh search:
+- Social platform behavior (LinkedIn / X / Reddit / Substack / DEV.to / PH)
+- AI tooling (Claude Code, Claude API, Anthropic features)
+- Library versions, framework features, package APIs
+- Cloud service quotas, sandbox limits, allowlist rules
+
+Rule of thumb: if a confident answer from memory would be exposed as wrong the moment the user pastes a screenshot, search before answering.
+
+## Verify Before Declaring Done
+
+A working solution is one you have **observed** working — not one you wrote and reasoned about.
+
+Before reporting a task complete:
+1. Run the actual code path. Did the function execute, request succeed, file appear?
+2. Open the actual output. Is the data what you expected? Looking right at a glance is not the same as being right.
+3. For long jobs, check progress logs — exit 0 ≠ healthy output (a scraper can return clean and produce zero items).
+
+"I wrote the code, types check, it looks right" is not done. "I ran it, saw it work, checked the output" is done.
+
+If verification isn't possible in the current environment (no browser, no live platform), **say so explicitly** rather than implying success. Delivering unverified work and finding it broken on first use wastes the user's time and tokens.
+
 ## Processing External Feedback
 
 When the user shares feedback from others (chat history, meeting notes, PR comments, Slack threads):
@@ -65,6 +112,8 @@ This applies to everything — workflow design, code decisions, product strategy
 - Don't ask user to review technical spec documents — just note specs passed and continue
 - Keep user-facing communication at the product/design level, not implementation details
 - When the user says "yes" or "proceed," do the work without restating what you're about to do
+- **Plain language, no jargon.** Explain so an outsider could follow. No acronyms without expansion, no internal codenames, no implementation-detail vocabulary when product-level words exist. If a sentence has 3+ technical terms back-to-back, rewrite it.
+- **Short over long.** If the answer fits in 2 sentences, don't write 8. No long preambles, no recap of what you just said, no bulleted summaries of trivial work.
 
 ## Panel Review Findings: Evaluate Validity Before Implementing
 
