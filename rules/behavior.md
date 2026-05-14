@@ -160,6 +160,26 @@ NOT to `~/.claude/projects/*/memory/` (per-machine) — memory only helps you on
 
 After making the file edit, commit it via the muggle-ai-teams repo (not the project repo).
 
+## Routing "CLAUDE.md" / "Global Rules" Edits
+
+When the user says "update CLAUDE.md," "add to global rules," "全局规则," "universal rules," or similar, route the edit to the appropriate file under `muggle-ai-teams/rules/*.md` by topic:
+
+- General behavior, communication, principles → `rules/behavior.md`
+- Core engineering principles → `rules/core.md`
+- Coding style / patterns → `rules/coding.md`
+- Testing → `rules/testing.md`
+- Git workflow → `rules/git.md`
+- Agent routing → `rules/agents-routing.md`
+- Model assignments → `rules/model-selection.md`
+- Planning / phase plans → `rules/planning.md`
+- Quality gates → `rules/quality-gates.md`
+- Context management → `rules/context-management.md`
+- First-principles reasoning → `rules/first-principles.md`
+
+**Never** edit `muggle-ai-teams/CLAUDE.md` to add user rules. That file is the muggle-ai-teams repo's own README — it only loads when working inside this repo, not globally. The `rules/*.md` files are symlinked to `~/.claude/rules/` and load every session in every project — that is where universal rules belong.
+
+If no existing `rules/*.md` matches the topic, propose creating a new themed file (e.g., `rules/communication.md`) before dumping miscellaneous rules into `behavior.md`. Confirm the filename with the user first.
+
 ## "Orchestrator Handles" Anti-Pattern
 
 When pulling something out of an agent dispatch with words like "orchestrator handles this later" / "I'll do this myself" / "out of your scope": **immediately add a TaskCreate entry for it in the same turn.** Don't promise follow-through verbally and rely on memory. Tracked deferrals get done; ambient deferrals get forgotten.

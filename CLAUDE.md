@@ -68,15 +68,11 @@ Each project declares its scopes, agents, directories, and commands in `projects
 - **Stop**: Console.log detection, compact suggestions, cost tracking, session save
 - **SessionStart**: Session context loading
 
-### Rules Loading
+### Rules & Model Routing
 
-Rules in `rules/` split into always-loaded (core.md, behavior.md, first-principles.md, agents-routing.md, model-selection.md) and on-demand (coding.md, testing.md, git.md, etc.). This reduces base context usage.
+User-facing rules live in `rules/*.md`, symlinked to `~/.claude/rules/` so they load globally on every session. Topics are sharded by file (behavior, core, git, planning, etc.) — see `rules/` for the current set.
 
-### Agent → Model Routing
-
-- **Opus**: Orchestrator, diagnosis, planning, architecture, code review
-- **Sonnet**: Implementation (frontend/backend/general engineers), build fixes, E2E, security review, TDD
-- **Haiku**: Docs lookup (Context7), doc updates
+Agent → model routing (Opus / Sonnet / Haiku assignments per role) lives in `rules/model-selection.md` — that file is authoritative; do not duplicate the table here.
 
 ## Key Conventions
 
