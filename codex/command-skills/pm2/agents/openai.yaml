@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "pm2"
+  short_description: "Auto-analyze project and generate PM2 service commands."
+policy:
+  allow_implicit_invocation: false

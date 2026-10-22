@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "kotlin-test"
+  short_description: "Enforce TDD workflow for Kotlin. Write Kotest tests first, then implement. Verify 80%+ coverage with Kover."
+policy:
+  allow_implicit_invocation: false

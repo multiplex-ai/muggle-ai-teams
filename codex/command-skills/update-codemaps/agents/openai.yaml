@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "update-codemaps"
+  short_description: "Analyze the codebase structure and generate token-lean architecture documentation."
+policy:
+  allow_implicit_invocation: false

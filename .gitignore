@@ -1,4 +1,5 @@
-projects/
-plans/
+# Per-project configs and plans, at the root only: codex/command-skills/ holds a skill named after /projects.
+/projects/
+/plans/
 memory
 .DS_Store

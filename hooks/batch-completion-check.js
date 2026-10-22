@@ -2,14 +2,15 @@
 /**
  * Batch Completion Check Hook
  *
- * Runs before git commit. Scans tracking files for incomplete items.
- * Warns (does not block) if items are incomplete — the orchestrator
- * should see this warning and address remaining items.
+ * Runs before a shell command that makes a git commit. Scans tracking files
+ * for incomplete items, and hands any to the orchestrator as context — a
+ * warning, not a block — so it addresses the remaining items.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { log, findFiles, readStdinJson } = require('./lib/utils');
+const { findFiles, readStdinJson } = require('./lib/utils');
+const { emitContext, readTarget } = require('./lib/host-compat');
 
 function findTrackingFiles() {
   const projectsDir = path.join(process.cwd(), 'muggle-ai-teams', 'projects');
@@ -54,6 +55,12 @@ function parseIncompleteGates(content) {
 }
 
 async function main() {
+  // The hooks select every shell call; only a commit is checked.
+  const input = await readStdinJson();
+  if (!/\bgit\b[^\n;&|]*\bcommit\b/.test(readTarget(input))) {
+    process.exit(0);
+  }
+
   const trackingFiles = findTrackingFiles();
   if (trackingFiles.length === 0) {
     process.exit(0);
@@ -75,17 +82,18 @@ async function main() {
   }
 
   if (allIssues.length > 0) {
-    log('[BatchCheck] WARNING: Incomplete items detected before commit:');
+    const warning = ['[BatchCheck] WARNING: Incomplete items detected before commit:'];
     for (const { file, issues } of allIssues) {
-      log(`  ${file}:`);
+      warning.push(`  ${file}:`);
       for (const issue of issues.slice(0, 8)) {
-        log(`    - ${issue}`);
+        warning.push(`    - ${issue}`);
       }
       if (issues.length > 8) {
-        log(`    ... and ${issues.length - 8} more`);
+        warning.push(`    ... and ${issues.length - 8} more`);
       }
     }
-    log('[BatchCheck] Review tracking files before proceeding.');
+    warning.push('[BatchCheck] Review tracking files before proceeding.');
+    emitContext(input, warning.join('\n'));
   }
 
   process.exit(0);

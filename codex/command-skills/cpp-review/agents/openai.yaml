@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "cpp-review"
+  short_description: "Comprehensive C++ code review for memory safety, modern C++ idioms, concurrency, and security. Invokes the cpp-reviewer agent."
+policy:
+  allow_implicit_invocation: false

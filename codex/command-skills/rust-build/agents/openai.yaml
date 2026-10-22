@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "rust-build"
+  short_description: "Fix Rust build errors, borrow checker issues, and dependency problems incrementally. Invokes the rust-build-resolver agent for minimal, surgical fixes."
+policy:
+  allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "muggle-social"
+  short_description: "Goal-driven social content workflow — PILLAR/SHORT/ENGAGE/RESPOND/PITCH modes, 12-angle opportunity analysis, Discovery+Conversion scoring, convergence loop, self-evolving rubric."
+policy:
+  allow_implicit_invocation: false

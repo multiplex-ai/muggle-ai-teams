@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "instinct-import"
+  short_description: "Import instincts from file or URL into project/global scope"
+policy:
+  allow_implicit_invocation: false

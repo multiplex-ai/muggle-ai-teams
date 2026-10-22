@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The static contracts, the hooks under both hosts' payloads, and the plugin
+  # installed into the real Codex CLI and driven by a scripted model — on every
+  # OS, since Codex runs hooks through a different shell on each.
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      # The Codex release the tests' pinned rules were read from. Bump it on
+      # purpose, with the tests, never by floating.
+      CODEX_CLI_VERSION: "0.163.0"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install the Codex CLI
+        shell: bash
+        run: |
+          npm install --no-save --prefix "$RUNNER_TEMP/codex-cli" "@openai/codex@${CODEX_CLI_VERSION}"
+          codex_bin="$RUNNER_TEMP/codex-cli/node_modules/@openai/codex/bin/codex.js"
+          node "$codex_bin" --version
+          echo "CODEX_BIN=$codex_bin" >> "$GITHUB_ENV"
+
+      - name: Test
+        env:
+          TEAMS_REQUIRE_CODEX_LIVE: "1"
+        run: npm test

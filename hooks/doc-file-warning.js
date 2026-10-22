@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 /**
- * Doc file warning hook (PreToolUse - Write)
- * Warns about non-standard documentation files.
+ * Doc file warning hook (PreToolUse - Claude Code's Write, Codex's apply_patch)
+ * Warns the model about non-standard documentation files it is about to create.
  * Exit code 0 always (warns only, never blocks).
  */
 
 'use strict';
 
 const path = require('path');
+const { emitContext, writtenFilePaths } = require('./lib/host-compat');
 
 const MAX_STDIN = 1024 * 1024;
 let data = '';
@@ -48,16 +49,16 @@ process.stdin.on('data', c => {
 process.stdin.on('end', () => {
   try {
     const input = JSON.parse(data);
-    const filePath = String(input.tool_input?.file_path || '');
+    const nonStandard = writtenFilePaths(input, { createdOnly: true }).filter(filePath => !isAllowedDocPath(filePath));
 
-    if (filePath && !isAllowedDocPath(filePath)) {
-      console.error('[Hook] WARNING: Non-standard documentation file detected');
-      console.error(`[Hook] File: ${filePath}`);
-      console.error('[Hook] Consider consolidating into README.md or docs/ directory');
+    if (nonStandard.length > 0) {
+      emitContext(input, [
+        '[Hook] WARNING: Non-standard documentation file detected',
+        ...nonStandard.map(filePath => `[Hook] File: ${filePath}`),
+        '[Hook] Consider consolidating into README.md or docs/ directory',
+      ].join('\n'));
     }
   } catch {
     // ignore parse errors
   }
-
-  process.stdout.write(data);
 });

@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "muggle-do"
+  short_description: "Quality-guranteed development workflow by Muggle AI. Takes a task through requirements, coding, testing, QA, and PR creation with iterative fix loops. Manages state in .muggle-do/sessions/ for auditability and crash recovery."
+policy:
+  allow_implicit_invocation: false

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-muggle-ai-teams is a Claude Code plugin — an agent orchestration framework composed of markdown definitions (agents, skills, commands, rules, workflow steps) and JavaScript hooks. There is no application code, no build step, and no test suite. The deliverable is the markdown and JS files themselves.
+muggle-ai-teams is a Claude Code and Codex plugin — an agent orchestration framework composed of markdown definitions (agents, skills, commands, rules, workflow steps) and JavaScript hooks. There is no application code and no build step. The deliverable is the markdown and JS files themselves, plus the Codex files generated from them (see [Codex](#codex)); `npm test` holds both hosts to them.
 
 Published as `@muggleai/teams` on npm. Part of the Muggle AI open-source ecosystem alongside `muggle-ai-works` (QA testing MCP server).
 
@@ -24,6 +24,8 @@ Both methods install `agents/`, `commands/`, `skills/`, `rules/` into `~/.claude
 
 After install, start with `/muggle-ai-teams` in Claude Code.
 
+Codex installs it as a plugin instead: `codex plugin marketplace add multiplex-ai/muggle-ai-teams`, then `codex plugin add muggle-ai-teams@muggle-ai-teams`, and starts with `$muggle-ai-teams:muggle-ai-teams`.
+
 ## Architecture
 
 ### Symlink System
@@ -31,9 +33,9 @@ After install, start with `/muggle-ai-teams` in Claude Code.
 ```
 muggle-ai-teams/          ← source of truth
   agents/                 ← 29 agent definitions (.md)
-  commands/               ← 54 slash command definitions (.md)
-  skills/                 ← 207 skill directories
-  rules/                  ← 16 domain rule files (.md)
+  commands/               ← 55 slash command definitions (.md)
+  skills/                 ← 174 skill directories
+  rules/                  ← 17 domain rule files (.md)
   workflow/               ← step files, procedures, references
   hooks/                  ← JS hooks + hooks.json manifest
   contexts/               ← mindset contexts for workflow steps
@@ -62,11 +64,17 @@ Each project declares its scopes, agents, directories, and commands in `projects
 
 ### Hooks System
 
-`hooks/hooks.json` is the manifest. Hooks are JavaScript files in `hooks/` that run on Claude Code events:
+`hooks/hooks.json` is the manifest. Hooks are JavaScript files in `hooks/` that run on Claude Code and Codex events:
 - **PostToolUse**: Auto-format after JS/TS edits, typecheck after TS edits, progress reminders after agent dispatch
 - **PreToolUse**: Batch completion check before git commit, doc file warnings, dispatch skill reminders
 - **Stop**: Console.log detection, compact suggestions, cost tracking, session save
-- **SessionStart**: Session context loading
+- **SessionStart**: Session context loading — under Codex, also the always-on rules
+
+Write every hook for both hosts, through `hooks/lib/host-compat.js`:
+- Matchers are tool names (`Edit|Write|MultiEdit`, `Bash`); a script filters by file or command itself. Neither host reads an expression matcher.
+- Read the files a call writes with `writtenFilePaths`, which knows Codex's `apply_patch`, and what a read names with `readTarget`, since Codex reads files through the shell.
+- Give the model text with `emitContext` (PreToolUse/PostToolUse) and the user with `emitSystemMessage`. Neither host gives stderr to the model, and Codex rejects any other JSON — never echo the payload back.
+- Timeouts are in seconds.
 
 ### Rules & Model Routing
 
@@ -78,7 +86,7 @@ Agent → model routing (Opus / Sonnet / Haiku assignments per role) lives in `r
 
 - Agent definitions are markdown files with frontmatter (`model`, `description`, `tools`). The filename minus `.md` is the agent name.
 - Command definitions are markdown files where the filename minus `.md` becomes the `/slash-command` name.
-- Skills are directories containing markdown files. They load on demand — zero tokens at rest.
+- Skills are directories containing markdown files. They load on demand — zero tokens at rest in Claude Code; Codex lists each one's name and a shortened description.
 - Workflow step files follow the naming pattern `step-{number}-{name}.md`. Reference files use `ref-*.md` and procedures use `procedure-*.md`.
 - The orchestrator never writes implementation code directly — it delegates everything to sub-agents.
 - Learning system: user corrections during sessions graduate to the appropriate `rules/` file, not just memory.
@@ -91,3 +99,12 @@ When editing agent/command/skill/rule files:
 - `scripts/postinstall.mjs` handles the npm install flow (copy + marker files + backups).
 - `setup.sh` handles the git clone flow (symlinks + permission fixes).
 - `scripts/migrate-to-new-workflow.sh` migrates users from old workflow structure.
+- Run `npm test` before pushing. The live Codex tests run when `CODEX_BIN` points at a Codex CLI (`@openai/codex`'s `bin/codex.js`); CI runs them on Linux, Windows and macOS.
+
+## Codex
+
+The Codex plugin is the same tree, described by `.codex-plugin/plugin.json` and listed by `.agents/plugins/marketplace.json`. Two parts of it are generated by `scripts/build-codex-plugin.mjs` and committed — never edit them by hand:
+- `codex/command-skills/<command>/` — one user-typed skill per command, since Codex has no plugin slash commands.
+- `hooks/codex-hooks.json` — `hooks/hooks.json` with each matcher renamed to the Codex tools that play its part.
+
+After changing `commands/` or `hooks/hooks.json`, run `npm run build:codex` and commit the result; `npm test` fails until you do. `codex/host-tool-equivalents.md` maps the Claude Code tools the instructions name to Codex's — add a row when the instructions come to depend on another.

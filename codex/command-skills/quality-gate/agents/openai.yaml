@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "quality-gate"
+  short_description: "Run the ECC quality pipeline on demand for a file or project scope."
+policy:
+  allow_implicit_invocation: false

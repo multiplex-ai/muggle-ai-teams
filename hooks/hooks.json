@@ -2,102 +2,101 @@
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "tool == 'Edit' && tool_input.file_path matches '\\.(ts|tsx|js|jsx)$'",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-edit-format.js \"$file_path\"",
-            "timeout": 10000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/post-edit-format.js\"",
+            "timeout": 20
           }
         ]
       },
       {
-        "matcher": "tool == 'Edit' && tool_input.file_path matches '\\.(ts|tsx)$'",
+        "matcher": "Edit|Write|MultiEdit",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-edit-typecheck.js \"$file_path\"",
-            "timeout": 30000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/post-edit-typecheck.js\"",
+            "timeout": 70
           }
         ]
       },
       {
-        "matcher": "tool == 'Agent'",
+        "matcher": "Agent|Task",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/progress-reminder.js",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/progress-reminder.js\"",
+            "timeout": 5
           }
         ]
       },
       {
-        "matcher": "tool == 'Read' && tool_input.file_path matches 'step-'",
+        "matcher": "Read",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/step-context-injector.js",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/step-context-injector.js\"",
+            "timeout": 5
           }
         ]
       }
     ],
     "PreToolUse": [
       {
-        "matcher": "tool == 'Bash' && tool_input.command matches 'git commit'",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/batch-completion-check.js",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/batch-completion-check.js\"",
+            "timeout": 5
           }
         ]
       },
       {
-        "matcher": "tool == 'Write' && tool_input.file_path matches '\\.(md|txt|doc)$'",
+        "matcher": "Write",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/doc-file-warning.js \"$file_path\"",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/doc-file-warning.js\"",
+            "timeout": 5
           }
         ]
       },
       {
-        "matcher": "tool == 'Agent'",
+        "matcher": "Agent|Task",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/dispatch-skill-reminder.js",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/dispatch-skill-reminder.js\"",
+            "timeout": 5
           }
         ]
       }
     ],
     "Stop": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/check-console-log.js",
-            "timeout": 10000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/check-console-log.js\"",
+            "timeout": 10
           },
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/suggest-compact.js",
-            "timeout": 5000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/suggest-compact.js\"",
+            "timeout": 5
           },
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/cost-tracker.js",
-            "timeout": 5000,
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/cost-tracker.js\"",
+            "timeout": 5,
             "async": true
           },
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/session-end.js",
-            "timeout": 10000,
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-end.js\"",
+            "timeout": 10,
             "async": true
           }
         ]
@@ -105,12 +104,11 @@
     ],
     "SessionStart": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js",
-            "timeout": 10000
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.js\"",
+            "timeout": 10
           }
         ]
       }

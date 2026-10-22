@@ -1,0 +1,42 @@
+{
+  "name": "muggle-ai-teams",
+  "version": "1.0.0",
+  "description": "Adaptive agent team orchestration for Codex and Claude Code: agents, skills, commands, rules, workflows, and hooks for the Muggle AI QA platform.",
+  "author": {
+    "name": "Muggle AI",
+    "url": "https://github.com/multiplex-ai"
+  },
+  "homepage": "https://github.com/multiplex-ai/muggle-ai-teams",
+  "repository": "https://github.com/multiplex-ai/muggle-ai-teams",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "claude-code",
+    "ai-agents",
+    "workflow",
+    "orchestration",
+    "muggle-ai",
+    "skills",
+    "multi-agent"
+  ],
+  "skills": ["./skills", "./codex/command-skills"],
+  "commands": [],
+  "hooks": "./hooks/codex-hooks.json",
+  "interface": {
+    "displayName": "Muggle AI Teams",
+    "shortDescription": "Describe a task; specialist agents research, design, build, test and review it",
+    "longDescription": "muggle-ai-teams runs a task through research, requirements, design, panel review, an approved plan, implementation by specialist agents, verification, a three-pass review, and a learning step that folds your corrections back into its rules.",
+    "developerName": "Muggle AI",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/multiplex-ai/muggle-ai-teams",
+    "defaultPrompt": [
+      "Use $muggle-ai-teams:muggle-ai-teams to add a logout button to the header",
+      "Use $muggle-ai-teams:plan to plan this change before any code",
+      "Use $muggle-ai-teams:code-review to review my uncommitted changes"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "update-docs"
+  short_description: "Sync documentation with the codebase, generating from source-of-truth files."
+policy:
+  allow_implicit_invocation: false
