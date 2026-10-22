@@ -57,6 +57,15 @@ chmod +x muggle-ai-teams/setup.sh
 
 After installing, open Claude Code and type `/muggle-ai-teams`. Describe what you want.
 
+### Option C: Codex
+
+```bash
+codex plugin marketplace add multiplex-ai/muggle-ai-teams
+codex plugin add muggle-ai-teams@muggle-ai-teams
+```
+
+Restart Codex and trust the plugin's hooks when it asks (or later, in `/hooks`): they bring the rules into every session and the workflow's reminders into its tool calls. Then type `$muggle-ai-teams:muggle-ai-teams` and describe what you want. See [Codex](#codex) for what differs.
+
 <details>
 <summary>What does install actually do?</summary>
 
@@ -153,11 +162,11 @@ The workflow triages complexity, recommends a tier, and waits for your confirmat
 | **Focus** | End-to-end workflow with cost tiers | Development workflow skills | Agent harness optimization | Context engineering |
 | **Core idea** | Describe task → approved design → autonomous delivery | Composable skills enforcing systematic dev process | Performance system with instincts, learning, and security | Fresh context per task to prevent quality degradation |
 | **Agents** | 29 specialized roles with scope-first routing | Skill-based (no standalone agents) | 28 subagents | Multi-agent orchestration via waves |
-| **Skills** | 207 (merged + deduplicated) | ~15 core workflow skills | 116+ | Embedded in prompts |
-| **Rules** | 16 domain-split files, loaded on demand | Via skill enforcement | Multi-language rule sets | XML-structured prompts |
+| **Skills** | 174 (merged + deduplicated) | ~15 core workflow skills | 116+ | Embedded in prompts |
+| **Rules** | 17 domain-split files, loaded on demand | Via skill enforcement | Multi-language rule sets | XML-structured prompts |
 | **Learning system** | Behavioral corrections graduate to always-loaded rules | N/A | Instinct-based with confidence scoring | N/A |
 | **Portability** | `setup.sh` symlinks to any machine | Plugin install | Plugin + manual setup | Drop-in folder |
-| **Multi-tool** | Claude Code (full), Cursor (partial) | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
+| **Multi-tool** | Claude Code (full), Codex (full), Cursor (partial) | Claude Code | Claude Code, Cursor, Codex, OpenCode | Claude Code, Gemini CLI, Codex, Copilot |
 | **Non-coding tasks** | Yes — same workflow for content, strategy, decks | No | No | Partial |
 
 </details>
@@ -191,7 +200,7 @@ The workflow coordinates specialist `claude code agents`, enforces quality gates
 </details>
 
 <details>
-<summary>Commands (54 slash commands)</summary>
+<summary>Commands (55 slash commands)</summary>
 
 Development: `/plan`, `/tdd`, `/code-review`, `/build-fix`, `/e2e`, `/verify`, `/quality-gate`
 
@@ -206,7 +215,7 @@ Operations: `/loop-start`, `/loop-status`, `/devfleet`, `/multi-execute`, `/mode
 </details>
 
 <details>
-<summary>Skills (207 domain skills)</summary>
+<summary>Skills (174 domain skills)</summary>
 
 Organized into directories covering: AI/ML patterns, backend frameworks (Django, FastAPI, Express, Spring Boot, Laravel), frontend patterns, SEO/GEO optimization, cloud infrastructure, database migrations, testing strategies, content writing, deployment patterns, and more.
 
@@ -215,7 +224,7 @@ Skills load on demand — zero skill tokens in context at rest. Only the current
 </details>
 
 <details>
-<summary>Rules (16 domain files)</summary>
+<summary>Rules (17 domain files)</summary>
 
 ```
 Always loaded (every conversation):
@@ -318,21 +327,23 @@ Want QA testing without managing any of this? Try [MuggleTest](https://www.muggl
 
 **Full support: Claude Code.** The orchestrated workflow — parallel `autonomous coding agent` dispatch, per-slice QA, task tracking, hooks, MCP integration — requires Claude Code's Agent tool, Skill tool, TaskCreate, and hook system.
 
+**Full support: Codex.** Installed as a Codex plugin, the same commands, agents, skills, rules and hooks run there. See [Codex](#codex).
+
 **Partial support: Cursor.** Reads the agent and skill files and supports MCP (so muggle-ai-works tools work). Cannot spawn subagent specialists in parallel, run hooks, or track workflow tasks. Use the step files as manual guidance rather than automated orchestration.
 
-**Not supported: Codex, Trae, and others.** The workflow files are readable markdown — any AI assistant can follow them as instructions — but automated orchestration won't work without the tools above. Contributions to port the orchestration layer are welcome.
+**Not supported: Trae and others.** The workflow files are readable markdown — any AI assistant can follow them as instructions — but automated orchestration won't work without the tools above. Contributions to port the orchestration layer are welcome.
 
 <details>
 <summary>Platform compatibility table</summary>
 
-| Capability | Claude Code | Cursor | Others |
-|-----------|------------|--------|--------|
-| Read workflow step files | Yes | Yes | Yes |
-| Agent tool (parallel specialists) | Yes | No | No |
-| MCP (muggle-ai-works QA) | Yes | Yes | Varies |
-| Skills / Commands | Yes | Partial | No |
-| Task tracking | Yes | No | No |
-| Hooks (auto-format, typecheck) | Yes | No | No |
+| Capability | Claude Code | Codex | Cursor | Others |
+|-----------|------------|-------|--------|--------|
+| Read workflow step files | Yes | Yes | Yes | Yes |
+| Agent tool (parallel specialists) | Yes | Yes, `spawn_agent` | No | No |
+| MCP (muggle-ai-works QA) | Yes | Yes | Yes | Varies |
+| Skills / Commands | Yes | Yes, commands as skills | Partial | No |
+| Task tracking | Yes | Opt-in, `update_plan` | No | No |
+| Hooks (auto-format, typecheck) | Yes | Yes, once trusted | No | No |
 
 </details>
 
@@ -350,9 +361,33 @@ You see the estimate and confirm the tier before any work begins.
 
 No. `setup.sh` backs up your existing `agents/`, `commands/`, `skills/`, and `rules/` to `.bak` directories before creating symlinks. To undo: remove the symlinks, rename the backups. Your original setup is preserved.
 
-### Will 207 skills eat my entire context window?
+### Will 174 skills eat my entire context window?
 
 No. Skills load on demand — Claude Code reads them only when a matching task triggers them. At rest, zero skill tokens are in your context. During a workflow run, only the current step file (~50 lines) is active.
+
+Codex lists every skill to the model by name and description within a budget of 2% of its context window: the names take about 3,300 tokens, and each description is cut to about 50 characters. See [Codex](#codex) to raise it.
+
+### Codex
+
+Codex runs the plugin as written for Claude Code, with these differences:
+
+- **Commands are skills.** `/muggle-ai-teams`, `/plan` and the rest are `$muggle-ai-teams:muggle-ai-teams`, `$muggle-ai-teams:plan`, and so on: type them, or pick one from `/skills`. They stay out of the model's skills list, as slash commands stay out of Claude Code's.
+- **Rules come from a hook.** Codex never reads `~/.claude/rules`, so the session-start hook gives each session the always-on rules and names the path-scoped ones. It runs once you trust the plugin's hooks. `codex exec` runs only hooks you have already trusted.
+- **Agents run through `spawn_agent`.** Codex's multi-agent tools are on by default. An agent's `model:` and `tools:` are not applied: every agent runs the session's model.
+- **The skills list is short on room.** Raise its budget to Codex's maximum, which roughly doubles each description:
+
+  ```toml
+  # ~/.codex/config.toml
+  [skills]
+  max_context_tokens = 10000
+  ```
+
+- **Task tracking is opt-in.** Codex's task list, `update_plan`, is off until you set `[tools.update_plan] enabled = true` in the same file. Without it the workflow's tracking files carry the progress.
+- **`AGENTS.md`, not `CLAUDE.md`.** Codex reads `AGENTS.md`. Add `project_doc_fallback_filenames = ["CLAUDE.md"]` to the same file to have it read a repo's `CLAUDE.md` too.
+- **Edit a checkout, not the plugin.** Codex keeps its own copy of the plugin and replaces it on every install and upgrade. Make the learning step's changes to agents, skills and rules in a muggle-ai-teams checkout.
+- **Updating.** `codex plugin marketplace upgrade muggle-ai-teams`. Codex also checks for a newer version each time it starts.
+
+[`codex/host-tool-equivalents.md`](codex/host-tool-equivalents.md) maps each Claude Code tool the instructions name to what plays its part in Codex. The model is pointed to it at the start of every session.
 
 ### I already use Superpowers or Everything Claude Code. Do I install both?
 

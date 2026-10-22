@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "projects"
+  short_description: "List known projects and their instinct statistics"
+policy:
+  allow_implicit_invocation: false

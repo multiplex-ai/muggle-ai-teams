@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "docs"
+  short_description: "Look up current documentation for a library or topic via Context7."
+policy:
+  allow_implicit_invocation: false

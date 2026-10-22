@@ -1,0 +1,16 @@
+{
+  "name": "muggle-ai-teams",
+  "owner": {
+    "name": "Muggle AI",
+    "email": "team@muggle-ai.com"
+  },
+  "plugins": [
+    {
+      "name": "muggle-ai-teams",
+      "source": "./",
+      "description": "Adaptive agent team orchestration for Codex and Claude Code: agents, skills, commands, rules, workflows, and hooks for the Muggle AI QA platform.",
+      "version": "1.0.0",
+      "category": "Developer Tools"
+    }
+  ]
+}

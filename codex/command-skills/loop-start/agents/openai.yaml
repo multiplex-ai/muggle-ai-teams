@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "loop-start"
+  short_description: "Start a managed autonomous loop pattern with safety defaults."
+policy:
+  allow_implicit_invocation: false

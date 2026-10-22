@@ -55,7 +55,7 @@ process.stdin.on('end', () => {
     const outputTokens = toNumber(usage.output_tokens || usage.completion_tokens || 0);
 
     const model = String(input.model || input._cursor?.model || process.env.CLAUDE_MODEL || 'unknown');
-    const sessionId = String(process.env.CLAUDE_SESSION_ID || 'default');
+    const sessionId = String(input.session_id || process.env.CLAUDE_SESSION_ID || 'default');
 
     const metricsDir = path.join(getClaudeDir(), 'metrics');
     ensureDir(metricsDir);
@@ -73,6 +73,4 @@ process.stdin.on('end', () => {
   } catch {
     // Keep hook non-blocking.
   }
-
-  process.stdout.write(raw);
 });

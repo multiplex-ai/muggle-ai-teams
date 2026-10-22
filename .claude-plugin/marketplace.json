@@ -12,7 +12,7 @@
     {
       "name": "muggle-ai-teams",
       "source": ".",
-      "description": "Adaptive agent team orchestration for Claude Code — 29 agents, 200+ skills, 54 commands, and quality-gate hooks",
+      "description": "Adaptive agent team orchestration for Claude Code — 29 agents, 174 skills, 55 commands, and quality-gate hooks",
       "version": "1.0.0"
     }
   ]

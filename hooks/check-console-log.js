@@ -6,8 +6,8 @@
  * Cross-platform (Windows, macOS, Linux)
  *
  * Runs after each response and checks if any modified JavaScript/TypeScript
- * files contain console.log statements. Provides warnings to help developers
- * remember to remove debug statements before committing.
+ * files contain console.log statements. Shows the user a warning, to help
+ * developers remember to remove debug statements before committing.
  *
  * Exclusions: test files, config files, and scripts/ directory (where
  * console.log is often intentional).
@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const { isGitRepo, getGitModifiedFiles, readFile, log } = require('./lib/utils');
+const { emitSystemMessage } = require('./lib/host-compat');
 
 // Files where console.log is expected and should not trigger warnings
 const EXCLUDED_PATTERNS = [
@@ -40,7 +41,6 @@ process.stdin.on('data', chunk => {
 process.stdin.on('end', () => {
   try {
     if (!isGitRepo()) {
-      process.stdout.write(data);
       process.exit(0);
     }
 
@@ -48,24 +48,22 @@ process.stdin.on('end', () => {
       .filter(f => fs.existsSync(f))
       .filter(f => !EXCLUDED_PATTERNS.some(pattern => pattern.test(f)));
 
-    let hasConsole = false;
+    const warnings = [];
 
     for (const file of files) {
       const content = readFile(file);
       if (content && content.includes('console.log')) {
-        log(`[Hook] WARNING: console.log found in ${file}`);
-        hasConsole = true;
+        warnings.push(`[Hook] WARNING: console.log found in ${file}`);
       }
     }
 
-    if (hasConsole) {
-      log('[Hook] Remove console.log statements before committing');
+    if (warnings.length > 0) {
+      warnings.push('[Hook] Remove console.log statements before committing');
+      emitSystemMessage(warnings.join('\n'));
     }
   } catch (err) {
     log(`[Hook] check-console-log error: ${err.message}`);
   }
 
-  // Always output the original data
-  process.stdout.write(data);
   process.exit(0);
 });

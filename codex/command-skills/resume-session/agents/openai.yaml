@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "resume-session"
+  short_description: "Load the most recent session file from ~/.claude/sessions/ and resume work with full context from where the last session ended."
+policy:
+  allow_implicit_invocation: false

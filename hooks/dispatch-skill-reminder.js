@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * Dispatch Skill Reminder Hook (PreToolUse: Agent)
+ * Dispatch Skill Reminder Hook (PreToolUse: Claude Code's Agent, Codex's spawn_agent)
  *
- * Fires before the Agent tool is invoked. Scans plan documents for
- * a Skills Found table and prints a reminder to include skill text
- * in the agent dispatch prompt.
+ * Fires before a sub-agent is dispatched. Scans plan documents for
+ * a Skills Found table and hands the model a reminder to include skill
+ * text in the agent dispatch prompt.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { log, findFiles, readFile } = require('./lib/utils');
+const { findFiles, readFile, readStdinJson } = require('./lib/utils');
+const { emitContext, pluginRoot } = require('./lib/host-compat');
 
 function findPlanFiles() {
   const projectsDir = path.join(process.cwd(), 'muggle-ai-teams', 'projects');
@@ -62,6 +63,7 @@ function extractSkillsTable(content) {
 }
 
 async function main() {
+  const input = await readStdinJson();
   const planFiles = findPlanFiles();
   if (planFiles.length === 0) {
     process.exit(0);
@@ -74,12 +76,14 @@ async function main() {
   }
 
   const table = extractSkillsTable(content);
+  const reminder = [];
   if (table) {
-    log(`\n[Dispatch] Skills Found in ${path.basename(planFiles[0].path)}:`);
-    log(table);
+    reminder.push(`[Dispatch] Skills Found in ${path.basename(planFiles[0].path)}:`, table, '');
   }
 
-  log('\nREMINDER: Read relevant SKILL.md files and include full text in agent prompt. See workflow/procedure-agent-dispatch.md');
+  const procedure = path.join(pluginRoot(), 'workflow', 'procedure-agent-dispatch.md');
+  reminder.push(`REMINDER: Read relevant SKILL.md files and include full text in agent prompt. See ${procedure}`);
+  emitContext(input, reminder.join('\n'));
 
   process.exit(0);
 }

@@ -1,7 +1,7 @@
 {
   "name": "@muggleai/teams",
   "version": "1.0.0",
-  "description": "Adaptive agent team orchestration for Claude Code — agents, skills, commands, rules, workflows, and hooks",
+  "description": "Adaptive agent team orchestration for Claude Code and Codex — agents, skills, commands, rules, workflows, and hooks",
   "type": "module",
   "files": [
     "agents",
@@ -16,10 +16,15 @@
   ],
   "scripts": {
     "postinstall": "node scripts/postinstall.mjs",
-    "setup": "bash setup.sh"
+    "setup": "bash setup.sh",
+    "build:codex": "node scripts/build-codex-plugin.mjs",
+    "verify:codex": "node scripts/build-codex-plugin.mjs --check",
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "test:codex": "node --test test/codex-live.test.mjs"
   },
   "keywords": [
     "claude-code",
+    "codex",
     "ai-agents",
     "workflow",
     "orchestration",

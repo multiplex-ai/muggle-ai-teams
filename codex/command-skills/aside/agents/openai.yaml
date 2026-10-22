@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "aside"
+  short_description: "Answer a quick side question without interrupting or losing context from the current task. Resume work automatically after answering."
+policy:
+  allow_implicit_invocation: false

@@ -2,16 +2,18 @@
 /**
  * Step Context Injector Hook
  *
- * Fires on PostToolUse when a step-*.md file is read.
+ * Fires on PostToolUse when a step-*.md file is read — by Claude Code's Read,
+ * or by a Codex shell command that names the file.
  * Automatically injects relevant rules and reference content
  * so the AI never needs to "decide" to read them.
  *
- * Outputs key points to stdout (returned to Claude's context).
+ * Hands the key points to the model as context.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { readStdinJson, output, log } = require('./lib/utils');
+const { readStdinJson, log } = require('./lib/utils');
+const { emitContext, hookHost, readTarget } = require('./lib/host-compat');
 
 // Step → key points to inject (concise, not full files)
 const STEP_INJECTIONS = {
@@ -162,11 +164,11 @@ const STEP_INJECTIONS = {
 async function main() {
   const input = await readStdinJson();
 
-  // Get the file path from the tool input
-  const filePath = input?.tool_input?.file_path || '';
+  // The file path, or under Codex the shell command that read it
+  const target = readTarget(input || {});
 
   // Check if this is a step file read
-  const stepMatch = filePath.match(/step-(\d+[a-z]?\d*)/);
+  const stepMatch = target.match(/step-(\d+[a-z]?\d*)[\w-]*\.md/);
   if (!stepMatch) {
     process.exit(0);
   }
@@ -180,12 +182,12 @@ async function main() {
 
   // Add universal cost tracking reminder for steps 2+
   const costSteps = ['step-2', 'step-3', 'step-4', 'step-5', 'step-6'];
+  const usageCommand = hookHost() === 'codex' ? '/status' : '/cost';
   const costReminder = costSteps.includes(stepKey)
-    ? '\n**💰 Cost tracking**: Run /cost to check spent so far. Report to user: "Spent: $X. Estimated remaining: $Y."'
+    ? `\n**💰 Cost tracking**: Run ${usageCommand} to check spent so far. Report to user: "Spent: $X. Estimated remaining: $Y."`
     : '';
 
-  // Output the injection points — these go to stdout and appear in Claude's context
-  output(injection.points.join('\n') + costReminder);
+  emitContext(input, injection.points.join('\n') + costReminder);
 
   log(`[StepInjector] Injected rules for ${injection.label}`);
 

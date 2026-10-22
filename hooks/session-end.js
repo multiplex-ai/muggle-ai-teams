@@ -6,7 +6,8 @@
  *
  * Runs on Stop events (after each response). Extracts a meaningful summary
  * from the session transcript (via stdin JSON transcript_path) and updates a
- * session file for cross-session continuity.
+ * session file for cross-session continuity. Reads both hosts' transcripts:
+ * Claude Code's, and the rollout file Codex names as its transcript_path.
  */
 
 const path = require('path');
@@ -23,10 +24,38 @@ const {
   runCommand,
   log
 } = require('./lib/utils');
+const { patchedFiles } = require('./lib/host-compat');
 
 const SUMMARY_START_MARKER = '<!-- ECC:SUMMARY:START -->';
 const SUMMARY_END_MARKER = '<!-- ECC:SUMMARY:END -->';
 const SESSION_SEPARATOR = '\n---\n';
+
+/**
+ * Fold one line of a Codex rollout into the summary. Each line wraps its item
+ * in { type, payload }: the user's own messages are completed UserMessage
+ * items, and tool calls are response items, a patch's files named in its input.
+ */
+function readCodexRolloutLine(entry, userMessages, toolsUsed, filesModified) {
+  const payload = entry.payload || {};
+  if (entry.type === 'event_msg' && payload.type === 'item_completed' && payload.item?.type === 'UserMessage') {
+    const text = (payload.item.content || []).map(part => (part && part.text) || '').join(' ');
+    if (text.trim()) userMessages.push(text.trim().slice(0, 200));
+    return;
+  }
+  if (entry.type !== 'response_item' || (payload.type !== 'function_call' && payload.type !== 'custom_tool_call')) return;
+  const toolName = payload.name || '';
+  if (toolName) toolsUsed.add(toolName);
+  if (toolName !== 'apply_patch') return;
+  let patch = payload.input;
+  if (patch === undefined) {
+    try {
+      patch = JSON.parse(payload.arguments || '{}').input;
+    } catch {
+      patch = '';
+    }
+  }
+  for (const file of patchedFiles(String(patch || ''))) filesModified.add(file.path);
+}
 
 /**
  * Extract a meaningful summary from the session transcript.
@@ -44,6 +73,11 @@ function extractSessionSummary(transcriptPath) {
   for (const line of lines) {
     try {
       const entry = JSON.parse(line);
+
+      if (entry.payload && typeof entry.payload === 'object') {
+        readCodexRolloutLine(entry, userMessages, toolsUsed, filesModified);
+        continue;
+      }
 
       if (entry.type === 'user' || entry.role === 'user' || entry.message?.role === 'user') {
         const rawContent = entry.message?.content ?? entry.content;

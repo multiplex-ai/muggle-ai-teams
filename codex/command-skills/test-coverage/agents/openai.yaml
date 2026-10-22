@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "test-coverage"
+  short_description: "Analyze test coverage, identify gaps, and generate missing tests to reach 80%+ coverage."
+policy:
+  allow_implicit_invocation: false

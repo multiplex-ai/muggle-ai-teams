@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "learn"
+  short_description: "Analyze the current session and extract any patterns worth saving as skills."
+policy:
+  allow_implicit_invocation: false

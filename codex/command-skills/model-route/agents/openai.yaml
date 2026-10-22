@@ -1,0 +1,7 @@
+# Codex reads this beside SKILL.md. A command is for the user to type: the
+# plugin's own skills already fill the list Codex shows the model.
+interface:
+  display_name: "model-route"
+  short_description: "Recommend the best model tier for the current task by complexity and budget."
+policy:
+  allow_implicit_invocation: false

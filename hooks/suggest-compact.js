@@ -12,11 +12,14 @@ const path = require('path');
 const {
   getTempDir,
   writeFile,
-  log
+  readStdinJson
 } = require('./lib/utils');
+const { emitSystemMessage } = require('./lib/host-compat');
 
 async function main() {
-  const sessionId = (process.env.CLAUDE_SESSION_ID || 'default').replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
+  // Both hosts give the session's id in the payload, and neither sets CLAUDE_SESSION_ID.
+  const input = await readStdinJson();
+  const sessionId = String(input.session_id || process.env.CLAUDE_SESSION_ID || 'default').replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
   const counterFile = path.join(getTempDir(), `claude-tool-count-${sessionId}`);
   const rawThreshold = parseInt(process.env.COMPACT_THRESHOLD || '50', 10);
   const threshold = Number.isFinite(rawThreshold) && rawThreshold > 0 && rawThreshold <= 10000
@@ -47,12 +50,12 @@ async function main() {
 
   // Suggest compact after threshold tool calls
   if (count === threshold) {
-    log(`[StrategicCompact] ${threshold} tool calls reached - consider /compact if transitioning phases`);
+    emitSystemMessage(`[StrategicCompact] ${threshold} tool calls reached - consider /compact if transitioning phases`);
   }
 
   // Suggest at regular intervals after threshold (every 25 calls from threshold)
   if (count > threshold && (count - threshold) % 25 === 0) {
-    log(`[StrategicCompact] ${count} tool calls - good checkpoint for /compact if context is stale`);
+    emitSystemMessage(`[StrategicCompact] ${count} tool calls - good checkpoint for /compact if context is stale`);
   }
 
   process.exit(0);

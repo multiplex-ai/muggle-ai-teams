@@ -4,9 +4,10 @@
  *
  * Cross-platform (Windows, macOS, Linux)
  *
- * Runs after Edit tool use. If the edited file is a JS/TS file,
- * auto-detects the project formatter (Biome or Prettier) by looking
- * for config files, then formats accordingly.
+ * Runs after a file edit — Claude Code's Edit, Write or MultiEdit, Codex's
+ * apply_patch. For each JS/TS file the edit wrote, auto-detects the project
+ * formatter (Biome or Prettier) by looking for config files, then formats
+ * accordingly.
  *
  * For Biome, uses `check --write` (format + lint in one pass) to
  * avoid a redundant second invocation from quality-gate.js.
@@ -24,6 +25,7 @@ const path = require('path');
 const UNSAFE_PATH_CHARS = /[&|<>^%!]/;
 
 const { findProjectRoot, detectFormatter, resolveFormatterBin } = require('./lib/resolve-formatter');
+const { writtenFilePaths } = require('./lib/host-compat');
 
 const MAX_STDIN = 1024 * 1024; // 1MB limit
 
@@ -32,22 +34,21 @@ const MAX_STDIN = 1024 * 1024; // 1MB limit
  * without spawning a child process.
  *
  * @param {string} rawInput - Raw JSON string from stdin
- * @returns {string} The original input (pass-through)
+ * @returns {string} The hook's answer: nothing. Codex rejects a PostToolUse
+ *   answer it cannot parse, so the input is not passed through.
  */
 function run(rawInput) {
   try {
     const input = JSON.parse(rawInput);
-    const filePath = input.tool_input?.file_path;
 
-    if (filePath && /\.(ts|tsx|js|jsx)$/.test(filePath)) {
+    for (const resolvedFilePath of writtenFilePaths(input).filter(file => /\.(ts|tsx|js|jsx)$/.test(file))) {
       try {
-        const resolvedFilePath = path.resolve(filePath);
         const projectRoot = findProjectRoot(path.dirname(resolvedFilePath));
         const formatter = detectFormatter(projectRoot);
-        if (!formatter) return rawInput;
+        if (!formatter) continue;
 
         const resolved = resolveFormatterBin(projectRoot, formatter);
-        if (!resolved) return rawInput;
+        if (!resolved) continue;
 
         // Biome: `check --write` = format + lint in one pass
         // Prettier: `--write` = format only
@@ -79,10 +80,10 @@ function run(rawInput) {
       }
     }
   } catch {
-    // Invalid input — pass through
+    // Invalid input — nothing to format
   }
 
-  return rawInput;
+  return '';
 }
 
 // ── stdin entry point (backwards-compatible) ────────────────────
