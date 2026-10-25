@@ -24,6 +24,8 @@ The orchestrator provides:
 3. Demo mockups or design references (if available)
 4. A description of what the UI is supposed to do
 
+Before reviewing, also read the project's own design rules: any design-system or aesthetic-rules document the repo's `CLAUDE.md` or `AGENTS.md` points to.
+
 ## Research Phase
 
 If **no demo mockups or design references** are provided, research best practices before reviewing:
@@ -106,12 +108,13 @@ Can all users interact with the UI effectively?
 ## What Works Well
 - [call out 1-2 things the implementation does right from a UX perspective]
 
-## Summary
+## Verdict
 - [overall UX assessment: approve / request changes]
 ```
 
 ## Rules
 
+- **Project rules first** — a deviation from the project's design rules is a finding that cites the rule; those rules outrank general best practice and the Research Phase
 - **Read-only** — never modify code, only review and suggest
 - **Be specific** — always include file path and line number
 - **Be actionable** — describe the problem AND suggest a concrete improvement
